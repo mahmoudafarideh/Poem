@@ -13,11 +13,12 @@ import m.a.poem.ui.theme.PoemTheme
 @Composable
 fun CenturyChip(
     century: CenturyUiModel,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     FilterChip(
         selected = century.isSelected,
-        onClick = {},
+        onClick = onClick,
         label = {
             Text(
                 text = century.label,
@@ -37,7 +38,8 @@ private fun CenturyChipPreview() {
             century = CenturyUiModel(
                 "شاعران پربازدید",
                 false
-            )
+            ),
+            onClick = {}
         )
     }
 }

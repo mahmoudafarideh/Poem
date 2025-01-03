@@ -10,11 +10,19 @@ import m.a.poem.R
 
 private val boldFont = Font(R.font.vazir_bold)
 private val lightFont = Font(R.font.vazir_light)
+private val regularFont = Font(R.font.vazir_regular)
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily(boldFont),
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily(regularFont),
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),

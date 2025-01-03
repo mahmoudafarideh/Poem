@@ -2,10 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinx.serialization)
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 android {
@@ -60,7 +64,9 @@ dependencies {
     implementation(libs.compose.material.navigation)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.compose.shimmer)
+
     implementation(libs.hilt.android)
+    implementation(libs.hilt.compose)
     kapt(libs.hilt.compiler)
 
     implementation(libs.coil.compose)
@@ -80,7 +86,3 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
-
-//kapt {
-//    correctErrorTypes = true
-//}

@@ -16,6 +16,7 @@ import m.a.poem.ui.theme.PoemTheme
 @Composable
 fun CenturyChips(
     labels: ImmutableList<CenturyUiModel>,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -27,7 +28,7 @@ fun CenturyChips(
             items = labels,
             key = { it.label }
         ) {
-            CenturyChip(it, Modifier)
+            CenturyChip(it, { onClick(it.label) }, Modifier)
         }
     }
 }
@@ -39,7 +40,8 @@ private fun CenturyChipsPreview() {
         CenturyChips(
             labels = persistentListOf(
                 CenturyUiModel("قرن پنجم", true)
-            )
+            ),
+            onClick = {}
         )
     }
 }

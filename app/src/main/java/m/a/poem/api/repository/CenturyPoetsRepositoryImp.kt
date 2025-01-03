@@ -10,6 +10,6 @@ class CenturyPoetsRepositoryImp @Inject constructor(
     private val centuryApi: CenturyApi
 ) : CenturyPoetsRepository {
     override suspend fun getCenturies(): List<CenturyPoets> {
-        centuryApi.getCenturies().map { it.toCenturyPoets() }
+        return centuryApi.getCenturies().map { it.toCenturyPoets() }
     }
 }

@@ -2,8 +2,10 @@ package m.a.poem.ui.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import m.a.poem.domain.model.CenturyPoets
 import m.a.poem.domain.model.LoadableData
+import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.NotLoaded
 import m.a.poem.domain.model.Poet
 import m.a.poem.domain.repository.CenturyPoetsRepository
@@ -28,6 +30,7 @@ class HomeViewModel @Inject constructor(
         executeLoadable(
             currentValue = state.value,
             action = {
+                delay(2_000)
                 getPoets()
             },
             data = {
@@ -69,6 +72,30 @@ class HomeViewModel @Inject constructor(
     private fun Poet.toPoetUiModel() = PoetUiModel(
         id = id,
         name = name,
-        profile = profile
+        profile = profile,
+        nickname = nickName
     )
+
+    fun centuryClicked(century: String) {
+        state.value.data?.let {
+            val centuries = it.labels.map { uiModel ->
+                uiModel.copy(isSelected = uiModel.label == century)
+            }.toImmutableList()
+            updateState {
+                Loaded(
+                    it.copy(
+                        labels = centuries,
+                        poets = centuryPoets.firstOrNull { it.name == century }?.poets.orEmpty()
+                            .map {
+                                it.toPoetUiModel()
+                            }.toImmutableList()
+                    )
+                )
+            }
+        }
+    }
+
+    fun retryClicked() {
+        getCenturyPoets()
+    }
 }

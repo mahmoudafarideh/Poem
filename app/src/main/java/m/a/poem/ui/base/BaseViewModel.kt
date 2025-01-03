@@ -1,5 +1,6 @@
 package m.a.poem.ui.base
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +29,10 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
             runCatching {
                 action()
             }.onFailure {
+                Log.d("SXO", "executeLoadable Failed ${it.message}")
                 data(Failed)
             }.onSuccess {
+                Log.d("SXO", "executeLoadable Succeed $it")
                 data(Loaded(it))
             }
         }
