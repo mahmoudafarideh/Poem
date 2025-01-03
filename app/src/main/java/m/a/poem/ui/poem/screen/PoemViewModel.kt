@@ -9,12 +9,14 @@ import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.PoemInfo
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoetRepository
 import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.poem.model.MediaPlayerState
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
 import m.a.poem.ui.poem.model.PoemScreenUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
@@ -112,28 +114,44 @@ class PoemViewModel @AssistedInject constructor(
             mediaPlayerRepository.pause()
             return
         }
-        musicPlayerJob?.cancel()
-        musicPlayerJob = viewModelScope.launch(Dispatchers.IO) {
-            this.launch {
-                mediaPlayerRepository.playingProgress().collect {
-                    updateRecitationState(
-                        recitationId,
-                        PoemRecitationUiModel.State.Playing(it.first, it.second)
-                    )
-                }
-            }
-            this.launch {
-                mediaPlayerRepository.musicPlayingStarted().collect {
-                    if (it != recitation.mp3Url) {
-                        updateRecitationState(recitationId, PoemRecitationUiModel.State.None)
-                    }
-                }
-            }
-        }
 
         if (recitation.state == PoemRecitationUiModel.State.Paused) {
             mediaPlayerRepository.play(recitation.mp3Url)
             return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            musicPlayerJob?.cancelAndJoin()
+            musicPlayerJob = launch(Dispatchers.IO) {
+                this.launch {
+                    mediaPlayerRepository.playingProgress().collect {
+                        updateRecitationState(
+                            recitationId,
+                            PoemRecitationUiModel.State.Playing(it.first, it.second)
+                        )
+                    }
+                }
+                this.launch {
+                    mediaPlayerRepository.musicPlayingStarted().collect {
+                        if (it != recitation.mp3Url) {
+                            updateRecitationState(recitationId, PoemRecitationUiModel.State.None)
+                        }
+                    }
+                }
+                this.launch {
+                    mediaPlayerRepository.playbackState().collect {
+                        when (it) {
+                            MediaPlayerState.Stopped -> {
+                                updateRecitationState(
+                                    recitationId,
+                                    PoemRecitationUiModel.State.None
+                                )
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }
+            }
         }
 
         updateRecitationState(recitationId, PoemRecitationUiModel.State.Loading)

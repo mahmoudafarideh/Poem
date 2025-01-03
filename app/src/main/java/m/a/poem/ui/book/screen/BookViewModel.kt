@@ -1,6 +1,5 @@
 package m.a.poem.ui.book.screen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dagger.assisted.Assisted
