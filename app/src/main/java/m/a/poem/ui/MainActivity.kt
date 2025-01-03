@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import m.a.compilot.navigation.LocalNavController
+import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.HomeRoute
 import m.a.poem.ui.home.homeGraph
 import m.a.poem.ui.home.routes.navigator
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         this.homeGraph()
                         this.poetGraph()
+                        this.bookGraph()
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package m.a.poem.api.model
 
 import kotlinx.serialization.Serializable
+import m.a.poem.domain.model.BookItem
 import m.a.poem.domain.model.PoetBook
 
 @Serializable
@@ -17,4 +18,9 @@ data class PoetBooksDto(
 internal fun PoetBookDto.toPoetBook() = PoetBook(
     id = id,
     label = title,
+)
+
+internal fun PoetBookDto.toBookItem() = BookItem.Book(
+    id = id,
+    label = title
 )
