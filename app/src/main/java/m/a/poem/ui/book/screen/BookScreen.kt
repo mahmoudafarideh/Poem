@@ -28,6 +28,8 @@ import m.a.poem.ui.book.components.PoemBioLoading
 import m.a.poem.ui.book.model.BookSubItemUiModel
 import m.a.poem.ui.book.navigation.BookRoute
 import m.a.poem.ui.book.navigation.routes.navigator
+import m.a.poem.ui.poem.navigation.PoemRoute
+import m.a.poem.ui.poem.navigation.routes.navigator
 import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
@@ -88,7 +90,17 @@ fun BookScreen(
                                 )
                             },
                             onPoemClick = {
-
+                                navigation.safeNavigate().navigate(
+                                    PoemRoute(
+                                        poetInfo = Poet(
+                                            id = poetUiModel.id,
+                                            name = poetUiModel.name,
+                                            nickName = poetUiModel.nickname,
+                                            profile = poetUiModel.profile,
+                                        ),
+                                        poemId = it.id
+                                    ).navigator
+                                )
                             }
                         )
                     }
