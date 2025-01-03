@@ -3,11 +3,11 @@ package m.a.poem.ui.poem.navigation
 import android.app.Activity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import dagger.hilt.android.EntryPointAccessors
@@ -24,7 +24,7 @@ import m.a.poem.ui.shared.model.PoetUiModel
 fun NavGraphBuilder.poemGraph() {
     PoemRoute.screen(this) {
         val viewModel = poemViewModel(it.argument.poetInfo, it.argument.poemId)
-        val state by viewModel.state.collectAsState()
+        val state by viewModel.state.collectAsStateWithLifecycle()
         val navigation = LocalNavController.comPilotNavController
         PoemScreen(
             poetUiModel = state.poet,
@@ -37,7 +37,10 @@ fun NavGraphBuilder.poemGraph() {
                     PoemRoute(it.argument.poetInfo, id).navigator
                 )
             },
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            onRecitationClicked = {
+                viewModel.recitationClicked(it)
+            }
         )
     }
 }

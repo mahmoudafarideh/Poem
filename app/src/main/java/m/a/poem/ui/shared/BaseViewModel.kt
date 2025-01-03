@@ -1,6 +1,5 @@
 package m.a.poem.ui.shared
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,21 +17,20 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
     protected fun updateState(stateUpdate: T.() -> T) {
         _state.update(stateUpdate)
     }
+
     protected fun <T> executeLoadable(
         currentValue: LoadableData<T>,
         action: suspend () -> T,
         data: (LoadableData<T>) -> Unit
     ) {
-        if(currentValue is Loading) return
+        if (currentValue is Loading) return
         data(Loading)
         viewModelScope.launch {
             runCatching {
                 action()
             }.onFailure {
-                Log.d("SXO", "executeLoadable Failed ${it.message}")
                 data(Failed)
             }.onSuccess {
-                Log.d("SXO", "executeLoadable Succeed $it")
                 data(Loaded(it))
             }
         }

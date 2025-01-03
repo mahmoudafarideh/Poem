@@ -21,6 +21,7 @@ kotlinxSerializationJsonConverter = "1.0.0"
 retrofitCoroutine = "0.9.2"
 okhttp = "5.0.0-alpha.3"
 coil = "3.0.4"
+exoPlayer = "1.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,8 @@ retrofit2-kotlin-coroutines-adapter = { group = "com.jakewharton.retrofit", name
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+exoplayer = {group = "androidx.media3", name = "media3-exoplayer", version.ref = "exoPlayer" }
+
 
 
 [plugins]

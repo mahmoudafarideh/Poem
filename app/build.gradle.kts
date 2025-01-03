@@ -71,6 +71,8 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
+    implementation(libs.exoplayer)
+//    implementation(libs.exoplayer.cache)
 
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)

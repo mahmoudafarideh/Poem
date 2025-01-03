@@ -38,7 +38,6 @@ class BookViewModel @AssistedInject constructor(
                 }.toImmutableList()
             },
             data = {
-                Log.d("SXO", "getBookItems $it")
                 updateState { copy(items = it) }
             }
         )
