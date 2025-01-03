@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Poem</string>
+    <string name="app_name">Saba</string>
     <string name="popular_poets_title">سخنوران پرمخاطب</string>
     <string name="categorize_by_century_title">دسته‌بندی براساس قرن</string>
     <string name="error_occured_label">مشکلی پیش آمد!</string>
