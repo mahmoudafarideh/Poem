@@ -1,4 +1,4 @@
-package m.a.poem.ui.base
+package m.a.poem.ui.shared
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

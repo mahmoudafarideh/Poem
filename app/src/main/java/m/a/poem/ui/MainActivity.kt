@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -26,7 +28,9 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(LocalNavController provides navigation) {
                     NavHost(
                         navController = navigation,
-                        startDestination = HomeRoute.navigator()
+                        startDestination = HomeRoute.navigator(),
+                        enterTransition = { EnterTransition.None },
+                        exitTransition = { ExitTransition.None },
                     ) {
                         this.homeGraph()
                         this.poetGraph()

@@ -1,5 +1,6 @@
 package m.a.poem.ui.home.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +27,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.R
 import m.a.poem.ui.home.model.CenturyUiModel
-import m.a.poem.ui.home.model.PoetUiModel
+import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -57,7 +58,8 @@ fun HomeLoadedScreen(
                 Text(
                     text = stringResource(R.string.popular_poets_title),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(start = 24.dp)
+                    modifier = Modifier.padding(start = 24.dp),
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }
@@ -83,7 +85,8 @@ fun HomeLoadedScreen(
                 Text(
                     text = stringResource(R.string.categorize_by_century_title),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(start = 24.dp)
+                    modifier = Modifier.padding(start = 24.dp),
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 CenturyChips(
@@ -111,6 +114,7 @@ fun HomeLoadedScreen(
 }
 
 @Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun HomeLoadedScreenPreview() {
     PoemThemePreview {

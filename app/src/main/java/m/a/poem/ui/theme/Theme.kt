@@ -14,6 +14,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import m.a.compilot.navigation.LocalNavController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -70,13 +73,15 @@ fun PoemThemePreview(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    PoemTheme {
-        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            PoemTheme(
-                content = content,
-                dynamicColor = dynamicColor,
-                darkTheme = darkTheme,
-            )
+    CompositionLocalProvider(LocalNavController provides rememberNavController()) {
+        PoemTheme {
+            Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+                PoemTheme(
+                    content = content,
+                    dynamicColor = dynamicColor,
+                    darkTheme = darkTheme,
+                )
+            }
         }
     }
 }

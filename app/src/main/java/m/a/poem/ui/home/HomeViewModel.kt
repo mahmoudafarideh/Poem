@@ -2,17 +2,16 @@ package m.a.poem.ui.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import m.a.poem.domain.model.CenturyPoets
 import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.NotLoaded
 import m.a.poem.domain.model.Poet
 import m.a.poem.domain.repository.CenturyPoetsRepository
-import m.a.poem.ui.base.BaseViewModel
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
-import m.a.poem.ui.home.model.PoetUiModel
+import m.a.poem.ui.shared.BaseViewModel
+import m.a.poem.ui.shared.model.PoetUiModel
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +29,6 @@ class HomeViewModel @Inject constructor(
         executeLoadable(
             currentValue = state.value,
             action = {
-                delay(2_000)
                 getPoets()
             },
             data = {

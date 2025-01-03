@@ -19,8 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
 import m.a.poem.R
-import m.a.poem.ui.base.components.UrlImage
-import m.a.poem.ui.home.model.PoetUiModel
+import m.a.poem.ui.shared.components.PoetProfilePlaceholder
+import m.a.poem.ui.shared.components.UrlImage
+import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -38,13 +39,7 @@ fun PoetBox(
                 contentDescription = poetUiModel.name,
                 modifier = Modifier.aspectRatio(.8f),
                 placeholder = {
-                    Image(
-                        painter = painterResource(R.drawable.circle),
-                        modifier = Modifier.aspectRatio(.8f).shimmer(),
-                        contentDescription = poetUiModel.name,
-                        contentScale = ContentScale.FillBounds,
-                        colorFilter = ColorFilter.tint(Color.Gray)
-                    )
+                    PoetProfilePlaceholder(poetUiModel)
                 }
             )
         }
@@ -52,10 +47,13 @@ fun PoetBox(
             text = poetUiModel.nickname,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(top = 12.dp),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
+
+
 
 @Preview
 @Composable

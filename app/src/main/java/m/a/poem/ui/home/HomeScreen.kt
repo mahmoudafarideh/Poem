@@ -15,12 +15,12 @@ import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.ui.base.components.FetchingDataFailed
+import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.home.component.HomeLoadedScreen
 import m.a.poem.ui.home.component.HomeLoadingScreen
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
-import m.a.poem.ui.home.model.PoetUiModel
+import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.theme.PoemTheme
 
 @Composable

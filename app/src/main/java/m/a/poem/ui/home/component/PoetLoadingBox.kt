@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import m.a.poem.R
-import m.a.poem.ui.home.model.PoetUiModel
+import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -40,7 +40,8 @@ fun PoetLoadingBox(
             text = poetUiModel.name,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(top = 12.dp),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }

@@ -4,4 +4,6 @@
     <string name="categorize_by_century_title">دسته‌بندی براساس قرن</string>
     <string name="error_occured_label">مشکلی پیش آمد!</string>
     <string name="retry_button_label">نلاش دوباره</string>
+    <string name="poet_books_label">آثار</string>
+    <string name="poet_bio_label">زندگی‌نامه</string>
 </resources>

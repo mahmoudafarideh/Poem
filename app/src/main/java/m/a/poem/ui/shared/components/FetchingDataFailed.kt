@@ -1,7 +1,6 @@
-package m.a.poem.ui.base.components
+package m.a.poem.ui.shared.components
 
 import android.content.res.Configuration
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
