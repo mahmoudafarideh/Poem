@@ -9,14 +9,19 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.navigation.NavController
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import m.a.compilot.navigation.LocalNavController
+import m.a.poem.ui.shared.ui.LocalWindowSize
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -66,6 +71,14 @@ fun PoemTheme(
     }
 }
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+fun currentWindowAdaptiveInfo(): WindowSizeClass {
+    val configuration = LocalConfiguration.current
+    val size = DpSize(configuration.screenWidthDp.dp, configuration.screenHeightDp.dp)
+    return WindowSizeClass.calculateFromSize(size)
+}
+
 @Composable
 fun PoemThemePreview(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -74,13 +87,15 @@ fun PoemThemePreview(
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(LocalNavController provides rememberNavController()) {
-        PoemTheme {
-            Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-                PoemTheme(
-                    content = content,
-                    dynamicColor = dynamicColor,
-                    darkTheme = darkTheme,
-                )
+        CompositionLocalProvider(LocalWindowSize provides currentWindowAdaptiveInfo()) {
+            PoemTheme {
+                Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+                    PoemTheme(
+                        content = content,
+                        dynamicColor = dynamicColor,
+                        darkTheme = darkTheme,
+                    )
+                }
             }
         }
     }

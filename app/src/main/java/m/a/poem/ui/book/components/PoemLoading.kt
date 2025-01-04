@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,12 +19,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import m.a.poem.R
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 internal fun PoemBioLoading(
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    val windowSize = LocalWindowSize.current
+    val horizontalPadding = when (windowSize.widthSizeClass) {
+        WindowWidthSizeClass.Expanded -> 48.dp
+        else -> 0.dp
+    }
+    Column(modifier = modifier.padding(horizontal = horizontalPadding)) {
         repeat(3) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -41,7 +50,7 @@ internal fun PoemBioLoading(
                 Spacer(
                     modifier = Modifier
                         .padding(vertical = 12.dp)
-                        .size(48.dp, 12.dp)
+                        .size(114.dp, 12.dp)
                         .clip(CircleShape)
                         .background(Color.Gray)
                 )
@@ -50,5 +59,13 @@ internal fun PoemBioLoading(
                 modifier = Modifier.padding(start = 56.dp)
             )
         }
+    }
+}
+
+@SabaPreview
+@Composable
+fun PoemBioLoadingPreview() {
+    PoemThemePreview {
+        PoemBioLoading()
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -27,16 +28,25 @@ import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.R
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.shared.ui.LocalWindowSize
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 fun HomeLoadingScreen(
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
     Column(
         modifier = modifier
             .fillMaxSize()
             .shimmer()
+            .padding(
+                horizontal =
+                    when (windowSize.widthSizeClass) {
+                        WindowWidthSizeClass.Expanded -> 148.dp
+                        else -> 0.dp
+                    }
+            ),
     ) {
         Spacer(
             Modifier.windowInsetsBottomHeight(
@@ -95,8 +105,17 @@ private fun PoetsGrid(
     popularPoets: ImmutableList<PoetUiModel>,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
+    val cells = remember {
+        when (windowSize.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> 3
+            WindowWidthSizeClass.Expanded -> 6
+            WindowWidthSizeClass.Medium -> 3
+            else -> 3
+        }
+    }
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(cells),
         modifier = modifier
             .fillMaxWidth(),
         userScrollEnabled = false,

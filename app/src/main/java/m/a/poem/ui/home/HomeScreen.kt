@@ -4,24 +4,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.domain.model.Failed
 import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.ui.shared.components.FetchingDataFailed
+import m.a.poem.ui.home.component.AppInfoBar
 import m.a.poem.ui.home.component.HomeLoadedScreen
 import m.a.poem.ui.home.component.HomeLoadingScreen
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
+import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.model.PoetUiModel
-import m.a.poem.ui.theme.PoemTheme
+import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 fun HomeScreen(
@@ -36,45 +40,53 @@ fun HomeScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-
-        when (centuries) {
-            Failed -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    FetchingDataFailed(
-                        onRetryClick = onRetryClick
-                    )
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
+            when (centuries) {
+                Failed -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        FetchingDataFailed(
+                            onRetryClick = onRetryClick
+                        )
+                    }
                 }
-            }
 
-            is Loaded<*> -> {
-                centuries.data?.let {
-                    HomeLoadedScreen(
-                        popularPoets = it.popularPoets,
-                        labels = it.labels,
-                        poets = it.poets,
-                        modifier = Modifier,
-                        onCenturyClick = onCenturyClick,
-                        onPoetClick = onPoetClick
-                    )
+                is Loaded<*> -> {
+                    centuries.data?.let {
+                        HomeLoadedScreen(
+                            popularPoets = it.popularPoets,
+                            labels = it.labels,
+                            poets = it.poets,
+                            modifier = Modifier,
+                            onCenturyClick = onCenturyClick,
+                            onPoetClick = onPoetClick
+                        )
+                    }
                 }
-            }
 
-            Loading -> {
-                HomeLoadingScreen()
-            }
+                Loading -> {
+                    HomeLoadingScreen()
+                }
 
-            NotLoaded -> {}
+                NotLoaded -> {}
+            }
         }
+        AppInfoBar(
+            modifier = Modifier
+                .padding(vertical = 16.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
-@Preview
+@SabaPreview
 @Composable
 private fun HomeScreenPreview() {
-    PoemTheme {
+    PoemThemePreview {
         HomeScreen(
             centuries = Loaded(
                 HomeUiModel(
@@ -105,12 +117,26 @@ private fun HomeScreenPreview() {
     }
 }
 
-@Preview
+@SabaPreview
 @Composable
 private fun HomeScreenFailedPreview() {
-    PoemTheme {
+    PoemThemePreview {
         HomeScreen(
             centuries = Failed,
+            modifier = Modifier,
+            onCenturyClick = {},
+            onRetryClick = {},
+            onPoetClick = {},
+        )
+    }
+}
+
+@SabaPreview
+@Composable
+private fun HomeScreenLoadingPreview() {
+    PoemThemePreview {
+        HomeScreen(
+            centuries = Loading,
             modifier = Modifier,
             onCenturyClick = {},
             onRetryClick = {},

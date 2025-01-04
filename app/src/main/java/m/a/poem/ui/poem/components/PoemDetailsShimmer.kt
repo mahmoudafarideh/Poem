@@ -15,13 +15,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.theme.PoemThemePreview
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 
 
 @Composable
-internal fun PoemDetailsShimmer() {
+internal fun PoemDetailsShimmer(
+    modifier: Modifier = Modifier
+) {
+
+    val windowSize = LocalWindowSize.current
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(12.dp)
+            .padding(
+                horizontal =
+                    when (windowSize.widthSizeClass) {
+                        WindowWidthSizeClass.Expanded -> 148.dp
+                        else -> 0.dp
+                    }
+            )
             .shimmer()
     ) {
         repeat(12) {
@@ -51,5 +66,13 @@ internal fun PoemDetailsShimmer() {
                 )
             }
         }
+    }
+}
+
+@SabaPreview
+@Composable
+fun PoemDetailsShimmerPreview() {
+    PoemThemePreview {
+        PoemDetailsShimmer()
     }
 }

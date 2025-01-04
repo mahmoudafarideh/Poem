@@ -20,20 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import m.a.poem.domain.model.Loaded
+import kotlinx.collections.immutable.ImmutableList
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
-import m.a.poem.ui.poem.model.PoemUiModel
-
 
 @Composable
 internal fun RecitationsColumn(
-    poemUiModel: Loaded<PoemUiModel>,
+    recitations: ImmutableList<PoemRecitationUiModel>,
     onRecitationClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
         items(
-            items = poemUiModel.data.recitations,
+            items = recitations,
             key = { it.id }
         ) {
             Row(

@@ -12,6 +12,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import m.a.poem.domain.model.Loaded
 import m.a.poem.ui.book.model.BookSubItemUiModel
 import m.a.poem.ui.book.model.SubBook
 import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.shared.ui.LocalWindowSize
 
 @Composable
 internal fun BookItemsColumn(
@@ -31,6 +33,11 @@ internal fun BookItemsColumn(
     onPoemClick: (SubPoem) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
+    val horizontalPadding = when (windowSize.widthSizeClass) {
+        WindowWidthSizeClass.Expanded -> 48.dp
+        else -> 0.dp
+    }
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -48,6 +55,7 @@ internal fun BookItemsColumn(
                             is SubPoem -> onPoemClick(it)
                         }
                     }
+                    .padding(horizontal = horizontalPadding)
                     .padding(vertical = 12.dp)
                     .padding(horizontal = 24.dp)
             ) {

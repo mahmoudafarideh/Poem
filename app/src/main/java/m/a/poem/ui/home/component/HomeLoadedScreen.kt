@@ -1,8 +1,8 @@
 package m.a.poem.ui.home.component
 
-import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,17 +17,20 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.R
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -39,9 +42,27 @@ fun HomeLoadedScreen(
     onPoetClick: (PoetUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
+    val cells = remember {
+        when (windowSize.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> 3
+            WindowWidthSizeClass.Expanded -> 6
+            WindowWidthSizeClass.Medium -> 3
+            else -> 3
+        }
+    }
     LazyVerticalGrid(
-        modifier = modifier.fillMaxSize(),
-        columns = GridCells.Fixed(3)
+        modifier = modifier
+            .fillMaxSize()
+            .padding(
+                horizontal =
+                    when (windowSize.widthSizeClass) {
+                        WindowWidthSizeClass.Expanded -> 148.dp
+                        else -> 0.dp
+                    }
+            ),
+        columns = GridCells.Fixed(cells),
+        contentPadding = PaddingValues(bottom = 48.dp)
     ) {
         item {
             Spacer(
@@ -51,7 +72,7 @@ fun HomeLoadedScreen(
             )
         }
         item(
-            span = { GridItemSpan(3) }
+            span = { GridItemSpan(cells) }
         ) {
             Column {
                 Spacer(modifier = Modifier.size(24.dp))
@@ -78,7 +99,7 @@ fun HomeLoadedScreen(
         }
 
         item(
-            span = { GridItemSpan(3) }
+            span = { GridItemSpan(cells) }
         ) {
             Column {
                 Spacer(modifier = Modifier.size(16.dp))
@@ -110,11 +131,13 @@ fun HomeLoadedScreen(
                     .padding(12.dp)
             )
         }
+        item {
+            Spacer(modifier = Modifier.size(56.dp))
+        }
     }
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@SabaPreview
 @Composable
 private fun HomeLoadedScreenPreview() {
     PoemThemePreview {

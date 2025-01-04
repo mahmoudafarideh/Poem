@@ -1,6 +1,5 @@
 package m.a.poem.ui.poet.screen
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +36,8 @@ import m.a.poem.ui.poet.model.PoetScreenUiModel
 import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -48,6 +49,7 @@ fun PoetScreen(
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
     val navigation = LocalNavController.comPilotNavController
     Scaffold(
         topBar = {
@@ -87,7 +89,15 @@ fun PoetScreen(
                             Text(
                                 text = poetInfo.data.poetBioUiModel.text,
                                 style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(horizontal = 24.dp),
+                                modifier = Modifier
+                                    .padding(horizontal = 24.dp)
+                                    .padding(
+                                        horizontal =
+                                            when (windowSize.widthSizeClass) {
+                                                WindowWidthSizeClass.Expanded -> 148.dp
+                                                else -> 0.dp
+                                            }
+                                    ),
                                 lineHeight = 32.sp,
                                 textAlign = TextAlign.Justify
                             )
@@ -120,8 +130,7 @@ fun PoetScreen(
     }
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@SabaPreview
 @Composable
 fun PoetScreenPreview() {
     PoemThemePreview {

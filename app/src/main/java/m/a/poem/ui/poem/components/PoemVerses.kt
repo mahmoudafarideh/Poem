@@ -14,14 +14,17 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import m.a.poem.domain.model.Loaded
 import m.a.poem.ui.book.model.SubPoem
 import m.a.poem.ui.poem.model.PoemUiModel
 import m.a.poem.ui.poem.model.PoemVerseUiModel
+import m.a.poem.ui.shared.ui.LocalWindowSize
 
 @Composable
 internal fun PoemVerses(
@@ -29,8 +32,14 @@ internal fun PoemVerses(
     onPoemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.padding(
+            horizontal = when (windowSize.widthSizeClass) {
+                WindowWidthSizeClass.Expanded -> 148.dp
+                else -> 0.dp
+            }
+        ),
         contentPadding = PaddingValues(vertical = 12.dp)
     ) {
         items(
@@ -81,14 +90,14 @@ internal fun PoemVerses(
                     Box(modifier = Modifier.weight(1f)) {
                         poemUiModel.data.previous?.let {
                             AnotherPoemCard(
-                                it, onPoemClick, Modifier.padding(12.dp)
+                                it, onPoemClick, Modifier.padding(12.dp).align(Alignment.CenterEnd)
                             )
                         }
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         poemUiModel.data.next?.let {
                             AnotherPoemCard(
-                                it, onPoemClick, Modifier.padding(12.dp)
+                                it, onPoemClick, Modifier.padding(12.dp).align(Alignment.CenterStart)
                             )
                         }
                     }
@@ -120,13 +129,16 @@ private fun AnotherPoemCard(
             Text(
                 text = poem.label,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = poem.excerpt,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
