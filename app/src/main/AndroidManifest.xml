@@ -16,7 +16,7 @@
         android:name=".ui.PoemApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Poem">
             <intent-filter>

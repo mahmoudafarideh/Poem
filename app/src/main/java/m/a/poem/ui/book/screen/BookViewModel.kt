@@ -7,7 +7,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
 import m.a.poem.domain.model.BookItem
-import m.a.poem.domain.repository.PoetRepository
+import m.a.poem.domain.repository.BookRepository
 import m.a.poem.ui.book.model.BookScreenUiModel
 import m.a.poem.ui.book.model.SubBook
 import m.a.poem.ui.book.model.SubPoem
@@ -17,7 +17,7 @@ import m.a.poem.ui.shared.model.PoetUiModel
 class BookViewModel @AssistedInject constructor(
     @Assisted private val poetUiModel: PoetUiModel,
     @Assisted private val bookId: Long,
-    private val poetRepository: PoetRepository
+    private val bookRepository: BookRepository
 ) : BaseViewModel<BookScreenUiModel>(BookScreenUiModel(poetUiModel)) {
 
     init {
@@ -28,7 +28,7 @@ class BookViewModel @AssistedInject constructor(
         executeLoadable(
             state.value.items,
             action = {
-                val items = poetRepository.getBook(bookId).items
+                val items = bookRepository.getBook(bookId).items
                 items.map {
                     when (it) {
                         is BookItem.Book -> SubBook(it.label, it.id)

@@ -9,11 +9,13 @@ data class PoemRecitationDto(
     @SerialName("audioArtist")
     val artistName: String,
     val id: Long,
-    val mp3Url: String
+    val mp3Url: String,
+    val xmlText: String?,
 )
 
 internal fun PoemRecitationDto.toPoemRecitation() = PoemRecitation(
     artistName = artistName,
     id = id,
     mp3Url = mp3Url,
+    syncUrl = xmlText
 )

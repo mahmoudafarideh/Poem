@@ -8,15 +8,15 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import m.a.poem.domain.model.Loaded
+import m.a.poem.domain.model.MediaPlayerState
+import m.a.poem.domain.model.PoemAudioInfo
 import m.a.poem.domain.model.PoemInfo
+import m.a.poem.domain.model.PoemRecitation
 import m.a.poem.domain.repository.MediaPlayerRepository
-import m.a.poem.domain.repository.PoetRepository
+import m.a.poem.domain.repository.PoemRepository
 import m.a.poem.ui.book.model.SubPoem
-import m.a.poem.ui.poem.model.MediaPlayerState
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
 import m.a.poem.ui.poem.model.PoemScreenUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
@@ -27,11 +27,9 @@ import m.a.poem.ui.shared.model.PoetUiModel
 class PoemViewModel @AssistedInject constructor(
     @Assisted private val poetUiModel: PoetUiModel,
     @Assisted private val poemId: Long,
-    private val poetRepository: PoetRepository,
+    private val poemRepository: PoemRepository,
     private val mediaPlayerRepository: MediaPlayerRepository,
 ) : BaseViewModel<PoemScreenUiModel>(PoemScreenUiModel(poetUiModel)) {
-
-    private var musicPlayerJob: Job? = null
 
     init {
         getPoem()
@@ -45,13 +43,28 @@ class PoemViewModel @AssistedInject constructor(
         executeLoadable(
             currentValue = state.value.poem,
             action = {
-                val poem = poetRepository.getPoem(poemId)
+                val poem = poemRepository.getPoem(poemId)
                 poem.toPoemUiModel()
             },
             data = {
                 updateState { copy(poem = it) }
+                it.data?.let { poem ->
+                    observePoemAudioPlayer()
+                }
             }
         )
+    }
+
+    private fun observePoemAudioPlayer() {
+        viewModelScope.launch(Dispatchers.IO) {
+            mediaPlayerRepository.state.collect { mediaState ->
+                state.value.poem.data?.recitations?.firstOrNull {
+                    it.id == mediaState?.id || it.state != PoemRecitationUiModel.State.None
+                }?.let {
+                    updateRecitationState(mediaState, it.id)
+                }
+            }
+        }
     }
 
     private fun PoemInfo.toPoemUiModel() = PoemUiModel(
@@ -81,7 +94,8 @@ class PoemViewModel @AssistedInject constructor(
                 artist = it.artistName,
                 mp3Url = it.mp3Url,
                 id = it.id,
-                state = PoemRecitationUiModel.State.None
+                state = PoemRecitationUiModel.State.None,
+                syncUrl = it.syncUrl
             )
         }.toImmutableList()
     )
@@ -105,7 +119,8 @@ class PoemViewModel @AssistedInject constructor(
     }
 
     fun recitationClicked(recitationId: Long) {
-        val recitation = state.value.poem.data?.recitations?.firstOrNull {
+        val data = state.value.poem.data ?: return
+        val recitation = data.recitations.firstOrNull {
             it.id == recitationId
         } ?: return
 
@@ -116,53 +131,45 @@ class PoemViewModel @AssistedInject constructor(
         }
 
         if (recitation.state == PoemRecitationUiModel.State.Paused) {
-            mediaPlayerRepository.play(recitation.mp3Url)
+            mediaPlayerRepository.play()
             return
         }
-        viewModelScope.launch(Dispatchers.IO) {
-            musicPlayerJob?.cancelAndJoin()
-            musicPlayerJob = launch(Dispatchers.IO) {
-                this.launch {
-                    mediaPlayerRepository.playingProgress().collect {
-                        updateRecitationState(
-                            recitationId,
-                            PoemRecitationUiModel.State.Playing(it.first, it.second)
-                        )
-                    }
-                }
-                this.launch {
-                    mediaPlayerRepository.musicPlayingStarted().collect {
-                        if (it != recitation.mp3Url) {
-                            updateRecitationState(recitationId, PoemRecitationUiModel.State.None)
-                        }
-                    }
-                }
-                this.launch {
-                    mediaPlayerRepository.playbackState().collect {
-                        when (it) {
-                            MediaPlayerState.Stopped -> {
-                                updateRecitationState(
-                                    recitationId,
-                                    PoemRecitationUiModel.State.None
-                                )
-                            }
-
-                            else -> {}
-                        }
-                    }
-                }
-            }
-        }
-
-        updateRecitationState(recitationId, PoemRecitationUiModel.State.Loading)
-        mediaPlayerRepository.play(recitation.mp3Url)
+        mediaPlayerRepository.play(
+            PoemAudioInfo(
+                PoemRecitation(
+                    recitation.artist,
+                    recitationId,
+                    recitation.mp3Url,
+                    recitation.syncUrl
+                ),
+                data.verses.first().text,
+                poemId
+            )
+        )
     }
 
+    private fun updateRecitationState(
+        mediaPlayerState: MediaPlayerState?,
+        recitationId: Long
+    ) {
+        when {
+            mediaPlayerState?.id != recitationId -> {
+                updateRecitationState(
+                    recitationId,
+                    PoemRecitationUiModel.State.None
+                )
+            }
 
-    override fun onCleared() {
-        mediaPlayerRepository.release()
-        super.onCleared()
-
+            else -> when (mediaPlayerState) {
+                is MediaPlayerState.Ended -> PoemRecitationUiModel.State.None
+                is MediaPlayerState.Loading -> PoemRecitationUiModel.State.Loading
+                MediaPlayerState.LoadingFailed -> PoemRecitationUiModel.State.None
+                is MediaPlayerState.Paused -> PoemRecitationUiModel.State.Paused
+                is MediaPlayerState.Playing -> PoemRecitationUiModel.State.Playing
+            }.let {
+                updateRecitationState(recitationId, it)
+            }
+        }
     }
 
     @AssistedFactory

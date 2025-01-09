@@ -1,4 +1,4 @@
-package m.a.poem.ui
+package m.a.poem.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.CompositionLocalProvider
@@ -23,6 +24,7 @@ import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.navigation.HomeRoute
 import m.a.poem.ui.home.navigation.homeGraph
 import m.a.poem.ui.home.navigation.routes.navigator
+import m.a.poem.ui.main.component.PoemPlayerBar
 import m.a.poem.ui.omen.navigation.omenGraph
 import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph
@@ -42,29 +44,30 @@ class MainActivity : ComponentActivity() {
         setContent {
             PoemTheme {
                 val navigation = rememberNavController()
-                CompositionLocalProvider(LocalNavController provides navigation) {
-                    CompositionLocalProvider(
-                        LocalWindowSize provides calculateWindowSizeClass(this)
-                    ) {
-                        NavHost(
-                            navController = navigation,
-                            startDestination = HomeRoute.navigator(),
-                            enterTransition = { EnterTransition.None },
-                            exitTransition = { ExitTransition.None },
-                        ) {
-                            this.homeGraph()
-                            this.poetGraph()
-                            this.bookGraph()
-                            this.poemGraph()
-                            this.searchGraph()
-                            this.omenGraph()
+                CompositionLocalProvider(LocalWindowSize provides calculateWindowSizeClass(this)) {
+                    CompositionLocalProvider(LocalNavController provides navigation) {
+                        Column {
+                            PoemPlayerBar(this@MainActivity)
+                            NavHost(
+                                navController = navigation,
+                                startDestination = HomeRoute.navigator(),
+                                enterTransition = { EnterTransition.Companion.None },
+                                exitTransition = { ExitTransition.Companion.None },
+                            ) {
+                                this.homeGraph()
+                                this.poetGraph()
+                                this.bookGraph()
+                                this.poemGraph()
+                                this.searchGraph()
+                                this.omenGraph()
+                            }
                         }
-                    }
-                    val navController = LocalNavController.comPilotNavController
-                    LaunchedEffect(Unit) {
-                        navigationFlow.filterNotNull().collect {
-                            navController.safeNavigate().navigate(it)
-                            navigationFlow.update { null }
+                        val navController = LocalNavController.comPilotNavController
+                        LaunchedEffect(Unit) {
+                            navigationFlow.filterNotNull().collect {
+                                navController.safeNavigate().navigate(it)
+                                navigationFlow.update { null }
+                            }
                         }
                     }
                 }

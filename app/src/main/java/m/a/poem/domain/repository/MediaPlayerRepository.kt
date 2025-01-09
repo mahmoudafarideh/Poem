@@ -1,13 +1,13 @@
 package m.a.poem.domain.repository
 
-import kotlinx.coroutines.flow.Flow
-import m.a.poem.ui.poem.model.MediaPlayerState
+import kotlinx.coroutines.flow.StateFlow
+import m.a.poem.domain.model.MediaPlayerState
+import m.a.poem.domain.model.PoemAudioInfo
 
 interface MediaPlayerRepository {
-    fun play(url: String)
-    fun playingProgress(): Flow<Pair<Long, Long>>
-    fun musicPlayingStarted(): Flow<String?>
-    fun playbackState(): Flow<MediaPlayerState>
+    val state: StateFlow<MediaPlayerState?>
+    fun play(poemAudioInfo: PoemAudioInfo)
     fun release()
     fun pause()
+    fun play()
 }

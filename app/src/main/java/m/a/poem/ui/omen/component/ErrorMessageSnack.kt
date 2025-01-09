@@ -23,9 +23,8 @@ internal fun ErrorMessageSnack(
         if (state is Failed) {
             val result = snackbarHostState.showSnackbar(
                 message = context.resources.getString(R.string.error_occured_label),
-                actionLabel = context.resources.getString(R.string.retry_button_label),
-                withDismissAction = true,
-                duration = SnackbarDuration.Long
+                withDismissAction = false,
+                duration = SnackbarDuration.Short
             )
             when (result) {
                 SnackbarResult.ActionPerformed -> {

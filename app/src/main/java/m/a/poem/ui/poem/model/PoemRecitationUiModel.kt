@@ -5,13 +5,10 @@ data class PoemRecitationUiModel(
     val id: Long,
     val mp3Url: String,
     val state: State,
+    val syncUrl: String? = null,
 ) {
     sealed class State {
-        data class Playing(
-            val progress: Long,
-            val duration: Long,
-        ) : State()
-
+        data object Playing : State()
         data object Loading : State()
         data object Paused : State()
         data object None : State()

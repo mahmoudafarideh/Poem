@@ -1,17 +1,15 @@
 package m.a.poem.ui.widget.widget
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.collectAsState
-import androidx.glance.Button
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
-import m.a.poem.ui.MainActivity
-import m.a.poem.ui.MainActivity.Companion.KEY_DESTINATION
+import m.a.poem.ui.main.MainActivity
+import m.a.poem.ui.main.MainActivity.Companion.KEY_DESTINATION
 import m.a.poem.ui.poem.navigation.PoemRoute
 import m.a.poem.ui.poem.navigation.routes.navigator
 import m.a.poem.ui.widget.components.WidgetContent
@@ -40,7 +38,8 @@ class PoemVerseWidget @Inject constructor(
                 onRetryClick = { viewModel.retryClicked() },
                 onRefreshClick = { viewModel.refreshClicked() },
                 onPoemClick = viewModel.currentPoem?.let {
-                    val parameters = actionParametersOf(destinationKey to PoemRoute(it.poet, it.id).navigator())
+                    val parameters =
+                        actionParametersOf(destinationKey to PoemRoute(it.poet, it.id).navigator())
                     actionStartActivity<MainActivity>(parameters)
                 }
             )
