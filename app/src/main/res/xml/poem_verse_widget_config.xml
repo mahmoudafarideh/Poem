@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--    android:targetCellWidth="5"-->
-<!--    android:targetCellHeight="2"-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:resizeMode="none"
-    android:updatePeriodMillis="3600000"
-    android:minHeight="86dp"
-    android:minWidth="720dp"
-    android:widgetFeatures="configuration_optional|reconfigurable"
-    android:widgetCategory="home_screen"
     android:configure="m.a.poem.ui.MainActivity"
-    android:previewImage="@mipmap/saba_logo"
+    android:description="@string/app_name"
     android:initialLayout="@layout/glance_default_loading_layout"
-    android:description="@string/app_name"/>
+    android:minWidth="720dp"
+    android:minHeight="86dp"
+    android:previewImage="@mipmap/saba_logo"
+    android:resizeMode="none"
+    android:targetCellWidth="5"
+    android:targetCellHeight="2"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen"
+    android:widgetFeatures="configuration_optional|reconfigurable" />

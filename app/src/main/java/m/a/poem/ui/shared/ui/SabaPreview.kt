@@ -26,12 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
     name = "PIXEL-TABLET-LIGHT"
 )
 @Preview(
-    device = "spec:width=1280dp,height=800dp,dpi=240",
+    device = "spec:width=1280dp,height=400dp,dpi=240",
     name = "TABLET-LIGHT"
 )
 @Preview(
-    device = "spec:width=1280dp,height=800dp,dpi=240",
+    device = "spec:width=1280dp,height=400dp,dpi=240",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    name = "TABLET-DARK"
+    name = "TABLET-DARK",
 )
 annotation class SabaPreview()

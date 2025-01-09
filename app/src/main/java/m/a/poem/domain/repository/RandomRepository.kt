@@ -4,4 +4,5 @@ import m.a.poem.domain.model.RandomPoem
 
 interface RandomRepository {
     suspend fun getRandomPoem(): RandomPoem
+    suspend fun getOmenPoem(): RandomPoem
 }

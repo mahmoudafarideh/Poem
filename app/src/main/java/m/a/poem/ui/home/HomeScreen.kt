@@ -31,6 +31,7 @@ fun HomeScreen(
     centuries: LoadableData<HomeUiModel>,
     onCenturyClick: (String) -> Unit,
     onRetryClick: () -> Unit,
+    onOmenClick: () -> Unit,
     onPoetClick: (PoetUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -59,7 +60,8 @@ fun HomeScreen(
                         poets = it.poets,
                         modifier = Modifier,
                         onCenturyClick = onCenturyClick,
-                        onPoetClick = onPoetClick
+                        onPoetClick = onPoetClick,
+                        onOmenClick = onOmenClick
                     )
                 }
             }
@@ -113,6 +115,7 @@ private fun HomeScreenPreview() {
             onCenturyClick = {},
             onRetryClick = {},
             onPoetClick = {},
+            onOmenClick = {},
         )
     }
 }
@@ -127,6 +130,7 @@ private fun HomeScreenFailedPreview() {
             onCenturyClick = {},
             onRetryClick = {},
             onPoetClick = {},
+            onOmenClick = {},
         )
     }
 }
@@ -141,6 +145,7 @@ private fun HomeScreenLoadingPreview() {
             onCenturyClick = {},
             onRetryClick = {},
             onPoetClick = {},
+            onOmenClick = {},
         )
     }
 }

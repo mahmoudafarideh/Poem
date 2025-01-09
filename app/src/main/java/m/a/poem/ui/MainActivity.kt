@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import m.a.compilot.common.RouteNavigator
 import m.a.compilot.navigation.LocalNavController
@@ -22,6 +23,7 @@ import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.HomeRoute
 import m.a.poem.ui.home.homeGraph
 import m.a.poem.ui.home.routes.navigator
+import m.a.poem.ui.omen.navigation.omenGraph
 import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph
 import m.a.poem.ui.search.navigation.searchGraph
@@ -55,15 +57,13 @@ class MainActivity : ComponentActivity() {
                             this.bookGraph()
                             this.poemGraph()
                             this.searchGraph()
-
+                            this.omenGraph()
                         }
                     }
                     val navController = LocalNavController.comPilotNavController
                     LaunchedEffect(Unit) {
-                        navigationFlow.collect {
-                            it?.let {
-                                navController.safeNavigate().navigate(it)
-                            }
+                        navigationFlow.filterNotNull().collect {
+                            navController.safeNavigate().navigate(it)
                             navigationFlow.update { null }
                         }
                     }

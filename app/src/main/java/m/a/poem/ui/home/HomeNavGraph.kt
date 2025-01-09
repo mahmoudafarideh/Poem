@@ -8,8 +8,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
-import m.a.poem.domain.model.Poet
 import m.a.poem.ui.home.routes.screen
+import m.a.poem.ui.omen.navigation.OmenRoute
+import m.a.poem.ui.omen.navigation.routes.navigator
 import m.a.poem.ui.poet.navigation.PoetRoute
 import m.a.poem.ui.poet.navigation.routes.navigator
 
@@ -30,16 +31,10 @@ fun NavGraphBuilder.homeGraph() {
             onPoetClick = {
                 navigation
                     .safeNavigate()
-                    .navigate(
-                        PoetRoute(
-                            Poet(
-                                id = it.id,
-                                name = it.name,
-                                profile = it.profile,
-                                nickName = it.nickname
-                            )
-                        ).navigator
-                    )
+                    .navigate(PoetRoute(it.toPoet()).navigator)
+            },
+            onOmenClick = {
+                navigation.safeNavigate().navigate(OmenRoute.navigator)
             }
         )
     }

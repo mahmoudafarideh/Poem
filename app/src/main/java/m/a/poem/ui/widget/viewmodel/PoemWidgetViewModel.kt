@@ -1,5 +1,9 @@
 package m.a.poem.ui.widget.viewmodel
 
+import android.icu.util.Calendar
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.NotLoaded
 import m.a.poem.domain.model.RandomPoem
@@ -18,9 +22,22 @@ class PoemWidgetViewModel @Inject constructor(
 
     private var _currentPoem: RandomPoem? = null
     val currentPoem get() = _currentPoem
+    private var currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
     init {
         getRandomVerse()
+        observeShouldUpdatePoem()
+    }
+
+    private fun observeShouldUpdatePoem() {
+        viewModelScope.launch {
+            while (true) {
+                if (currentDate != Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                    refreshClicked()
+                }
+                delay(360000)
+            }
+        }
     }
 
     private fun getRandomVerse() {
@@ -51,7 +68,7 @@ class PoemWidgetViewModel @Inject constructor(
     }
 
     fun refreshClicked() {
-        if(state.value.poemVerse !is Loaded) return
+        if (state.value.poemVerse !is Loaded) return
         updateState {
             copy(poemVerse = NotLoaded)
         }
