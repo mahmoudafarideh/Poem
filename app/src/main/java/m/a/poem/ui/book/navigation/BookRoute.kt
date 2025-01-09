@@ -6,7 +6,8 @@ import m.a.poem.domain.model.Poet
 @RouteNavigation
 data class BookRoute(
     val poetInfo: Poet,
-    val bookId: Long
+    val bookId: Long,
+    val bookName: String,
 ) {
     companion object
 }

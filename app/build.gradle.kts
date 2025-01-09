@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.compose.shimmer)
     implementation(libs.material3.window.size)
+    implementation(libs.material.icons.extended)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)

@@ -19,6 +19,7 @@ import m.a.poem.ui.home.homeGraph
 import m.a.poem.ui.home.routes.navigator
 import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph
+import m.a.poem.ui.search.navigation.searchGraph
 import m.a.poem.ui.shared.ui.LocalWindowSize
 import m.a.poem.ui.theme.PoemTheme
 
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
                             this.poetGraph()
                             this.bookGraph()
                             this.poemGraph()
+                            this.searchGraph()
                         }
                     }
                 }

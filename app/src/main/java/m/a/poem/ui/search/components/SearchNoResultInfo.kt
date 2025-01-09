@@ -1,6 +1,5 @@
-package m.a.poem.ui.shared.components
+package m.a.poem.ui.search.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,14 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import m.a.poem.R
+import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
-fun FetchingDataFailed(
-    onRetryClick: () -> Unit,
+fun SearchNoResultInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,11 +34,11 @@ fun FetchingDataFailed(
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.errorContainer)
+                .background(MaterialTheme.colorScheme.tertiaryContainer)
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
-                tint = MaterialTheme.colorScheme.error,
+                imageVector = Icons.Default.FolderOpen,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null,
                 modifier = Modifier
                     .size(56.dp)
@@ -50,31 +47,20 @@ fun FetchingDataFailed(
         }
         Spacer(modifier = Modifier.size(24.dp))
         Text(
-            text = stringResource(R.string.error_occured_label),
+            text = stringResource(R.string.no_search_result_label),
             modifier = Modifier,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
-        Spacer(modifier = Modifier.size(24.dp))
-        Button(
-            onClick = onRetryClick,
-        ) {
-            Text(
-                text = stringResource(R.string.retry_button_label),
-                modifier = Modifier,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        Spacer(modifier = Modifier.size(72.dp))
     }
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@SabaPreview
 @Composable
-fun FetchingDataFailedPreview() {
+private fun SearchNoResultInfoPreview() {
     PoemThemePreview {
-        FetchingDataFailed(
-            onRetryClick = {},
+        SearchCharacterLimitInfo(
             modifier = Modifier.fillMaxWidth()
         )
     }

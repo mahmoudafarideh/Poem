@@ -19,7 +19,7 @@ import m.a.poem.ui.poem.navigation.routes.navigator
 import m.a.poem.ui.poem.navigation.routes.screen
 import m.a.poem.ui.poem.screen.PoemScreen
 import m.a.poem.ui.poem.screen.PoemViewModel
-import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.toPoetUiModel
 
 fun NavGraphBuilder.poemGraph() {
     PoemRoute.screen(this) {
@@ -48,12 +48,7 @@ fun NavGraphBuilder.poemGraph() {
 @Composable
 private fun poemViewModel(poet: Poet, bookId: Long): PoemViewModel {
     val poetUiModel = remember(poet) {
-        PoetUiModel(
-            name = poet.name,
-            nickname = poet.nickName,
-            profile = poet.profile,
-            id = poet.id
-        )
+        poet.toPoetUiModel()
     }
     val factory = EntryPointAccessors.fromActivity(
         LocalContext.current as Activity,

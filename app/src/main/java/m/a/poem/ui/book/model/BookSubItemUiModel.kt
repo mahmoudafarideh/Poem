@@ -18,6 +18,5 @@ data class SubPoem(
     val excerpt: String,
     override val id: Long
 ) : BookSubItemUiModel() {
-
     override val itemId: String = "SubPoem$id"
 }

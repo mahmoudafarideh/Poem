@@ -12,6 +12,8 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Logger
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -66,6 +68,9 @@ object RetrofitModule {
         return OkHttpClient.Builder().apply {
             followSslRedirects(true)
             addInterceptor(interceptor)
+            addInterceptor(HttpLoggingInterceptor(Logger.DEFAULT).also {
+                it.setLevel(HttpLoggingInterceptor.Level.BODY)
+            })
         }.build()
     }
 
@@ -98,6 +103,7 @@ object RetrofitModule {
         this.ignoreUnknownKeys = true
         this.allowComments = true
         this.explicitNulls = false
+        this.coerceInputValues = true
     }
 
 }

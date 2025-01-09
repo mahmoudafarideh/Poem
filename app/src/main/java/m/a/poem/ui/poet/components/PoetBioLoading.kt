@@ -8,34 +8,42 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import m.a.poem.R
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 internal fun PoetBioLoading(
     modifier: Modifier = Modifier
 ) {
+    val windowSize = LocalWindowSize.current
+    val horizontalPadding = when (windowSize.widthSizeClass) {
+        WindowWidthSizeClass.Expanded -> 48.dp
+        else -> 0.dp
+    }
     Column(modifier = modifier) {
         repeat(3) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = horizontalPadding)
                     .padding(vertical = 18.dp)
                     .padding(horizontal = 24.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.agenda),
+                    imageVector = Icons.Default.Book,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -49,8 +57,18 @@ internal fun PoetBioLoading(
                 )
             }
             HorizontalDivider(
-                modifier = Modifier.padding(start = 56.dp)
+                modifier = Modifier
+                    .padding(horizontal = horizontalPadding)
+                    .padding(start = 56.dp)
             )
         }
+    }
+}
+
+@Composable
+@SabaPreview
+internal fun PoetBioLoadingPreview() {
+    PoemThemePreview {
+        PoetBioLoading()
     }
 }

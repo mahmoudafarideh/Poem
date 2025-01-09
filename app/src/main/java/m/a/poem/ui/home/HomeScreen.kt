@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.domain.model.Failed
@@ -79,6 +80,7 @@ fun HomeScreen(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .fillMaxWidth()
+                .blur(4.dp)
         )
     }
 }

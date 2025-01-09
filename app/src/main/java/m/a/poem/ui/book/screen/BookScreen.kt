@@ -17,7 +17,6 @@ import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.domain.model.Poet
 import m.a.poem.ui.book.components.BookItemsColumn
 import m.a.poem.ui.book.components.PoemBioLoading
 import m.a.poem.ui.book.model.BookSubItemUiModel
@@ -25,6 +24,8 @@ import m.a.poem.ui.book.navigation.BookRoute
 import m.a.poem.ui.book.navigation.routes.navigator
 import m.a.poem.ui.poem.navigation.PoemRoute
 import m.a.poem.ui.poem.navigation.routes.navigator
+import m.a.poem.ui.search.navigation.SearchRoute
+import m.a.poem.ui.search.navigation.routes.navigator
 import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
@@ -36,7 +37,9 @@ fun BookScreen(
     poetUiModel: PoetUiModel,
     bookInfo: LoadableData<ImmutableList<BookSubItemUiModel>>,
     onRetryClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    bookId: Long,
+    bookName: String
 ) {
     val navigation = LocalNavController.comPilotNavController
     Scaffold(
@@ -44,7 +47,15 @@ fun BookScreen(
             PoetAppBar(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
-                modifier = Modifier
+                modifier = Modifier,
+                onSearchClick = {
+                    navigation.safeNavigate().navigate(
+                        SearchRoute(
+                            poetUiModel.toPoet(),
+                            SearchRoute.Book(bookId, bookName)
+                        ).navigator
+                    )
+                },
             )
         },
         modifier = modifier
@@ -74,25 +85,16 @@ fun BookScreen(
                         onBookClick = {
                             navigation.safeNavigate().navigate(
                                 BookRoute(
-                                    poetInfo = Poet(
-                                        id = poetUiModel.id,
-                                        name = poetUiModel.name,
-                                        nickName = poetUiModel.nickname,
-                                        profile = poetUiModel.profile,
-                                    ),
-                                    bookId = it.id
+                                    poetInfo = poetUiModel.toPoet(),
+                                    bookId = it.id,
+                                    bookName = it.label,
                                 ).navigator
                             )
                         },
                         onPoemClick = {
                             navigation.safeNavigate().navigate(
                                 PoemRoute(
-                                    poetInfo = Poet(
-                                        id = poetUiModel.id,
-                                        name = poetUiModel.name,
-                                        nickName = poetUiModel.nickname,
-                                        profile = poetUiModel.profile,
-                                    ),
+                                    poetInfo = poetUiModel.toPoet(),
                                     poemId = it.id
                                 ).navigator
                             )
@@ -116,9 +118,10 @@ fun BookScreenPreview() {
     PoemThemePreview {
         BookScreen(
             poetUiModel = PoetUiModel.fixture,
-            modifier = Modifier,
             bookInfo = Loading,
             onRetryClick = {},
+            bookId = 1,
+            bookName = "bookName",
         )
     }
 }

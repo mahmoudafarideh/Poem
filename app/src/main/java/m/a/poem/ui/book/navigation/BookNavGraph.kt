@@ -16,7 +16,7 @@ import m.a.poem.domain.model.Poet
 import m.a.poem.ui.book.navigation.routes.screen
 import m.a.poem.ui.book.screen.BookScreen
 import m.a.poem.ui.book.screen.BookViewModel
-import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.toPoetUiModel
 
 fun NavGraphBuilder.bookGraph() {
     BookRoute.screen(this) {
@@ -28,7 +28,9 @@ fun NavGraphBuilder.bookGraph() {
                 viewModel.retryClicked()
             },
             bookInfo = state.items,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            bookId = it.argument.bookId,
+            bookName = it.argument.bookName
         )
     }
 }
@@ -36,12 +38,7 @@ fun NavGraphBuilder.bookGraph() {
 @Composable
 private fun bookViewModel(poet: Poet, bookId: Long): BookViewModel {
     val poetUiModel = remember(poet) {
-        PoetUiModel(
-            name = poet.name,
-            nickname = poet.nickName,
-            profile = poet.profile,
-            id = poet.id
-        )
+        poet.toPoetUiModel()
     }
     val factory = EntryPointAccessors.fromActivity(
         LocalContext.current as Activity,

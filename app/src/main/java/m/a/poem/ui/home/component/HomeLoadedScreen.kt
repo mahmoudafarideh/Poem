@@ -51,25 +51,17 @@ fun HomeLoadedScreen(
             else -> 3
         }
     }
+    val horizontalPadding = when (windowSize.widthSizeClass) {
+        WindowWidthSizeClass.Expanded -> 148.dp
+        else -> 0.dp
+    }
     LazyVerticalGrid(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(
-                horizontal =
-                    when (windowSize.widthSizeClass) {
-                        WindowWidthSizeClass.Expanded -> 148.dp
-                        else -> 0.dp
-                    }
-            ),
+        modifier = modifier.fillMaxSize().padding(horizontal = horizontalPadding),
         columns = GridCells.Fixed(cells),
-        contentPadding = PaddingValues(bottom = 48.dp)
+        contentPadding = PaddingValues(bottom = 48.dp),
     ) {
         item {
-            Spacer(
-                Modifier.windowInsetsBottomHeight(
-                    WindowInsets.systemBars
-                )
-            )
+            Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
         }
         item(
             span = { GridItemSpan(cells) }
@@ -98,9 +90,7 @@ fun HomeLoadedScreen(
             )
         }
 
-        item(
-            span = { GridItemSpan(cells) }
-        ) {
+        item(span = { GridItemSpan(cells) }) {
             Column {
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
@@ -118,10 +108,7 @@ fun HomeLoadedScreen(
             }
         }
 
-        items(
-            items = poets,
-            key = { "${it.id}" }
-        ) {
+        items(items = poets, key = { "${it.id}" }) {
             PoetBox(
                 poetUiModel = it,
                 modifier = Modifier
@@ -131,6 +118,7 @@ fun HomeLoadedScreen(
                     .padding(12.dp)
             )
         }
+
         item {
             Spacer(modifier = Modifier.size(56.dp))
         }

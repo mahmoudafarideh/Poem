@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -16,9 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import m.a.poem.R
 import m.a.poem.ui.shared.ui.LocalWindowSize
 import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.theme.PoemThemePreview
@@ -42,7 +42,7 @@ internal fun PoemBioLoading(
                     .padding(horizontal = 24.dp)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.poem),
+                    imageVector = Icons.Default.Description,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )

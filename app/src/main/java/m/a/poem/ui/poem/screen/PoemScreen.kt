@@ -53,7 +53,8 @@ fun PoemScreen(
             PoetAppBar(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
-                modifier = Modifier
+                modifier = Modifier,
+                onSearchClick = {},
             )
         },
         modifier = modifier

@@ -1,4 +1,4 @@
-package m.a.poem.ui.shared.components
+package m.a.poem.ui.search.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -10,8 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,8 +25,7 @@ import m.a.poem.R
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
-fun FetchingDataFailed(
-    onRetryClick: () -> Unit,
+fun SearchCharacterLimitInfo(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,11 +35,11 @@ fun FetchingDataFailed(
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.errorContainer)
+                .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
-                tint = MaterialTheme.colorScheme.error,
+                imageVector = Icons.Default.Keyboard,
+                tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null,
                 modifier = Modifier
                     .size(56.dp)
@@ -50,31 +48,21 @@ fun FetchingDataFailed(
         }
         Spacer(modifier = Modifier.size(24.dp))
         Text(
-            text = stringResource(R.string.error_occured_label),
+            text = stringResource(R.string.search_limit_message),
             modifier = Modifier,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
-        Spacer(modifier = Modifier.size(24.dp))
-        Button(
-            onClick = onRetryClick,
-        ) {
-            Text(
-                text = stringResource(R.string.retry_button_label),
-                modifier = Modifier,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        Spacer(modifier = Modifier.size(72.dp))
     }
 }
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun FetchingDataFailedPreview() {
+fun SearchCharacterLimitInfoPreview() {
     PoemThemePreview {
-        FetchingDataFailed(
-            onRetryClick = {},
+        SearchCharacterLimitInfo(
             modifier = Modifier.fillMaxWidth()
         )
     }

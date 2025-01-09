@@ -6,10 +6,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import m.a.poem.api.repository.CenturyPoetsRepositoryImp
 import m.a.poem.api.repository.MediaPlayerRepositoryImp
+import m.a.poem.api.repository.PoemSearchRepositoryImp
 import m.a.poem.api.repository.PoetRepositoryImp
 import m.a.poem.domain.repository.CenturyPoetsRepository
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoetRepository
+import m.a.poem.domain.repository.SearchRepository
 
 
 @Module
@@ -26,5 +28,8 @@ interface RepositoryModule {
 
     @Binds
     fun providesMediaPlayerRepository(repo: MediaPlayerRepositoryImp): MediaPlayerRepository
+
+    @Binds
+    fun providesSearchRepository(repo: PoemSearchRepositoryImp): SearchRepository
 
 }
