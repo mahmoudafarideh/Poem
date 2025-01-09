@@ -12,4 +12,7 @@
     <string name="no_search_result_label">هیچ نتیجه‌ای پیدا نشد!</string>
     <string name="search_poet_book_placeholder">جست‌وجو در %s %s ...</string>
     <string name="search_poet_poems_placeholder">جست‌وجو در آثار %s ...</string>
+    <string name="omen_final_step_label">ای حافظ شیرازی! تو محرم هر رازی! تو را به خدا و به شاخ نباتت قسم می دهم که هر چه صلاح و مصلحت می بینی برایم آشکار و آرزوی مرا براورده سازی.</string>
+    <string name="omen_sentence_label">سپس جمله زیر را بخوانید:</string>
+    <string name="omen_first_step_label">برای گرفتن فال ابتدا نیت کرده و چند نفس عمیق بکشید</string>
 </resources>
