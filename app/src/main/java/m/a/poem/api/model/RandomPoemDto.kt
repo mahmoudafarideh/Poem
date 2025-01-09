@@ -17,5 +17,6 @@ internal fun RandomPoemDto.toRandomPoem(
 ) = RandomPoem(
     verses = verses.map { it.toPoemVerse() },
     poet = poetInfoDto.toPoet(),
-    book = poetBookDto.toPoetBook()
+    book = poetBookDto.toPoetBook(),
+    id = id
 )
