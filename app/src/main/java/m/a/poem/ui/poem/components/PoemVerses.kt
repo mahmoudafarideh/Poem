@@ -1,6 +1,7 @@
 package m.a.poem.ui.poem.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import m.a.poem.domain.model.Loaded
@@ -49,7 +51,6 @@ internal fun PoemVerses(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
                     .padding(
                         top = when (it.position) {
                             PoemVerseUiModel.VersePosition.Start -> 12.dp
@@ -70,7 +71,17 @@ internal fun PoemVerses(
                                 PoemVerseUiModel.VersePosition.Start -> Alignment.CenterStart
                                 PoemVerseUiModel.VersePosition.End -> Alignment.CenterEnd
                             }
-                        ),
+                        )
+                        .padding(horizontal = 12.dp)
+                        .background(
+                            when {
+                                it.isHighlighted -> MaterialTheme.colorScheme.secondaryContainer.copy(
+                                    alpha = .5f
+                                )
+                                else -> Color.Unspecified
+                            }
+                        )
+                        .padding(horizontal = 12.dp),
                     color = MaterialTheme.colorScheme.onBackground,
                     minLines = 1
                 )
@@ -90,14 +101,20 @@ internal fun PoemVerses(
                     Box(modifier = Modifier.weight(1f)) {
                         poemUiModel.data.previous?.let {
                             AnotherPoemCard(
-                                it, onPoemClick, Modifier.padding(12.dp).align(Alignment.CenterEnd)
+                                it, onPoemClick, Modifier
+                                    .padding(12.dp)
+                                    .align(Alignment.CenterEnd)
                             )
                         }
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         poemUiModel.data.next?.let {
                             AnotherPoemCard(
-                                it, onPoemClick, Modifier.padding(12.dp).align(Alignment.CenterStart)
+                                it,
+                                onPoemClick,
+                                Modifier
+                                    .padding(12.dp)
+                                    .align(Alignment.CenterStart)
                             )
                         }
                     }

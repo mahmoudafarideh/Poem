@@ -4,6 +4,7 @@ data class PoemVerseUiModel(
     val text: String,
     val id: Long,
     val position: VersePosition,
+    val isHighlighted: Boolean= false
 ) {
     enum class VersePosition {
         Start,

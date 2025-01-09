@@ -53,26 +53,26 @@ class MediaPlayerRepositoryImp @Inject constructor(
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 super.onIsPlayingChanged(isPlaying)
-                if (isPlaying) {
-                    poemAudioInfo?.let { recitation ->
-                        state.update {
-                            MediaPlayerState.Playing(
-                                recitation.poemExcerpt,
-                                recitation.recitation.artistName,
-                                recitation.recitation.id,
-                                audioSync.firstOrNull { (_, time) ->
-                                    time > exoPlayer.currentPosition
-                                }?.first
-                            )
-                        }
-                    }
-                } else {
+                if (!isPlaying) {
                     poemAudioInfo?.let { recitation ->
                         state.update {
                             MediaPlayerState.Paused(
                                 recitation.poemExcerpt,
                                 recitation.recitation.artistName,
                                 recitation.recitation.id,
+                            )
+                        }
+                    }
+                } else {
+                    poemAudioInfo?.let { recitation ->
+                        state.update {
+                            MediaPlayerState.Playing(
+                                recitation.poemExcerpt,
+                                recitation.recitation.artistName,
+                                recitation.recitation.id,
+                                audioSync.lastOrNull { (_, time) ->
+                                    time <= exoPlayer.currentPosition + 1000
+                                }?.first
                             )
                         }
                     }
@@ -117,7 +117,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
         coroutineScope.launch(Dispatchers.Main) {
             state.flatMapLatest {
                 flow {
-                    while (true) {
+                    while (it is MediaPlayerState.Playing) {
                         poemAudioInfo?.let { recitation ->
                             emit(
                                 MediaPlayerState.Playing(
@@ -125,7 +125,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
                                     recitation.recitation.artistName,
                                     recitation.recitation.id,
                                     audioSync.lastOrNull { (_, time) ->
-                                        time <= exoPlayer.currentPosition
+                                        time <= exoPlayer.currentPosition + 500
                                     }?.first
                                 )
                             )
@@ -134,7 +134,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
                     }
                 }
             }.collect {
-                state.update { it }
+                state.value = it
             }
         }
     }

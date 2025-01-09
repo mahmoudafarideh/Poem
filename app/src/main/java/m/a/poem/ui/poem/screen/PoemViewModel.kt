@@ -118,6 +118,21 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
+    private fun updateVerseHighlightState(shouldHighlight: Boolean, verseIndex: Int) {
+        val data = state.value.poem.data ?: return
+        updateState {
+            copy(
+                poem = Loaded(
+                    data.copy(
+                        verses = data.verses.mapIndexed { index, verse ->
+                            verse.copy(isHighlighted = shouldHighlight && index <= verseIndex)
+                        }.toImmutableList(),
+                    )
+                )
+            )
+        }
+    }
+
     fun recitationClicked(recitationId: Long) {
         val data = state.value.poem.data ?: return
         val recitation = data.recitations.firstOrNull {
@@ -154,10 +169,8 @@ class PoemViewModel @AssistedInject constructor(
     ) {
         when {
             mediaPlayerState?.id != recitationId -> {
-                updateRecitationState(
-                    recitationId,
-                    PoemRecitationUiModel.State.None
-                )
+                updateVerseHighlightState(false, -1)
+                updateRecitationState(recitationId, PoemRecitationUiModel.State.None)
             }
 
             else -> when (mediaPlayerState) {
@@ -167,6 +180,11 @@ class PoemViewModel @AssistedInject constructor(
                 is MediaPlayerState.Paused -> PoemRecitationUiModel.State.Paused
                 is MediaPlayerState.Playing -> PoemRecitationUiModel.State.Playing
             }.let {
+                if (mediaPlayerState is MediaPlayerState.Playing) {
+                    updateVerseHighlightState(true, mediaPlayerState.playingVerseIndex ?: -1)
+                } else if (mediaPlayerState !is MediaPlayerState.Paused) {
+                    updateVerseHighlightState(false, -1)
+                }
                 updateRecitationState(recitationId, it)
             }
         }
