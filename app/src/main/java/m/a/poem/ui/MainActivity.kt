@@ -20,9 +20,9 @@ import m.a.compilot.common.RouteNavigator
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
 import m.a.poem.ui.book.navigation.bookGraph
-import m.a.poem.ui.home.HomeRoute
-import m.a.poem.ui.home.homeGraph
-import m.a.poem.ui.home.routes.navigator
+import m.a.poem.ui.home.navigation.HomeRoute
+import m.a.poem.ui.home.navigation.homeGraph
+import m.a.poem.ui.home.navigation.routes.navigator
 import m.a.poem.ui.omen.navigation.omenGraph
 import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph

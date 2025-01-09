@@ -1,6 +1,5 @@
-package m.a.poem.ui.home
+package m.a.poem.ui.home.navigation
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -8,7 +7,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
-import m.a.poem.ui.home.routes.screen
+import m.a.poem.ui.home.navigation.routes.screen
+import m.a.poem.ui.home.screen.HomeScreen
+import m.a.poem.ui.home.screen.HomeViewModel
 import m.a.poem.ui.omen.navigation.OmenRoute
 import m.a.poem.ui.omen.navigation.routes.navigator
 import m.a.poem.ui.poet.navigation.PoetRoute
@@ -21,7 +22,7 @@ fun NavGraphBuilder.homeGraph() {
         val navigation = LocalNavController.comPilotNavController
         HomeScreen(
             centuries = state,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier,
             onCenturyClick = {
                 viewModel.centuryClicked(it)
             },

@@ -10,13 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -42,8 +42,8 @@ fun HomeLoadedScreen(
     poets: ImmutableList<PoetUiModel>,
     onCenturyClick: (String) -> Unit,
     onPoetClick: (PoetUiModel) -> Unit,
-    onOmenClick: () -> Unit,
-    modifier: Modifier = Modifier
+    scrollState: LazyGridState,
+    modifier: Modifier = Modifier,
 ) {
     val windowSize = LocalWindowSize.current
     val cells = remember {
@@ -64,6 +64,7 @@ fun HomeLoadedScreen(
             .padding(horizontal = horizontalPadding),
         columns = GridCells.Fixed(cells),
         contentPadding = PaddingValues(bottom = 48.dp),
+        state = scrollState
     ) {
         item {
             Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
@@ -125,23 +126,7 @@ fun HomeLoadedScreen(
         }
 
         item(span = { GridItemSpan(cells) }) {
-            Spacer(modifier = Modifier.size(48.dp))
-        }
-
-        item(span = { GridItemSpan(cells) }) {
-            Button(
-                onClick = onOmenClick,
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Text(
-                    text = "فال حافظ",
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-        }
-
-        item(span = { GridItemSpan(cells) }) {
-            Spacer(modifier = Modifier.size(56.dp))
+            Spacer(modifier = Modifier.size(24.dp))
         }
     }
 }
@@ -170,7 +155,7 @@ private fun HomeLoadedScreenPreview() {
             ),
             onCenturyClick = {},
             onPoetClick = {},
-            onOmenClick = {},
+            scrollState = rememberLazyGridState(),
         )
     }
 }

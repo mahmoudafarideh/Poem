@@ -1,31 +1,38 @@
-package m.a.poem.ui.home
+package m.a.poem.ui.home.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
+import m.a.compilot.navigation.LocalNavController
+import m.a.compilot.navigation.comPilotNavController
 import m.a.poem.domain.model.Failed
 import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.ui.home.component.AppInfoBar
+import m.a.poem.ui.home.component.HomeAppBar
 import m.a.poem.ui.home.component.HomeLoadedScreen
 import m.a.poem.ui.home.component.HomeLoadingScreen
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
+import m.a.poem.ui.omen.navigation.OmenRoute
+import m.a.poem.ui.omen.navigation.routes.navigator
+import m.a.poem.ui.search.navigation.SearchRoute
+import m.a.poem.ui.search.navigation.routes.navigator
 import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.shared.ui.scrollShadow
 import m.a.poem.ui.theme.PoemThemePreview
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     centuries: LoadableData<HomeUiModel>,
@@ -35,54 +42,68 @@ fun HomeScreen(
     onPoetClick: (PoetUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        when (centuries) {
-            Failed -> {
-                Box(
-                    modifier = Modifier.fillMaxSize().padding(bottom = 48.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    FetchingDataFailed(
-                        onRetryClick = onRetryClick
-                    )
-                }
-            }
-
-            is Loaded<*> -> {
-                centuries.data?.let {
-                    HomeLoadedScreen(
-                        popularPoets = it.popularPoets,
-                        labels = it.labels,
-                        poets = it.poets,
-                        modifier = Modifier,
-                        onCenturyClick = onCenturyClick,
-                        onPoetClick = onPoetClick,
-                        onOmenClick = onOmenClick
-                    )
-                }
-            }
-
-            Loading -> {
-                HomeLoadingScreen()
-            }
-
-            NotLoaded -> {}
-        }
-
-        AppInfoBar(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .background(
-                    MaterialTheme.colorScheme.background.copy(alpha = .9f)
-                )
-                .padding(top = 8.dp, bottom = 16.dp)
-                .fillMaxWidth()
+    val navigation = LocalNavController.comPilotNavController
+    val onSearchClick = {
+        navigation.safeNavigate().navigate(
+            SearchRoute(null, null).navigator
         )
     }
+    val onInfoClick = {
+        navigation.safeNavigate().navigate(OmenRoute.navigator)
+    }
+    val scrollState = rememberLazyGridState()
+
+    Scaffold(
+        topBar = {
+            HomeAppBar(
+                onInfoClick,
+                onOmenClick,
+                onSearchClick,
+                Modifier.scrollShadow(scrollState)
+            )
+        },
+        modifier = modifier
+    ) { contentPadding ->
+        Box(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize()
+        ) {
+            when (centuries) {
+                Failed -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        FetchingDataFailed(
+                            onRetryClick = onRetryClick
+                        )
+                    }
+                }
+
+                is Loaded<*> -> {
+                    centuries.data?.let {
+                        HomeLoadedScreen(
+                            popularPoets = it.popularPoets,
+                            labels = it.labels,
+                            poets = it.poets,
+                            modifier = Modifier,
+                            onCenturyClick = onCenturyClick,
+                            onPoetClick = onPoetClick,
+                            scrollState = scrollState
+                        )
+                    }
+                }
+
+                Loading -> {
+                    HomeLoadingScreen()
+                }
+
+                NotLoaded -> {}
+            }
+        }
+    }
+
 }
 
 @SabaPreview

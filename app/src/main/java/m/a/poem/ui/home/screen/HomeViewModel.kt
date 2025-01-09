@@ -1,4 +1,4 @@
-package m.a.poem.ui.home
+package m.a.poem.ui.home.screen
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
