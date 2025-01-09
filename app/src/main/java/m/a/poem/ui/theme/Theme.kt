@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.glance.GlanceTheme
 import androidx.navigation.compose.rememberNavController
 import m.a.compilot.navigation.LocalNavController
 import m.a.poem.ui.shared.ui.LocalWindowSize
@@ -52,15 +54,7 @@ fun PoemTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = colorScheme(dynamicColor, darkTheme)
 
     CompositionLocalProvider(LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl) {
         MaterialTheme(
@@ -69,6 +63,29 @@ fun PoemTheme(
             content = content
         )
     }
+}
+
+@Composable
+fun WidgetPoemTheme(
+    content: @Composable () -> Unit
+) {
+    GlanceTheme(
+        content = content
+    )
+}
+
+@Composable
+private fun colorScheme(
+    dynamicColor: Boolean,
+    darkTheme: Boolean
+): ColorScheme = when {
+    dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        val context = LocalContext.current
+        if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    }
+
+    darkTheme -> DarkColorScheme
+    else -> LightColorScheme
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

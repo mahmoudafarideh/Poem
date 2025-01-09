@@ -1,5 +1,6 @@
 package m.a.poem.api.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import m.a.poem.domain.model.PoemInfo
 
@@ -9,7 +10,16 @@ data class PoemInfoDto(
     val recitations: List<PoemRecitationDto>,
     val next: PoemDto?,
     val previous: PoemDto?,
-)
+    @SerialName("category")
+    val source: SourceDto,
+) {
+    @Serializable
+    data class SourceDto(
+        val poet: PoetInfoDto,
+        @SerialName("cat")
+        val book: PoetBookDto
+    )
+}
 
 internal fun PoemInfoDto.toPoemInfo() = PoemInfo(
     verses = verses.map { it.toPoemVerse() },

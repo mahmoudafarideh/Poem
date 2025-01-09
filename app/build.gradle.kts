@@ -66,6 +66,10 @@ dependencies {
     implementation(libs.compose.shimmer)
     implementation(libs.material3.window.size)
     implementation(libs.material.icons.extended)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material)
+    implementation(libs.glance.appwidget.preview)
+    implementation(libs.glance.preview)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)
@@ -74,7 +78,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network)
     implementation(libs.exoplayer)
-//    implementation(libs.exoplayer.cache)
 
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)

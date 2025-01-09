@@ -8,9 +8,11 @@ import m.a.poem.api.repository.CenturyPoetsRepositoryImp
 import m.a.poem.api.repository.MediaPlayerRepositoryImp
 import m.a.poem.api.repository.PoemSearchRepositoryImp
 import m.a.poem.api.repository.PoetRepositoryImp
+import m.a.poem.api.repository.RandomRepositoryImp
 import m.a.poem.domain.repository.CenturyPoetsRepository
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoetRepository
+import m.a.poem.domain.repository.RandomRepository
 import m.a.poem.domain.repository.SearchRepository
 
 
@@ -31,5 +33,8 @@ interface RepositoryModule {
 
     @Binds
     fun providesSearchRepository(repo: PoemSearchRepositoryImp): SearchRepository
+
+    @Binds
+    fun providesRandomRepository(repo: RandomRepositoryImp): RandomRepository
 
 }

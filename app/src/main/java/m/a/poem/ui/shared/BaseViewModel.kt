@@ -21,8 +21,10 @@ import m.a.poem.domain.model.PageLoaded
 import m.a.poem.domain.model.PaginateLoadableData
 
 abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
+
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()
+
     protected fun updateState(stateUpdate: T.() -> T) {
         _state.update(stateUpdate)
     }

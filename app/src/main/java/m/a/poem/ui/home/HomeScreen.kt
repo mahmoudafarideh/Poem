@@ -2,7 +2,6 @@ package m.a.poem.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.domain.model.Failed
@@ -36,51 +34,51 @@ fun HomeScreen(
     onPoetClick: (PoetUiModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Box(
-            modifier = Modifier.weight(1f)
-        ) {
-            when (centuries) {
-                Failed -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        FetchingDataFailed(
-                            onRetryClick = onRetryClick
-                        )
-                    }
+        when (centuries) {
+            Failed -> {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(bottom = 48.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    FetchingDataFailed(
+                        onRetryClick = onRetryClick
+                    )
                 }
-
-                is Loaded<*> -> {
-                    centuries.data?.let {
-                        HomeLoadedScreen(
-                            popularPoets = it.popularPoets,
-                            labels = it.labels,
-                            poets = it.poets,
-                            modifier = Modifier,
-                            onCenturyClick = onCenturyClick,
-                            onPoetClick = onPoetClick
-                        )
-                    }
-                }
-
-                Loading -> {
-                    HomeLoadingScreen()
-                }
-
-                NotLoaded -> {}
             }
+
+            is Loaded<*> -> {
+                centuries.data?.let {
+                    HomeLoadedScreen(
+                        popularPoets = it.popularPoets,
+                        labels = it.labels,
+                        poets = it.poets,
+                        modifier = Modifier,
+                        onCenturyClick = onCenturyClick,
+                        onPoetClick = onPoetClick
+                    )
+                }
+            }
+
+            Loading -> {
+                HomeLoadingScreen()
+            }
+
+            NotLoaded -> {}
         }
+
         AppInfoBar(
             modifier = Modifier
-                .padding(vertical = 16.dp)
+                .align(Alignment.BottomCenter)
+                .background(
+                    MaterialTheme.colorScheme.background.copy(alpha = .9f)
+                )
+                .padding(top = 8.dp, bottom = 16.dp)
                 .fillMaxWidth()
-                .blur(4.dp)
         )
     }
 }

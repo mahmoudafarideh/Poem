@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import m.a.poem.api.contract.CenturyApi
 import m.a.poem.api.contract.PoetApi
+import m.a.poem.api.contract.RandomApi
 import m.a.poem.api.contract.SearchApi
 import retrofit2.Retrofit
 
@@ -22,6 +23,9 @@ object ApiModule {
 
     @Provides
     fun providesSearchApi(retrofit: Retrofit): SearchApi = retrofit.create(SearchApi::class.java)
+
+    @Provides
+    fun providesRandomApi(retrofit: Retrofit): RandomApi = retrofit.create(RandomApi::class.java)
 
 
 }
