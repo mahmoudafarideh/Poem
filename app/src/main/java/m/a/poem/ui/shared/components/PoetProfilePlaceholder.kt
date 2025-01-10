@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.valentinilk.shimmer.shimmer
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.shared.model.PoetUiModel
 
 @Composable

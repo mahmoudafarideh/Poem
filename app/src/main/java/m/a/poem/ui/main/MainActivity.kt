@@ -15,10 +15,17 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavController.OnDestinationChangedListener
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -32,9 +39,7 @@ import m.a.compilot.navigation.comPilotNavController
 import m.a.poem.ui.LocalSnackBarHostState
 import m.a.poem.ui.artwork.navigation.artworkGraph
 import m.a.poem.ui.book.navigation.bookGraph
-import m.a.poem.ui.home.navigation.HomeRoute
 import m.a.poem.ui.home.navigation.homeGraph
-import m.a.poem.ui.home.navigation.routes.navigator
 import m.a.poem.ui.info.navigation.infoGraph
 import m.a.poem.ui.main.component.PoemPlayerContent
 import m.a.poem.ui.omen.navigation.omenGraph
@@ -42,6 +47,10 @@ import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph
 import m.a.poem.ui.search.navigation.searchGraph
 import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.splash.navigation.SplashRoute
+import m.a.poem.ui.splash.navigation.routes.navigationRoute
+import m.a.poem.ui.splash.navigation.routes.navigator
+import m.a.poem.ui.splash.navigation.splashGraph
 import m.a.poem.ui.theme.PoemTheme
 
 @AndroidEntryPoint
@@ -74,12 +83,18 @@ class MainActivity : ComponentActivity() {
         navigation: NavHostController,
         modifier: Modifier = Modifier
     ) {
+        var splashPassed by remember {
+            mutableStateOf(false)
+        }
+        CheckSplashPassed(navigation) {
+            splashPassed = true
+        }
         Box(modifier) {
             Column(modifier = Modifier) {
                 PoemPlayerContent(this@MainActivity)
                 NavHost(
                     navController = navigation,
-                    startDestination = HomeRoute.navigator(),
+                    startDestination = SplashRoute.navigator(),
                     enterTransition = { EnterTransition.Companion.None },
                     exitTransition = { ExitTransition.Companion.None },
                 ) {
@@ -91,19 +106,46 @@ class MainActivity : ComponentActivity() {
                     this.omenGraph()
                     this.infoGraph()
                     this.artworkGraph()
+                    this.splashGraph()
                 }
             }
             val navController = LocalNavController.comPilotNavController
-            LaunchedEffect(Unit) {
-                navigationFlow.filterNotNull().collect {
-                    navController.safeNavigate().navigate(it)
-                    navigationFlow.update { null }
+            if (splashPassed) {
+                LaunchedEffect(Unit) {
+                    navigationFlow.filterNotNull().collect {
+                        navController.safeNavigate().navigate(it)
+                        navigationFlow.update { null }
+                    }
                 }
             }
             SnackbarHost(
                 hostState = snackbarHostState,
                 modifier = Modifier.padding(top = 24.dp)
             )
+        }
+    }
+
+    @Composable
+    private fun CheckSplashPassed(
+        navigation: NavHostController,
+        splashPassed: () -> Unit
+    ) {
+        DisposableEffect(Unit) {
+            val listener = object : OnDestinationChangedListener {
+                override fun onDestinationChanged(
+                    controller: NavController,
+                    destination: NavDestination,
+                    arguments: Bundle?
+                ) {
+                    if(destination.route != SplashRoute.navigationRoute()){
+                        splashPassed()
+                    }
+                }
+            }
+            navigation.addOnDestinationChangedListener(listener)
+            onDispose {
+                navigation.removeOnDestinationChangedListener(listener)
+            }
         }
     }
 

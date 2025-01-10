@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Poem"
-        android:name=".ui.PoemApp"
+        android:name="m.a.poem.ui.PoemApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="m.a.poem.ui.main.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Poem">
             <intent-filter>
@@ -27,7 +27,7 @@
         </activity>
 
         <receiver
-            android:name=".ui.widget.widget.PoemVerseWidgetReceiver"
+            android:name="m.a.poem.ui.widget.widget.PoemVerseWidgetReceiver"
             android:exported="true"
             android:label="@string/app_name">
 

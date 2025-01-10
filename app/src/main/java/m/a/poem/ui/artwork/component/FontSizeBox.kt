@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.theme.PoemThemePreview
 

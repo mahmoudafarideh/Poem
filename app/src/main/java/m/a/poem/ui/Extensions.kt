@@ -1,5 +1,8 @@
 package m.a.poem.ui
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.SnackbarHostState
@@ -36,3 +39,12 @@ fun Modifier.noRippleClickable(
 
 val LocalSnackBarHostState =
     compositionLocalOf<SnackbarHostState> { error("No SnackbarHostState found!") }
+
+internal fun Context.goToMarket() {
+    Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse("bazaar://details?id=" + "PACKAGE_NAME")
+        setPackage("com.farsitel.bazaar")
+    }.let {
+        startActivity(it)
+    }
+}

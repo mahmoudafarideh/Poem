@@ -1,7 +1,7 @@
 package m.a.poem.ui.artwork.model
 
 import androidx.annotation.StringRes
-import m.a.poem.R
+import m.a.nobahar.R
 
 data class ArtTabUiModel(
     val tab: Tab,

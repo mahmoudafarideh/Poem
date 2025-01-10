@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.artwork.model.ArtSavingState
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
 

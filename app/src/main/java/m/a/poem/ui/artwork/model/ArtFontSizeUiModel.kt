@@ -3,7 +3,7 @@ package m.a.poem.ui.artwork.model
 import androidx.annotation.StringRes
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import m.a.poem.R
+import m.a.nobahar.R
 
 data class ArtFontSizeUiModel(
     val size: Size,

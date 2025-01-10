@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import m.a.poem.R
+import m.a.nobahar.R
 
 private val boldFont = Font(R.font.vazir_bold)
 private val lightFont = Font(R.font.vazir_light)

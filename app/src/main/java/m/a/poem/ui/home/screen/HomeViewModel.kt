@@ -8,16 +8,21 @@ import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.NotLoaded
 import m.a.poem.domain.model.Poet
 import m.a.poem.domain.repository.CenturyPoetsRepository
+import m.a.poem.domain.repository.HomeCommunicationRepository
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
+import m.a.poem.ui.home.model.toHomeCommunicationUiModel
 import m.a.poem.ui.shared.BaseViewModel
 import m.a.poem.ui.shared.model.PoetUiModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: CenturyPoetsRepository
-) : BaseViewModel<LoadableData<HomeUiModel>>(NotLoaded) {
+    private val repository: CenturyPoetsRepository,
+    private val homeCommunicationRepository: HomeCommunicationRepository
+) : BaseViewModel<LoadableData<HomeUiModel>>(
+    NotLoaded
+) {
 
     private var centuryPoets: List<CenturyPoets> = emptyList()
 
@@ -55,7 +60,9 @@ class HomeViewModel @Inject constructor(
         return HomeUiModel(
             popularPoets = popularPoets,
             labels = labels,
-            poets = poets
+            poets = poets,
+            communication = homeCommunicationRepository.getCommunication()
+                ?.toHomeCommunicationUiModel()
         )
     }
 

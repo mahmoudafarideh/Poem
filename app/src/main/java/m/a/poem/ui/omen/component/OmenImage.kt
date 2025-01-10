@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loading
 import m.a.poem.ui.omen.model.OmenUiModel

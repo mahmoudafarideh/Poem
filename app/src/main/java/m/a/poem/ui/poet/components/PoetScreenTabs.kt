@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.poet.model.PoetScreenTabsUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
 

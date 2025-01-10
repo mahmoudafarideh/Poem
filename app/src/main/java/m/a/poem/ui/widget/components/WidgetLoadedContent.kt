@@ -9,7 +9,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
-import m.a.poem.R
+import m.a.nobahar.R
 
 @Composable
 internal fun WidgetLoadedContent(

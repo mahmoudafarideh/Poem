@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.shared.components.PoetProfilePlaceholder
 import m.a.poem.ui.shared.components.UrlImage
 import m.a.poem.ui.shared.model.PoetUiModel

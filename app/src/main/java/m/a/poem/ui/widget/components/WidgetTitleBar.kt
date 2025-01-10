@@ -20,7 +20,7 @@ import androidx.glance.layout.Spacer
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.unit.ColorProvider
-import m.a.poem.R
+import m.a.nobahar.R
 
 @SuppressLint("RestrictedApi")
 @Composable

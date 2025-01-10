@@ -10,6 +10,7 @@ import m.a.poem.api.contract.PoemApi
 import m.a.poem.api.contract.PoetApi
 import m.a.poem.api.contract.RandomApi
 import m.a.poem.api.contract.SearchApi
+import m.a.poem.api.contract.SplashApi
 import retrofit2.Retrofit
 
 
@@ -34,6 +35,9 @@ object ApiModule {
 
     @Provides
     fun providesBookApi(retrofit: Retrofit): BookApi = retrofit.create(BookApi::class.java)
+
+    @Provides
+    fun providesSplashApi(retrofit: Retrofit): SplashApi = retrofit.create(SplashApi::class.java)
 
 
 }

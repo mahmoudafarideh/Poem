@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import m.a.poem.R
+import m.a.nobahar.R
 
 data class ArtScreenUiModel(
     val tabs: ImmutableList<ArtTabUiModel>,

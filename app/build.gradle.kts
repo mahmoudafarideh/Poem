@@ -13,11 +13,11 @@ kapt {
 }
 
 android {
-    namespace = "m.a.poem"
+    namespace = "m.a.nobahar"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "m.a.poem"
+        applicationId = "m.a.nobahar"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

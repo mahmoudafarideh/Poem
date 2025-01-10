@@ -3,7 +3,7 @@ package m.a.poem.ui.artwork.model
 import androidx.annotation.FontRes
 import androidx.annotation.StringRes
 import androidx.compose.ui.text.font.FontFamily
-import m.a.poem.R
+import m.a.nobahar.R
 
 data class ArtFontUiModel(
     val font: Font,

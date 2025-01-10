@@ -6,7 +6,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
 import dagger.hilt.android.qualifiers.ApplicationContext
-import m.a.poem.R
+import m.a.nobahar.R
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
@@ -32,10 +32,6 @@ class BitmapSaver @Inject constructor(
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
         }
 
-        notifyImageAdded(imageFile)
-    }
-
-    private fun notifyImageAdded(imageFile: File) {
         runCatching {
             MediaScannerConnection.scanFile(
                 context,

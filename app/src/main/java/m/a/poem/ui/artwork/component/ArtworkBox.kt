@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.capturable
 import dev.shreyaspatil.capturable.controller.CaptureController
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
 
 val ordibeheshtFont = FontFamily(Font(R.font.ordibehesht))

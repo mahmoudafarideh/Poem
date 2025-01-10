@@ -87,6 +87,7 @@ fun HomeScreen(
                             popularPoets = it.popularPoets,
                             labels = it.labels,
                             poets = it.poets,
+                            communication = it.communication,
                             modifier = Modifier,
                             onCenturyClick = onCenturyClick,
                             onPoetClick = onPoetClick,

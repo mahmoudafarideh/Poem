@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize

@@ -28,8 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.home.model.CenturyUiModel
+import m.a.poem.ui.home.model.HomeCommunicationUiModel
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
 import m.a.poem.ui.shared.ui.SabaPreview
@@ -43,6 +44,7 @@ fun HomeLoadedScreen(
     onCenturyClick: (String) -> Unit,
     onPoetClick: (PoetUiModel) -> Unit,
     scrollState: LazyGridState,
+    communication: HomeCommunicationUiModel?,
     modifier: Modifier = Modifier,
 ) {
     val windowSize = LocalWindowSize.current
@@ -68,6 +70,14 @@ fun HomeLoadedScreen(
     ) {
         item {
             Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+        }
+
+        item(
+            span = { GridItemSpan(cells) }
+        ) {
+            communication?.let {
+                HomeCommunicationBar(it)
+            }
         }
         item(
             span = { GridItemSpan(cells) }
@@ -156,6 +166,7 @@ private fun HomeLoadedScreenPreview() {
             onCenturyClick = {},
             onPoetClick = {},
             scrollState = rememberLazyGridState(),
+            communication = null,
         )
     }
 }

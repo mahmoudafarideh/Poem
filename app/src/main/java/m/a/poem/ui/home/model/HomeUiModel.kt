@@ -7,4 +7,5 @@ data class HomeUiModel(
     val popularPoets: ImmutableList<PoetUiModel>,
     val labels: ImmutableList<CenturyUiModel>,
     val poets: ImmutableList<PoetUiModel>,
+    val communication: HomeCommunicationUiModel? = null
 )

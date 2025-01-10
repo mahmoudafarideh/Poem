@@ -32,4 +32,7 @@
     <string name="artwork_saving_message">در حال ذخیره‌سازی...</string>
     <string name="artwork_saving_failed_message">ذخیره‌سازی با مشکل مواجه شد!</string>
     <string name="nobahar">نوبهار</string>
+    <string name="nobahar_slogan">به بوی آن که دگر نوبهار بازآید</string>
+    <string name="new_version_label">نوبهار جدید رسید :)</string>
+    <string name="update_app_button_label">به‌روزرسانی</string>
 </resources>

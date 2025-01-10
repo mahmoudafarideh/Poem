@@ -25,7 +25,7 @@ import androidx.glance.layout.size
 import androidx.glance.preview.ExperimentalGlancePreviewApi
 import androidx.glance.preview.Preview
 import androidx.glance.unit.ColorProvider
-import m.a.poem.R
+import m.a.nobahar.R
 import m.a.poem.ui.theme.WidgetPoemTheme
 
 
