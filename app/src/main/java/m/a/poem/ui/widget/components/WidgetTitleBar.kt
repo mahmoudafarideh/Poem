@@ -48,7 +48,7 @@ internal fun WidgetTitleBar(
             )
             Spacer(modifier = GlanceModifier.size(12.dp))
             GlanceText(
-                text = "تک‌بیت روز | نوبهار",
+                text = "نوبهار | تک‌بیت روز",
                 font = R.font.vazir_medium,
                 fontSize = 14.sp
             )

@@ -31,4 +31,5 @@
     <string name="artwork_saved_message">تصویر شما با موفقیت ذخیره شد.</string>
     <string name="artwork_saving_message">در حال ذخیره‌سازی...</string>
     <string name="artwork_saving_failed_message">ذخیره‌سازی با مشکل مواجه شد!</string>
+    <string name="nobahar">نوبهار</string>
 </resources>
