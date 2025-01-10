@@ -1,16 +1,60 @@
 package m.a.poem.ui.artwork.navigation
 
+import androidx.compose.runtime.ExperimentalComposeApi
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import kotlinx.coroutines.launch
 import m.a.poem.ui.artwork.navigation.routes.screen
 import m.a.poem.ui.artwork.screen.ArtworkScreen
+import m.a.poem.ui.artwork.screen.ArtworkViewModel
 
+@OptIn(ExperimentalComposeApi::class)
 fun NavGraphBuilder.artworkGraph() {
     ArtworkRoute.screen(this) {
+        val viewModel: ArtworkViewModel = hiltViewModel()
+        val state = viewModel.state.collectAsStateWithLifecycle().value
+        val captureController = rememberCaptureController()
+        val coroutineScope = rememberCoroutineScope()
         ArtworkScreen(
-            it.argument.first.text,
-            it.argument.second.text,
-            it.argument.poetName,
-            it.argument.poemBook
+            firstVerse = it.argument.first.text,
+            secondVerse = it.argument.second.text,
+            poetName = it.argument.poetName,
+            bookName = it.argument.poemBook,
+            state = state,
+            onTabClick = {
+                viewModel.tabClicked(it)
+            },
+            onFontClick = {
+                viewModel.fontClicked(it)
+            },
+            onFontSizeClick = {
+                viewModel.fontSizeClicked(it)
+            },
+            onColorClick = {
+                viewModel.colorClicked(it)
+            },
+            onSaveButtonClick = {
+                viewModel.saveButtonClicked()
+                coroutineScope.launch {
+                    val bitmapAsync = captureController.captureAsync()
+                    try {
+                        viewModel.bitmapLoaded(bitmapAsync.await().asAndroidBitmap())
+                    } catch (_: Throwable) {
+                        viewModel.savingFailed()
+                    }
+                }
+            },
+            onBackgroundClick = {
+                viewModel.backgroundClicked(it)
+            },
+            captureController = captureController,
+            onMatnnegarClick = {
+
+            }
         )
     }
 }

@@ -1,51 +1,119 @@
 package m.a.poem.ui.artwork.screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import m.a.poem.R
+import dev.shreyaspatil.capturable.controller.CaptureController
+import dev.shreyaspatil.capturable.controller.rememberCaptureController
+import m.a.poem.ui.artwork.component.ArtworkAppBar
+import m.a.poem.ui.artwork.component.ArtworkHorizontalContent
+import m.a.poem.ui.artwork.component.ArtworkVerticalContent
+import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
+import m.a.poem.ui.artwork.model.ArtFontUiModel
+import m.a.poem.ui.artwork.model.ArtSavingState
+import m.a.poem.ui.artwork.model.ArtScreenUiModel
+import m.a.poem.ui.artwork.model.ArtTabUiModel
+import m.a.poem.ui.shared.ui.LocalWindowSize
+import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.theme.PoemThemePreview
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeApi::class)
 @Composable
 fun ArtworkScreen(
     firstVerse: String,
     secondVerse: String,
     poetName: String,
     bookName: String,
-    modifier: Modifier = Modifier
+    state: ArtScreenUiModel,
+    onTabClick: (ArtTabUiModel.Tab) -> Unit,
+    onFontClick: (ArtFontUiModel.Font) -> Unit,
+    onFontSizeClick: (ArtFontSizeUiModel.Size) -> Unit,
+    onColorClick: (Color) -> Unit,
+    onSaveButtonClick: () -> Unit,
+    onMatnnegarClick: () -> Unit,
+    onBackgroundClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    captureController: CaptureController
 ) {
-    Box(modifier = modifier) {
-        Box(modifier = Modifier.aspectRatio(1f).padding(16.dp)) {
-            Image(
-                painter = painterResource(R.drawable.bg_poem_1),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
-            Column(modifier = Modifier.align(Alignment.Center)) {
-                Text(
-                    text = firstVerse,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White
+    val windowSize = LocalWindowSize.current
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    Scaffold(
+        topBar = {
+            if (windowSize.widthSizeClass == WindowWidthSizeClass.Compact) {
+                ArtworkAppBar(state, onSaveButtonClick)
+            }
+        },
+        modifier = modifier
+    ) { contentPadding ->
+        when (windowSize.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> {
+                ArtworkVerticalContent(
+                    state = state,
+                    onTabClick = onTabClick,
+                    onFontClick = onFontClick,
+                    onFontSizeClick = onFontSizeClick,
+                    onColorClick = onColorClick,
+                    onBackgroundClick = onBackgroundClick,
+                    scaffoldState = scaffoldState,
+                    firstVerse = firstVerse,
+                    secondVerse = secondVerse,
+                    poetName = poetName,
+                    bookName = bookName,
+                    captureController = captureController,
+                    modifier = Modifier.padding(contentPadding),
+                    onMatnnegarClick = onMatnnegarClick
                 )
-                Spacer(modifier = Modifier.size(24.dp))
-                Text(
-                    text = secondVerse,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White
+            }
+
+            WindowWidthSizeClass.Expanded -> {
+                ArtworkHorizontalContent(
+                    state = state,
+                    onTabClick = onTabClick,
+                    onFontClick = onFontClick,
+                    onFontSizeClick = onFontSizeClick,
+                    onColorClick = onColorClick,
+                    onBackgroundClick = onBackgroundClick,
+                    firstVerse = firstVerse,
+                    secondVerse = secondVerse,
+                    poetName = poetName,
+                    bookName = bookName,
+                    onSaveButtonClick = onSaveButtonClick,
+                    captureController = captureController,
+                    modifier = Modifier.padding(contentPadding),
+                    onMatnnegarClick = onMatnnegarClick
                 )
             }
         }
+    }
+}
+
+
+@SabaPreview
+@Composable
+private fun ArtworkScreenPreview() {
+    PoemThemePreview {
+        ArtworkScreen(
+            firstVerse = "اَلا یا اَیُّهَا السّاقی اَدِرْ کَأسَاً و ناوِلْها",
+            secondVerse = "که عشق آسان نُمود اوّل ولی افتاد مشکل\u200Cها",
+            poetName = "حافظ",
+            bookName = "غزلیات",
+            state = ArtScreenUiModel.default.copy(
+                savingState = ArtSavingState.Failed
+            ),
+            onTabClick = {},
+            onFontClick = {},
+            onFontSizeClick = {},
+            onColorClick = {},
+            onBackgroundClick = {},
+            onSaveButtonClick = {},
+            onMatnnegarClick = {},
+            captureController = rememberCaptureController()
+        )
     }
 }

@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.glance.material)
     implementation(libs.glance.appwidget.preview)
     implementation(libs.glance.preview)
+    implementation(libs.capturable)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)

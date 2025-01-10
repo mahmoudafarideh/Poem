@@ -102,14 +102,13 @@ class PoemViewModel @AssistedInject constructor(
     )
 
     private fun List<PoemVerse>.zipped() = buildList {
-        var pairItems: Pair<PoemVerse?, PoemVerse?> = null to null
+        var firstItem: PoemVerse? = null
         this@zipped.forEach {
             when {
-                pairItems.first == null -> pairItems = it to null
-                pairItems.second == null -> pairItems = pairItems.first to it
+                firstItem == null -> firstItem = it
                 else -> {
-                    add(pairItems.first!! to pairItems.second!!)
-                    pairItems = it to null
+                    add(firstItem to it)
+                    firstItem = null
                 }
             }
 

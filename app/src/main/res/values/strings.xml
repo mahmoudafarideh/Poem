@@ -15,4 +15,20 @@
     <string name="omen_final_step_label">ای حافظ شیرازی! تو محرم هر رازی! تو را به خدا و به شاخ نباتت قسم می دهم که هر چه صلاح و مصلحت می بینی برایم آشکار و آرزوی مرا براورده سازی.</string>
     <string name="omen_sentence_label">سپس جمله زیر را بخوانید:</string>
     <string name="omen_first_step_label">برای گرفتن فال ابتدا نیت کرده و چند نفس عمیق بکشید</string>
+    <string name="vazir_font_label">وزیر</string>
+    <string name="ordibehesht_font_label">اردیبهشت</string>
+    <string name="nastaliq_font_label">نستعلیق</string>
+    <string name="font_tab_label">قلم</string>
+    <string name="background_tab_label">پس‌زمینه</string>
+    <string name="color_tab_label">رنگ</string>
+    <string name="extra_small_font_size_label">خیلی کوچک</string>
+    <string name="small_font_size_label">کوچک</string>
+    <string name="medium_font_size_label">متوسط</string>
+    <string name="large_font_size_label">بزرگ</string>
+    <string name="extra_large_font_size_label">خیلی بزرگ</string>
+    <string name="save_artwork_button_label">ذخیره تصویر</string>
+    <string name="powered_by_matnnegar">قدرت‌گرفته از متن‌نگار</string>
+    <string name="artwork_saved_message">تصویر شما با موفقیت ذخیره شد.</string>
+    <string name="artwork_saving_message">در حال ذخیره‌سازی...</string>
+    <string name="artwork_saving_failed_message">ذخیره‌سازی با مشکل مواجه شد!</string>
 </resources>
