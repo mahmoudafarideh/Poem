@@ -96,10 +96,7 @@ fun BookScreen(
                         },
                         onPoemClick = {
                             navigation.safeNavigate().navigate(
-                                PoemRoute(
-                                    poetInfo = poetUiModel.toPoet(),
-                                    poemId = it.id
-                                ).navigator
+                                PoemRoute(poemId = it.id).navigator
                             )
                         },
                         modifier = Modifier,

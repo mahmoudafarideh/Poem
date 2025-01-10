@@ -27,7 +27,7 @@ fun NavGraphBuilder.omenGraph() {
         LaunchedEffect(state) {
             state.data?.let {
                 navigation.safeNavigate().navigate(
-                    PoemRoute(it.poetUiModel.toPoet(), it.poemId).navigator
+                    PoemRoute(it.poemId).navigator
                 )
                 viewModel.navigatedToPoemScreen()
             }
@@ -35,7 +35,9 @@ fun NavGraphBuilder.omenGraph() {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
             OmenScreen(
                 state = state,

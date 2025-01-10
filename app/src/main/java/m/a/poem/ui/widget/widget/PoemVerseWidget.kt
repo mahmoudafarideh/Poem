@@ -39,7 +39,7 @@ class PoemVerseWidget @Inject constructor(
                 onRefreshClick = { viewModel.refreshClicked() },
                 onPoemClick = viewModel.currentPoem?.let {
                     val parameters =
-                        actionParametersOf(destinationKey to PoemRoute(it.poet, it.id).navigator())
+                        actionParametersOf(destinationKey to PoemRoute(it.id).navigator())
                     actionStartActivity<MainActivity>(parameters)
                 }
             )

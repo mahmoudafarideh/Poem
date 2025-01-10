@@ -2,7 +2,9 @@ package m.a.poem.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import m.a.poem.domain.model.Poet
@@ -31,3 +33,6 @@ fun Modifier.noRippleClickable(
         onClick()
     }
 )
+
+val LocalSnackBarHostState =
+    compositionLocalOf<SnackbarHostState> { error("No SnackbarHostState found!") }

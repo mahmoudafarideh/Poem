@@ -13,6 +13,7 @@ import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.MediaPlayerState
 import m.a.poem.domain.model.PoemAudioInfo
 import m.a.poem.domain.model.PoemInfo
+import m.a.poem.domain.model.PoemVerse
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoemRepository
 import m.a.poem.ui.book.model.toBookItemUiModel
@@ -20,18 +21,17 @@ import m.a.poem.ui.book.model.toPoemItemUiModel
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
 import m.a.poem.ui.poem.model.PoemScreenUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
+import m.a.poem.ui.poem.model.PoemVerseUiModel
 import m.a.poem.ui.poem.model.toPoemRecitationUiModel
 import m.a.poem.ui.poem.model.toPoemVerseUiModel
 import m.a.poem.ui.shared.BaseViewModel
-import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.toPoetUiModel
 
 class PoemViewModel @AssistedInject constructor(
-    @Assisted private val poetUiModel: PoetUiModel,
     @Assisted private val poemId: Long,
     private val poemRepository: PoemRepository,
     private val mediaPlayerRepository: MediaPlayerRepository,
-) : BaseViewModel<PoemScreenUiModel>(PoemScreenUiModel(poetUiModel)) {
+) : BaseViewModel<PoemScreenUiModel>(PoemScreenUiModel()) {
 
     init {
         getPoem()
@@ -39,6 +39,24 @@ class PoemViewModel @AssistedInject constructor(
 
     fun retryClicked() {
         getPoem()
+    }
+
+    fun verseClicked(index: Int) {
+        val poem = state.value.poem.data ?: return
+        updateState {
+            copy(
+                poem = Loaded(
+                    poem.copy(
+                        verses = poem.verses.mapIndexed { verseIndex, verse ->
+                            when (index) {
+                                verseIndex -> verse.copy(isSelected = !verse.isSelected)
+                                else -> verse
+                            }
+                        }.toImmutableList()
+                    )
+                )
+            )
+        }
     }
 
     private fun getPoem() {
@@ -70,7 +88,7 @@ class PoemViewModel @AssistedInject constructor(
     }
 
     private fun PoemInfo.toPoemUiModel() = PoemUiModel(
-        verses = verses.mapIndexed { index, poemVerse ->
+        verses = verses.zipped().mapIndexed { index, poemVerse ->
             poemVerse.toPoemVerseUiModel(index)
         }.toImmutableList(),
         next = nextPoem?.toPoemItemUiModel(),
@@ -79,8 +97,24 @@ class PoemViewModel @AssistedInject constructor(
             it.toPoemRecitationUiModel()
         }.toImmutableList(),
         poetUiModel = poet.toPoetUiModel(),
-        bookUiModel = book.toBookItemUiModel()
+        bookUiModel = book.toBookItemUiModel(),
+        label = label
     )
+
+    private fun List<PoemVerse>.zipped() = buildList {
+        var pairItems: Pair<PoemVerse?, PoemVerse?> = null to null
+        this@zipped.forEach {
+            when {
+                pairItems.first == null -> pairItems = it to null
+                pairItems.second == null -> pairItems = pairItems.first to it
+                else -> {
+                    add(pairItems.first!! to pairItems.second!!)
+                    pairItems = it to null
+                }
+            }
+
+        }
+    }
 
     private fun updateRecitationState(recitationId: Long, newState: PoemRecitationUiModel.State) {
         val data = state.value.poem.data ?: return
@@ -107,13 +141,27 @@ class PoemViewModel @AssistedInject constructor(
                 poem = Loaded(
                     data.copy(
                         verses = data.verses.mapIndexed { index, verse ->
-                            verse.copy(isHighlighted = shouldHighlight && index <= verseIndex)
+                            updateHighlightedVerse(verse, shouldHighlight, index, verseIndex)
                         }.toImmutableList(),
                     )
                 )
             )
         }
     }
+
+    private fun updateHighlightedVerse(
+        verse: PoemVerseUiModel,
+        shouldHighlight: Boolean,
+        index: Int,
+        verseIndex: Int
+    ): PoemVerseUiModel = verse.copy(
+        first = verse.first.copy(
+            isHighlighted = shouldHighlight && index.times(2) <= verseIndex
+        ),
+        second = verse.second.copy(
+            isHighlighted = shouldHighlight && index.times(2).plus(1) <= verseIndex
+        )
+    )
 
     fun recitationClicked(recitationId: Long) {
         val data = state.value.poem.data ?: return
@@ -134,9 +182,9 @@ class PoemViewModel @AssistedInject constructor(
         mediaPlayerRepository.play(
             PoemAudioInfo(
                 recitation.toRecitation(),
-                poetUiModel.toPoet(),
+                data.poetUiModel.toPoet(),
                 PoemAudioInfo.Poem(
-                    data.verses.first().text,
+                    data.verses.first().first.text,
                     poemId
                 )
             )
@@ -170,20 +218,37 @@ class PoemViewModel @AssistedInject constructor(
         }
     }
 
+    fun releaseVerses() {
+        val poem = state.value.poem.data ?: return
+        updateState {
+            copy(
+                poem = Loaded(
+                    poem.copy(
+                        verses = poem.verses.map { verse ->
+                            verse.copy(
+                                isSelected
+                                = false
+                            )
+                        }.toImmutableList()
+                    )
+                )
+            )
+        }
+    }
+
     @AssistedFactory
     interface Factory {
-        fun create(poetUiModel: PoetUiModel, bookId: Long): PoemViewModel
+        fun create(poemId: Long): PoemViewModel
     }
 
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun provideFactory(
             assistedFactory: Factory,
-            poetUiModel: PoetUiModel,
-            bookId: Long
+            poemId: Long
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(poetUiModel, bookId) as T
+                return assistedFactory.create(poemId) as T
             }
         }
     }

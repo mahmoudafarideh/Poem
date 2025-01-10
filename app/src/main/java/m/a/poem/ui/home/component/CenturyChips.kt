@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.ui.home.model.CenturyUiModel
-import m.a.poem.ui.theme.PoemTheme
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 fun CenturyChips(
@@ -36,7 +36,7 @@ fun CenturyChips(
 @Preview
 @Composable
 private fun CenturyChipsPreview() {
-    PoemTheme {
+    PoemThemePreview {
         CenturyChips(
             labels = persistentListOf(
                 CenturyUiModel("قرن پنجم", true)

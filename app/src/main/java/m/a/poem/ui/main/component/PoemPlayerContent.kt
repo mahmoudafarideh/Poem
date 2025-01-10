@@ -37,7 +37,7 @@ internal fun PoemPlayerContent(
         },
         modifier = modifier.clickable {
             poemPlayerViewModel.poemAudio?.let {
-                val route = PoemRoute(it.poet, it.poemInfo.id).navigator
+                val route = PoemRoute(it.poemInfo.id).navigator
                 navigation.checkNotInRoutes(route.route()).navigate(route)
             }
         }

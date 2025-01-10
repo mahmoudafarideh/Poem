@@ -32,7 +32,7 @@ fun NavGraphBuilder.searchGraph() {
             onBackClick = { navigation.safePopBackStack() },
             onPoemClick = { poet, poemId ->
                 navigation.safeNavigate().navigate(
-                    PoemRoute(poetInfo = poet.toPoet(), poemId = poemId).navigator
+                    PoemRoute(poemId = poemId).navigator
                 )
             },
             onRetryClick = {

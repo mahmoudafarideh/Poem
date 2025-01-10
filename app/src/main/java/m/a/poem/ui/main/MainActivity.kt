@@ -6,11 +6,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import m.a.compilot.common.RouteNavigator
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
+import m.a.poem.ui.LocalSnackBarHostState
 import m.a.poem.ui.artwork.navigation.artworkGraph
 import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.navigation.HomeRoute
@@ -46,36 +56,54 @@ class MainActivity : ComponentActivity() {
         setContent {
             PoemTheme {
                 val navigation = rememberNavController()
+                val snackbarHostState = remember { SnackbarHostState() }
                 CompositionLocalProvider(LocalWindowSize provides calculateWindowSizeClass(this)) {
                     CompositionLocalProvider(LocalNavController provides navigation) {
-                        Column {
-                            PoemPlayerContent(this@MainActivity)
-                            NavHost(
-                                navController = navigation,
-                                startDestination = HomeRoute.navigator(),
-                                enterTransition = { EnterTransition.Companion.None },
-                                exitTransition = { ExitTransition.Companion.None },
-                            ) {
-                                this.homeGraph()
-                                this.poetGraph()
-                                this.bookGraph()
-                                this.poemGraph()
-                                this.searchGraph()
-                                this.omenGraph()
-                                this.infoGraph()
-                                this.artworkGraph()
-                            }
-                        }
-                        val navController = LocalNavController.comPilotNavController
-                        LaunchedEffect(Unit) {
-                            navigationFlow.filterNotNull().collect {
-                                navController.safeNavigate().navigate(it)
-                                navigationFlow.update { null }
-                            }
+                        CompositionLocalProvider(LocalSnackBarHostState provides snackbarHostState) {
+                            MainContent(snackbarHostState, navigation)
                         }
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun MainContent(
+        snackbarHostState: SnackbarHostState,
+        navigation: NavHostController,
+        modifier: Modifier = Modifier
+    ) {
+        Box(modifier) {
+            Column(modifier = Modifier) {
+                PoemPlayerContent(this@MainActivity)
+                NavHost(
+                    navController = navigation,
+                    startDestination = HomeRoute.navigator(),
+                    enterTransition = { EnterTransition.Companion.None },
+                    exitTransition = { ExitTransition.Companion.None },
+                ) {
+                    this.homeGraph()
+                    this.poetGraph()
+                    this.bookGraph()
+                    this.poemGraph()
+                    this.searchGraph()
+                    this.omenGraph()
+                    this.infoGraph()
+                    this.artworkGraph()
+                }
+            }
+            val navController = LocalNavController.comPilotNavController
+            LaunchedEffect(Unit) {
+                navigationFlow.filterNotNull().collect {
+                    navController.safeNavigate().navigate(it)
+                    navigationFlow.update { null }
+                }
+            }
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(top = 24.dp)
+            )
         }
     }
 

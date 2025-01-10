@@ -7,8 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import m.a.poem.ui.home.model.CenturyUiModel
-import m.a.poem.ui.theme.PoemTheme
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 fun PoetChip(
@@ -34,7 +33,7 @@ fun PoetChip(
 @Preview
 @Composable
 private fun PoetChipPreview() {
-    PoemTheme {
+    PoemThemePreview {
         PoetChip(
             label = "زندگی‌نامه",
             onClick = {},

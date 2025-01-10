@@ -10,14 +10,21 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import m.a.compilot.navigation.ComPilotNavController
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
 import m.a.poem.domain.model.Failed
@@ -25,19 +32,20 @@ import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.domain.model.PoemVerse
+import m.a.poem.ui.LocalSnackBarHostState
 import m.a.poem.ui.artwork.navigation.ArtworkRoute
 import m.a.poem.ui.artwork.navigation.routes.navigator
 import m.a.poem.ui.book.model.BookItemUiModel
 import m.a.poem.ui.book.model.PoemItemUiModel
+import m.a.poem.ui.poem.components.PoemAppBar
 import m.a.poem.ui.poem.components.PoemDetailsShimmer
 import m.a.poem.ui.poem.components.PoemVerses
 import m.a.poem.ui.poem.components.RecitationsColumn
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
 import m.a.poem.ui.poem.model.PoemVerseUiModel
+import m.a.poem.ui.poem.model.toPoemVerse
 import m.a.poem.ui.shared.components.FetchingDataFailed
-import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.SabaPreview
 import m.a.poem.ui.shared.ui.scrollShadow
@@ -46,37 +54,44 @@ import m.a.poem.ui.theme.PoemThemePreview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PoemScreen(
-    poetUiModel: PoetUiModel,
     poemUiModel: LoadableData<PoemUiModel>,
     onRetryClick: () -> Unit,
+    onVersesCopyClick: () -> Unit,
+    onVerseArtworkClick: () -> Unit,
     onPoemClick: (Long) -> Unit,
+    onVerseClick: (Int) -> Unit,
     onRecitationClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = LocalSnackBarHostState.current
     val navigation = LocalNavController.comPilotNavController
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
     Scaffold(
         topBar = {
-            PoetAppBar(
-                poetUiModel = poetUiModel,
+            PoemAppBar(
+                poemUiModel = poemUiModel,
                 onBackClick = { navigation.safePopBackStack() },
                 modifier = Modifier.scrollShadow(state),
-                onSearchClick = {
-                    poemUiModel.data?.let {
-                        navigation.navigate(
-                            ArtworkRoute(
-                                it.verses[0].let {
-                                    PoemVerse(it.text, it.id)
-                                },
-                                it.verses[1].let {
-                                    PoemVerse(it.text, it.id)
-                                },
-                                poetUiModel.nickname,
-                                poemUiModel.data!!.bookUiModel.label
-                            ).navigator
-                        )
-                    }
+                onArtworkClick = {
+                    artworkIconClicked(
+                        poemUiModel,
+                        navigation,
+                        coroutineScope,
+                        snackbarHostState,
+                        onVerseArtworkClick
+                    )
                 },
+                onCopyClick = {
+                    copyVerses(
+                        poemUiModel,
+                        clipboardManager,
+                        coroutineScope,
+                        snackbarHostState,
+                        onVersesCopyClick
+                    )
+                }
             )
         },
         modifier = modifier
@@ -95,9 +110,10 @@ fun PoemScreen(
                 is Loaded -> {
                     if (poemUiModel.data.recitations.isEmpty()) {
                         PoemVerses(
-                            poemUiModel,
-                            onPoemClick,
-                            state
+                            poemUiModel = poemUiModel,
+                            onOtherPoemClick = onPoemClick,
+                            onVerseClick = onVerseClick,
+                            state = state,
                         )
                     } else {
                         val scaffoldState = rememberBottomSheetScaffoldState()
@@ -110,11 +126,20 @@ fun PoemScreen(
                         BottomSheetScaffold(
                             sheetPeekHeight = 124.dp,
                             sheetContent = {
-                                RecitationsColumn(poemUiModel.data.recitations, onRecitationClicked)
+                                RecitationsColumn(
+                                    poemUiModel.data.recitations,
+                                    onRecitationClicked
+                                )
                             },
                             scaffoldState = scaffoldState
                         ) {
-                            PoemVerses(poemUiModel, onPoemClick, state, Modifier.padding(it))
+                            PoemVerses(
+                                poemUiModel = poemUiModel,
+                                onOtherPoemClick = onPoemClick,
+                                onVerseClick = onVerseClick,
+                                state = state,
+                                modifier = Modifier.padding(it)
+                            )
                         }
                     }
                 }
@@ -129,35 +154,96 @@ fun PoemScreen(
     }
 }
 
+private fun copyVerses(
+    poemUiModel: LoadableData<PoemUiModel>,
+    clipboardManager: ClipboardManager,
+    coroutineScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+    onVersesCopyClick: () -> Unit
+) {
+    poemUiModel.data?.let { poem ->
+        if (poem.anyVerseSelected) {
+            clipboardManager.setText(
+                AnnotatedString(
+                    poem.selectedVerses.joinToString("\n\n") {
+                        it.first.text + "\n" + it.second.text
+                    } + "\n\n" + poem.poetUiModel.nickname + " | " + poem.label
+                )
+            )
+            onVersesCopyClick()
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "کپی شد",
+                    withDismissAction = false,
+                    duration = SnackbarDuration.Short
+                )
+            }
+
+        } else {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "حداقل یک بیت را انتخاب کنید!",
+                    withDismissAction = false,
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
+}
+
+private fun artworkIconClicked(
+    poemUiModel: LoadableData<PoemUiModel>,
+    navigation: ComPilotNavController,
+    coroutineScope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+    onVerseArtworkClick: () -> Unit
+) {
+    poemUiModel.data?.let { poem ->
+        if (poem.isOneVerseSelected) {
+            poem.selectedVerse?.let {
+                navigation.navigate(
+                    ArtworkRoute(
+                        it.first.toPoemVerse(),
+                        it.second.toPoemVerse(),
+                        poem.poetUiModel.nickname,
+                        poem.bookUiModel.label
+                    ).navigator
+                )
+                onVerseArtworkClick()
+            }
+        } else {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(
+                    message = "لطفا یک بیت را انتخاب کنید!",
+                    withDismissAction = false,
+                    duration = SnackbarDuration.Short
+                )
+            }
+
+        }
+
+    }
+}
+
 @SabaPreview
 @Composable
 private fun PoemScreenPreview() {
     PoemThemePreview {
         PoemScreen(
-            poetUiModel = PoetUiModel.fixture,
             modifier = Modifier,
             poemUiModel = Loaded(
                 PoemUiModel(
                     verses = persistentListOf(
                         PoemVerseUiModel(
-                            text = "ای رستخیز ناگهان وی رحمت بی\u200Cمنتها",
-                            id = 1,
-                            PoemVerseUiModel.VersePosition.Start
-                        ),
-                        PoemVerseUiModel(
-                            text = "ای آتشی افروخته، در بیشه اندیشه\u200Cها",
-                            id = 2,
-                            PoemVerseUiModel.VersePosition.End
-                        ),
-                        PoemVerseUiModel(
-                            text = "ای رستخیز ناگهان وی رحمت بی\u200Cمنتها",
-                            id = 3,
-                            PoemVerseUiModel.VersePosition.Start
-                        ),
-                        PoemVerseUiModel(
-                            text = "ای آتشی افروخته، در بیشه اندیشه\u200Cها",
-                            id = 4,
-                            PoemVerseUiModel.VersePosition.End
+                            first = PoemVerseUiModel.VerseInfo(
+                                "ای رستخیز ناگهان وی رحمت بی\u200Cمنتها",
+                                1
+                            ),
+                            second = PoemVerseUiModel.VerseInfo(
+                                "ای آتشی افروخته، در بیشه اندیشه\u200Cمنتها",
+                                2
+                            ),
+                            1
                         ),
                     ),
                     next = PoemItemUiModel(
@@ -185,12 +271,16 @@ private fun PoemScreenPreview() {
                         )
                     ),
                     poetUiModel = PoetUiModel.fixture,
-                    bookUiModel = BookItemUiModel.fixture
+                    bookUiModel = BookItemUiModel.fixture,
+                    label = "غزل شماره یک"
                 )
             ),
             onRetryClick = {},
             onPoemClick = {},
             onRecitationClicked = {},
+            onVerseClick = {},
+            onVersesCopyClick = {},
+            onVerseArtworkClick = {},
         )
     }
 }
@@ -200,12 +290,14 @@ private fun PoemScreenPreview() {
 fun PoemScreenLoadingPreview() {
     PoemThemePreview {
         PoemScreen(
-            poetUiModel = PoetUiModel.fixture,
             modifier = Modifier,
             poemUiModel = Loading,
             onRetryClick = {},
             onPoemClick = {},
             onRecitationClicked = {},
+            onVerseClick = {},
+            onVersesCopyClick = {},
+            onVerseArtworkClick = {},
         )
     }
 }

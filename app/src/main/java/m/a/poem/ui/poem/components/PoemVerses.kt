@@ -3,12 +3,16 @@ package m.a.poem.ui.poem.components
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -27,6 +31,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import m.a.poem.domain.model.Loaded
@@ -35,14 +41,17 @@ import m.a.poem.ui.poem.model.PoemUiModel
 import m.a.poem.ui.poem.model.PoemVerseUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PoemVerses(
     poemUiModel: Loaded<PoemUiModel>,
-    onPoemClick: (Long) -> Unit,
+    onOtherPoemClick: (Long) -> Unit,
+    onVerseClick: (Int) -> Unit,
     state: LazyListState,
     modifier: Modifier = Modifier
 ) {
     val windowSize = LocalWindowSize.current
+    val haptic = LocalHapticFeedback.current
     val highlightColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = .5f)
     LazyColumn(
         modifier = modifier.padding(
@@ -51,57 +60,50 @@ internal fun PoemVerses(
                 else -> 0.dp
             }
         ),
-        contentPadding = PaddingValues(vertical = 12.dp),
         state = state
     ) {
         items(
             items = poemUiModel.data.verses,
-            key = { it.id }
+            key = { "${it.first.id} ${it.second.id}" }
         ) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        top = when (it.position) {
-                            PoemVerseUiModel.VersePosition.Start -> 12.dp
-                            PoemVerseUiModel.VersePosition.End -> 12.dp
+                    .combinedClickable(
+                        onClick = {
+                            if (it.isSelected || poemUiModel.data.anyVerseSelected) {
+                                onVerseClick(it.index)
+                            }
                         },
-                        bottom = when (it.position) {
-                            PoemVerseUiModel.VersePosition.Start -> 0.dp
-                            PoemVerseUiModel.VersePosition.End -> 12.dp
+                        onLongClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onVerseClick(it.index)
                         }
+                    )
+                    .background(
+                        if (it.isSelected) MaterialTheme.colorScheme.primaryContainer
+                        else Color.Unspecified
                     )
             ) {
-                val highlightSize = animateFloatAsState(
-                    targetValue = if (it.isHighlighted) 1f else 0f,
-                    animationSpec = tween(2200),
-                )
-                Text(
-                    text = it.text,
-                    style = MaterialTheme.typography.bodyLarge,
+                Spacer(modifier = Modifier.size(12.dp))
+                PoemVerse(
+                    verse = it.first,
+                    highlightColor = highlightColor,
                     modifier = Modifier
-                        .align(
-                            when (it.position) {
-                                PoemVerseUiModel.VersePosition.Start -> Alignment.CenterStart
-                                PoemVerseUiModel.VersePosition.End -> Alignment.CenterEnd
-                            }
-                        )
-                        .padding(horizontal = 12.dp)
-                        .drawBehind {
-                            highlightVerse(highlightSize, highlightColor)
-                        }
-                        .padding(horizontal = 12.dp),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    minLines = 1
+                        .align(Alignment.Start)
+                        .padding(top = 12.dp)
                 )
-            }
-            when (it.position) {
-                PoemVerseUiModel.VersePosition.Start -> {}
-                PoemVerseUiModel.VersePosition.End -> {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(vertical = 12.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.size(16.dp))
+                PoemVerse(
+                    verse = it.second,
+                    highlightColor = highlightColor,
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(bottom = 12.dp)
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = 12.dp)
+                )
             }
         }
         item {
@@ -111,7 +113,8 @@ internal fun PoemVerses(
                         poemUiModel.data.previous?.let {
                             AnotherPoemCard(
                                 it,
-                                onPoemClick, Modifier
+                                onOtherPoemClick,
+                                Modifier
                                     .padding(12.dp)
                                     .align(Alignment.CenterEnd)
                             )
@@ -121,7 +124,7 @@ internal fun PoemVerses(
                         poemUiModel.data.next?.let {
                             AnotherPoemCard(
                                 it,
-                                onPoemClick,
+                                onOtherPoemClick,
                                 Modifier
                                     .padding(12.dp)
                                     .align(Alignment.CenterStart)
@@ -132,6 +135,31 @@ internal fun PoemVerses(
             }
         }
     }
+}
+
+@Composable
+private fun PoemVerse(
+    verse: PoemVerseUiModel.VerseInfo,
+    highlightColor: Color,
+    modifier: Modifier = Modifier,
+) {
+
+    val highlightSize = animateFloatAsState(
+        targetValue = if (verse.isHighlighted) 1f else 0f,
+        animationSpec = tween(2200),
+    )
+    Text(
+        text = verse.text,
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = modifier
+            .padding(horizontal = 12.dp)
+            .drawBehind {
+                highlightVerse(highlightSize, highlightColor)
+            }
+            .padding(horizontal = 12.dp),
+        color = MaterialTheme.colorScheme.onBackground,
+        minLines = 1
+    )
 }
 
 private fun DrawScope.highlightVerse(

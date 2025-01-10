@@ -9,6 +9,7 @@ data class PoemInfoDto(
     val verses: List<PoemVerseDto>,
     val recitations: List<PoemRecitationDto>,
     val next: PoemDto?,
+    val title: String,
     val previous: PoemDto?,
     @SerialName("category")
     val source: SourceDto,
@@ -27,5 +28,6 @@ internal fun PoemInfoDto.toPoemInfo() = PoemInfo(
     previousPoem = previous?.toBookItem(),
     recitations = recitations.map { it.toPoemRecitation() },
     poet = source.poet.toPoet(),
-    book = source.book.toPoetBook()
+    book = source.book.toPoetBook(),
+    label = title
 )

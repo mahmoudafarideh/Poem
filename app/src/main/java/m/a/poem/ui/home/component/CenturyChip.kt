@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import m.a.poem.ui.home.model.CenturyUiModel
-import m.a.poem.ui.theme.PoemTheme
+import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
 fun CenturyChip(
@@ -33,7 +33,7 @@ fun CenturyChip(
 @Preview
 @Composable
 private fun CenturyChipPreview() {
-    PoemTheme {
+    PoemThemePreview {
         CenturyChip(
             century = CenturyUiModel(
                 "شاعران پربازدید",
