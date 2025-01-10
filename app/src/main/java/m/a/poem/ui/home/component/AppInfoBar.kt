@@ -28,7 +28,7 @@ internal fun AppInfoBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
-            painter = painterResource(R.mipmap.saba_logo),
+            painter = painterResource(R.mipmap.logo),
             contentDescription = null,
             modifier = Modifier.size(32.dp)
         )

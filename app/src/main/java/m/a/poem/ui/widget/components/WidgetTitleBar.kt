@@ -48,13 +48,13 @@ internal fun WidgetTitleBar(
             )
             Spacer(modifier = GlanceModifier.size(12.dp))
             GlanceText(
-                text = "تک‌بیت روز | صبا",
+                text = "تک‌بیت روز | نوبهار",
                 font = R.font.vazir_medium,
                 fontSize = 14.sp
             )
             Spacer(modifier = GlanceModifier.size(12.dp))
             Image(
-                provider = ImageProvider(R.mipmap.saba_logo),
+                provider = ImageProvider(R.mipmap.logo),
                 contentDescription = null,
                 modifier = GlanceModifier.size(36.dp)
             )

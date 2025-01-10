@@ -25,5 +25,7 @@ internal fun PoemInfoDto.toPoemInfo() = PoemInfo(
     verses = verses.map { it.toPoemVerse() },
     nextPoem = next?.toBookItem(),
     previousPoem = previous?.toBookItem(),
-    recitations = recitations.map { it.toPoemRecitation() }
+    recitations = recitations.map { it.toPoemRecitation() },
+    poet = source.poet.toPoet(),
+    book = source.book.toPoetBook()
 )

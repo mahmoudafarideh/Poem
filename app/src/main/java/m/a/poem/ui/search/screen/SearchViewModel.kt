@@ -18,8 +18,8 @@ import m.a.poem.domain.model.NotInitialLoaded
 import m.a.poem.domain.model.PoemSearchFilter
 import m.a.poem.domain.model.PoemSearchResult
 import m.a.poem.domain.repository.SearchRepository
-import m.a.poem.ui.book.model.SubBook
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.book.model.BookItemUiModel
+import m.a.poem.ui.book.model.PoemItemUiModel
 import m.a.poem.ui.search.model.SearchBookUiModel
 import m.a.poem.ui.search.model.SearchResultUiModel
 import m.a.poem.ui.search.model.SearchScreenUiModel
@@ -85,13 +85,13 @@ class SearchViewModel @AssistedInject constructor(
     }
 
     private fun PoemSearchResult.toSearchResultUiModel(): SearchResultUiModel = SearchResultUiModel(
-        poemUiModel = SubPoem(
+        poemUiModel = PoemItemUiModel(
             id = poem.id,
             label = poem.label,
             excerpt = poem.excerpt,
         ),
         poetUiModel = poet.toPoetUiModel(),
-        bookUiModel = SubBook(
+        bookUiModel = BookItemUiModel(
             label = book.label,
             id = book.id
         )

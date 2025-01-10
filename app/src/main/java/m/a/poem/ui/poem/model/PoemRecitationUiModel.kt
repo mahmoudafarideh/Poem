@@ -18,3 +18,11 @@ data class PoemRecitationUiModel(
 
     fun toRecitation() = PoemRecitation(artist, id, mp3Url, syncUrl)
 }
+
+internal fun PoemRecitation.toPoemRecitationUiModel() = PoemRecitationUiModel(
+    artist = artistName,
+    mp3Url = mp3Url,
+    id = id,
+    state = PoemRecitationUiModel.State.None,
+    syncUrl = syncUrl
+)

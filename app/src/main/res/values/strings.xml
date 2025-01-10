@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Saba</string>
+    <string name="app_name">nobahar</string>
     <string name="popular_poets_title">سخنوران پرمخاطب</string>
     <string name="categorize_by_century_title">دسته‌بندی براساس قرن</string>
     <string name="error_occured_label">مشکلی در اتصال به اینترنت پیش آمد!</string>
     <string name="retry_button_label">نلاش دوباره</string>
     <string name="poet_books_label">آثار</string>
     <string name="poet_bio_label">زندگی‌نامه</string>
-    <string name="saba_slogan"><b>صبا</b> | قدرت‌گرفته از گنجور</string>
+    <string name="saba_slogan"><b>نوبهار</b> | قدرت‌گرفته از گنجور</string>
     <string name="search_placeholder">جست‌وجو ...</string>
     <string name="search_limit_message">برای جست‌وجو حداقل ۲ حرف وارد کنید!</string>
     <string name="no_search_result_label">هیچ نتیجه‌ای پیدا نشد!</string>

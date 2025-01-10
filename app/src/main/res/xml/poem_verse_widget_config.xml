@@ -5,7 +5,7 @@
     android:initialLayout="@layout/glance_default_loading_layout"
     android:minWidth="720dp"
     android:minHeight="86dp"
-    android:previewImage="@mipmap/saba_logo"
+    android:previewImage="@mipmap/logo"
     android:resizeMode="none"
     android:targetCellWidth="5"
     android:targetCellHeight="2"

@@ -25,7 +25,11 @@ import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.Loading
 import m.a.poem.domain.model.NotLoaded
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.domain.model.PoemVerse
+import m.a.poem.ui.artwork.navigation.ArtworkRoute
+import m.a.poem.ui.artwork.navigation.routes.navigator
+import m.a.poem.ui.book.model.BookItemUiModel
+import m.a.poem.ui.book.model.PoemItemUiModel
 import m.a.poem.ui.poem.components.PoemDetailsShimmer
 import m.a.poem.ui.poem.components.PoemVerses
 import m.a.poem.ui.poem.components.RecitationsColumn
@@ -57,7 +61,22 @@ fun PoemScreen(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
                 modifier = Modifier.scrollShadow(state),
-                onSearchClick = {},
+                onSearchClick = {
+                    poemUiModel.data?.let {
+                        navigation.navigate(
+                            ArtworkRoute(
+                                it.verses[0].let {
+                                    PoemVerse(it.text, it.id)
+                                },
+                                it.verses[1].let {
+                                    PoemVerse(it.text, it.id)
+                                },
+                                poetUiModel.nickname,
+                                poemUiModel.data!!.bookUiModel.label
+                            ).navigator
+                        )
+                    }
+                },
             )
         },
         modifier = modifier
@@ -141,12 +160,12 @@ private fun PoemScreenPreview() {
                             PoemVerseUiModel.VersePosition.End
                         ),
                     ),
-                    next = SubPoem(
+                    next = PoemItemUiModel(
                         label = "غزل شماره ۵",
                         excerpt = "الا ای آهوی وحشی کجایی",
                         id = 12
                     ),
-                    previous = SubPoem(
+                    previous = PoemItemUiModel(
                         label = "غزل شماره ۶",
                         excerpt = "الا ای آهوی وحشی کجایی",
                         id = 12
@@ -164,7 +183,9 @@ private fun PoemScreenPreview() {
                             mp3Url = "folan.mp3",
                             state = PoemRecitationUiModel.State.Paused
                         )
-                    )
+                    ),
+                    poetUiModel = PoetUiModel.fixture,
+                    bookUiModel = BookItemUiModel.fixture
                 )
             ),
             onRetryClick = {},

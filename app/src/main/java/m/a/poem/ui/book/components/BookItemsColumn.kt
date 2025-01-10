@@ -24,15 +24,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import m.a.poem.domain.model.Loaded
 import m.a.poem.ui.book.model.BookSubItemUiModel
-import m.a.poem.ui.book.model.SubBook
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.book.model.BookItemUiModel
+import m.a.poem.ui.book.model.PoemItemUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
 
 @Composable
 internal fun BookItemsColumn(
     poetInfo: Loaded<ImmutableList<BookSubItemUiModel>>,
-    onBookClick: (SubBook) -> Unit,
-    onPoemClick: (SubPoem) -> Unit,
+    onBookClick: (BookItemUiModel) -> Unit,
+    onPoemClick: (PoemItemUiModel) -> Unit,
     state: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -55,8 +55,8 @@ internal fun BookItemsColumn(
                     .fillMaxWidth()
                     .clickable {
                         when (it) {
-                            is SubBook -> onBookClick(it)
-                            is SubPoem -> onPoemClick(it)
+                            is BookItemUiModel -> onBookClick(it)
+                            is PoemItemUiModel -> onPoemClick(it)
                         }
                     }
                     .padding(horizontal = horizontalPadding)
@@ -65,22 +65,22 @@ internal fun BookItemsColumn(
             ) {
                 Icon(
                     imageVector = when (it) {
-                        is SubBook -> Icons.Default.Book
-                        is SubPoem -> Icons.Default.Description
+                        is BookItemUiModel -> Icons.Default.Book
+                        is PoemItemUiModel -> Icons.Default.Description
                     },
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.size(12.dp))
                 when (it) {
-                    is SubBook -> Text(
+                    is BookItemUiModel -> Text(
                         text = it.label,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(vertical = 12.dp)
                     )
 
-                    is SubPoem -> {
+                    is PoemItemUiModel -> {
                         Text(
                             text = it.label + ": ",
                             style = MaterialTheme.typography.bodySmall,

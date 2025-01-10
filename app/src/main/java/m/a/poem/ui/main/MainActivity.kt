@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.update
 import m.a.compilot.common.RouteNavigator
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
+import m.a.poem.ui.artwork.navigation.artworkGraph
 import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.navigation.HomeRoute
 import m.a.poem.ui.home.navigation.homeGraph
@@ -62,6 +63,7 @@ class MainActivity : ComponentActivity() {
                                 this.searchGraph()
                                 this.omenGraph()
                                 this.infoGraph()
+                                this.artworkGraph()
                             }
                         }
                         val navController = LocalNavController.comPilotNavController

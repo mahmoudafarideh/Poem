@@ -15,13 +15,16 @@ import m.a.poem.domain.model.PoemAudioInfo
 import m.a.poem.domain.model.PoemInfo
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoemRepository
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.book.model.toBookItemUiModel
+import m.a.poem.ui.book.model.toPoemItemUiModel
 import m.a.poem.ui.poem.model.PoemRecitationUiModel
 import m.a.poem.ui.poem.model.PoemScreenUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
-import m.a.poem.ui.poem.model.PoemVerseUiModel
+import m.a.poem.ui.poem.model.toPoemRecitationUiModel
+import m.a.poem.ui.poem.model.toPoemVerseUiModel
 import m.a.poem.ui.shared.BaseViewModel
 import m.a.poem.ui.shared.model.PoetUiModel
+import m.a.poem.ui.toPoetUiModel
 
 class PoemViewModel @AssistedInject constructor(
     @Assisted private val poetUiModel: PoetUiModel,
@@ -68,35 +71,15 @@ class PoemViewModel @AssistedInject constructor(
 
     private fun PoemInfo.toPoemUiModel() = PoemUiModel(
         verses = verses.mapIndexed { index, poemVerse ->
-            PoemVerseUiModel(
-                text = poemVerse.text,
-                id = poemVerse.id,
-                position = if (index % 2 == 1) PoemVerseUiModel.VersePosition.End else PoemVerseUiModel.VersePosition.Start
-            )
+            poemVerse.toPoemVerseUiModel(index)
         }.toImmutableList(),
-        next = nextPoem?.let {
-            SubPoem(
-                label = it.label,
-                excerpt = it.excerpt,
-                id = it.id
-            )
-        },
-        previous = previousPoem?.let {
-            SubPoem(
-                label = it.label,
-                excerpt = it.excerpt,
-                id = it.id
-            )
-        },
+        next = nextPoem?.toPoemItemUiModel(),
+        previous = previousPoem?.toPoemItemUiModel(),
         recitations = recitations.map {
-            PoemRecitationUiModel(
-                artist = it.artistName,
-                mp3Url = it.mp3Url,
-                id = it.id,
-                state = PoemRecitationUiModel.State.None,
-                syncUrl = it.syncUrl
-            )
-        }.toImmutableList()
+            it.toPoemRecitationUiModel()
+        }.toImmutableList(),
+        poetUiModel = poet.toPoetUiModel(),
+        bookUiModel = book.toBookItemUiModel()
     )
 
     private fun updateRecitationState(recitationId: Long, newState: PoemRecitationUiModel.State) {

@@ -31,8 +31,8 @@ import kotlinx.collections.immutable.persistentListOf
 import m.a.poem.domain.model.LoadingMore
 import m.a.poem.domain.model.LoadingMoreFailed
 import m.a.poem.domain.model.PaginateLoadableData
-import m.a.poem.ui.book.model.SubBook
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.book.model.BookItemUiModel
+import m.a.poem.ui.book.model.PoemItemUiModel
 import m.a.poem.ui.search.model.SearchResultUiModel
 import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetProfilePlaceholder
@@ -174,13 +174,13 @@ fun SearchResultListPreview() {
         SearchResultList(
             result = persistentListOf(
                 SearchResultUiModel(
-                    poemUiModel = SubPoem(
+                    poemUiModel = PoemItemUiModel(
                         "غزل شماره یک",
                         "الا یا ایها الساقی",
                         1
                     ),
                     poetUiModel = PoetUiModel.fixture,
-                    bookUiModel = SubBook(
+                    bookUiModel = BookItemUiModel(
                         "غزلیات حافظ",
                         1
                     )

@@ -40,13 +40,13 @@ internal fun HomeAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(R.mipmap.saba_logo),
+                    painter = painterResource(R.mipmap.logo),
                     contentDescription = null,
                     modifier = Modifier.size(32.dp)
                 )
                 Spacer(modifier = Modifier.size(12.dp))
                 Text(
-                    text = "صبا",
+                    text = "نوبهار",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground
                 )

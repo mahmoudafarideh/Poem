@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import m.a.poem.domain.model.Loaded
-import m.a.poem.ui.book.model.SubPoem
+import m.a.poem.ui.book.model.PoemItemUiModel
 import m.a.poem.ui.poem.model.PoemUiModel
 import m.a.poem.ui.poem.model.PoemVerseUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
@@ -110,7 +110,8 @@ internal fun PoemVerses(
                     Box(modifier = Modifier.weight(1f)) {
                         poemUiModel.data.previous?.let {
                             AnotherPoemCard(
-                                it, onPoemClick, Modifier
+                                it,
+                                onPoemClick, Modifier
                                     .padding(12.dp)
                                     .align(Alignment.CenterEnd)
                             )
@@ -154,7 +155,7 @@ private fun DrawScope.highlightVerse(
 
 @Composable
 private fun AnotherPoemCard(
-    poem: SubPoem,
+    poem: PoemItemUiModel,
     onPoemClick: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
