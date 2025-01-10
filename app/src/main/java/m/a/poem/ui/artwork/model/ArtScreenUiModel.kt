@@ -30,7 +30,11 @@ data class ArtScreenUiModel(
             }.toImmutableList(),
             backgrounds = persistentListOf(
                 ArtBackgroundUiModel(R.drawable.bg_poem_1, true),
-                ArtBackgroundUiModel(R.drawable.bg_poem_1, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_2, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_3, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_4, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_5, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_6, false),
             ),
             colors = persistentListOf(
                 ArtColorUiModel(Color.White, true),

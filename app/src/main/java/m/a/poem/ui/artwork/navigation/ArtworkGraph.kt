@@ -3,6 +3,7 @@ package m.a.poem.ui.artwork.navigation
 import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -11,6 +12,7 @@ import kotlinx.coroutines.launch
 import m.a.poem.ui.artwork.navigation.routes.screen
 import m.a.poem.ui.artwork.screen.ArtworkScreen
 import m.a.poem.ui.artwork.screen.ArtworkViewModel
+import m.a.poem.ui.goToMatnnegarMarket
 
 @OptIn(ExperimentalComposeApi::class)
 fun NavGraphBuilder.artworkGraph() {
@@ -19,6 +21,7 @@ fun NavGraphBuilder.artworkGraph() {
         val state = viewModel.state.collectAsStateWithLifecycle().value
         val captureController = rememberCaptureController()
         val coroutineScope = rememberCoroutineScope()
+        val context = LocalContext.current
         ArtworkScreen(
             firstVerse = it.argument.first.text,
             secondVerse = it.argument.second.text,
@@ -53,7 +56,7 @@ fun NavGraphBuilder.artworkGraph() {
             },
             captureController = captureController,
             onMatnnegarClick = {
-
+                context.goToMatnnegarMarket()
             }
         )
     }

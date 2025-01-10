@@ -117,16 +117,19 @@ fun ArtworkTools(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .horizontalScroll(rememberScrollState())
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     state.backgrounds.forEach {
                         SelectiveArtworkItem(
                             selected = it.selected,
                             onClick = {
                                 onBackgroundClick(it.image)
-                            }
+                            },
+                            modifier = Modifier.padding(horizontal = 8.dp)
                         ) {
-                            BackgroundBox(image = it.image)
+                            BackgroundBox(
+                                image = it.image
+                            )
                         }
                     }
                 }

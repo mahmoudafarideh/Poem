@@ -49,6 +49,15 @@ internal fun Context.goToMarket() {
     }
 }
 
+internal fun Context.goToMatnnegarMarket() {
+    Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse("bazaar://details?id=" + "com.ma.textgraphy")
+        setPackage("com.farsitel.bazaar")
+    }.let {
+        startActivity(it)
+    }
+}
+
 internal fun Context.goToInstagram() {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/_u/nobaharapp"))
     runCatching {

@@ -1,5 +1,6 @@
 package m.a.poem.storage
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
@@ -9,11 +10,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import m.a.nobahar.R
 import java.io.File
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
 import javax.inject.Inject
+import kotlin.text.format
 
 class BitmapSaver @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    @SuppressLint("SimpleDateFormat")
     fun savePhoto(bitmap: Bitmap) {
 
         val imagesDir = File(
@@ -23,8 +27,9 @@ class BitmapSaver @Inject constructor(
         if (!imagesDir.exists()) {
             imagesDir.mkdirs()
         }
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss")
         val fileName =
-            context.resources.getString(R.string.app_name) + ".png"
+            context.resources.getString(R.string.app_name) + "_" + formatter.format(java.util.Date()) + ".png"
 
         val imageFile = File(imagesDir, fileName)
 
