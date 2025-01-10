@@ -24,7 +24,8 @@ import m.a.poem.ui.book.navigation.bookGraph
 import m.a.poem.ui.home.navigation.HomeRoute
 import m.a.poem.ui.home.navigation.homeGraph
 import m.a.poem.ui.home.navigation.routes.navigator
-import m.a.poem.ui.main.component.PoemPlayerBar
+import m.a.poem.ui.info.navigation.infoGraph
+import m.a.poem.ui.main.component.PoemPlayerContent
 import m.a.poem.ui.omen.navigation.omenGraph
 import m.a.poem.ui.poem.navigation.poemGraph
 import m.a.poem.ui.poet.navigation.poetGraph
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(LocalWindowSize provides calculateWindowSizeClass(this)) {
                     CompositionLocalProvider(LocalNavController provides navigation) {
                         Column {
-                            PoemPlayerBar(this@MainActivity)
+                            PoemPlayerContent(this@MainActivity)
                             NavHost(
                                 navController = navigation,
                                 startDestination = HomeRoute.navigator(),
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
                                 this.poemGraph()
                                 this.searchGraph()
                                 this.omenGraph()
+                                this.infoGraph()
                             }
                         }
                         val navController = LocalNavController.comPilotNavController

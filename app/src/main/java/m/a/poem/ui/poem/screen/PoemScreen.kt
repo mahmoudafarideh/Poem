@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -35,6 +36,7 @@ import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.shared.ui.scrollShadow
 import m.a.poem.ui.theme.PoemThemePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,13 +49,14 @@ fun PoemScreen(
     onRecitationClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val state = rememberLazyListState()
     val navigation = LocalNavController.comPilotNavController
     Scaffold(
         topBar = {
             PoetAppBar(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
-                modifier = Modifier,
+                modifier = Modifier.scrollShadow(state),
                 onSearchClick = {},
             )
         },
@@ -72,7 +75,11 @@ fun PoemScreen(
 
                 is Loaded -> {
                     if (poemUiModel.data.recitations.isEmpty()) {
-                        PoemVerses(poemUiModel, onPoemClick)
+                        PoemVerses(
+                            poemUiModel,
+                            onPoemClick,
+                            state
+                        )
                     } else {
                         val scaffoldState = rememberBottomSheetScaffoldState()
                         val scope = rememberCoroutineScope()
@@ -88,7 +95,7 @@ fun PoemScreen(
                             },
                             scaffoldState = scaffoldState
                         ) {
-                            PoemVerses(poemUiModel, onPoemClick, Modifier.padding(it))
+                            PoemVerses(poemUiModel, onPoemClick, state, Modifier.padding(it))
                         }
                     }
                 }
@@ -105,7 +112,7 @@ fun PoemScreen(
 
 @SabaPreview
 @Composable
-fun PoemScreenPreview() {
+private fun PoemScreenPreview() {
     PoemThemePreview {
         PoemScreen(
             poetUiModel = PoetUiModel.fixture,

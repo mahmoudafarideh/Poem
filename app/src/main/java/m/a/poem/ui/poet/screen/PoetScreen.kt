@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.LocalWindowSize
 import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.shared.ui.scrollShadow
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -47,6 +49,7 @@ fun PoetScreen(
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val state = rememberLazyListState()
     val windowSize = LocalWindowSize.current
     val navigation = LocalNavController.comPilotNavController
     Scaffold(
@@ -54,7 +57,7 @@ fun PoetScreen(
             PoetAppBar(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
-                modifier = Modifier,
+                modifier = Modifier.scrollShadow(state),
                 onSearchClick = {
                     navigation.safeNavigate().navigate(
                         SearchRoute(poetUiModel.toPoet(), null).navigator
@@ -114,7 +117,8 @@ fun PoetScreen(
                                         bookName = it.label,
                                     ).navigator
                                 )
-                            }
+                            },
+                            state,
                         )
                     }
                 }

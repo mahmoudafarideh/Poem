@@ -49,6 +49,7 @@ internal fun SearchResultList(
     resultState: PaginateLoadableData<SearchResultUiModel>,
     onListReachEnd: () -> Unit,
     onRetryClick: () -> Unit,
+    listState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
     val windowSize = LocalWindowSize.current
@@ -56,11 +57,10 @@ internal fun SearchResultList(
         WindowWidthSizeClass.Expanded -> 48.dp
         else -> 0.dp
     }
-    val scrollState: LazyListState = rememberLazyListState()
 
     val endOfListReached by remember {
         derivedStateOf {
-            scrollState.isScrolledToEnd()
+            listState.isScrolledToEnd()
         }
     }
 
@@ -70,7 +70,7 @@ internal fun SearchResultList(
 
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
-        state = scrollState
+        state = listState
     ) {
         items(
             items = result,
@@ -189,7 +189,8 @@ fun SearchResultListPreview() {
             onClick = { _, _ -> },
             resultState = LoadingMore(persistentListOf(), 0, 1),
             onListReachEnd = {},
-            onRetryClick = {}
+            onRetryClick = {},
+            listState = rememberLazyListState()
         )
     }
 }

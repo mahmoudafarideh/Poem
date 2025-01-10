@@ -2,38 +2,26 @@ package m.a.poem.domain.model
 
 sealed class MediaPlayerState {
 
-    abstract val id: Long
-    abstract val label: String
-    abstract val poemExcerpt: String
+    abstract val poemAudioInfo: PoemAudioInfo?
 
     data class Paused(
-        override val poemExcerpt: String,
-        override val label: String,
-        override val id: Long,
+        override val poemAudioInfo: PoemAudioInfo,
     ): MediaPlayerState()
 
     data class Loading(
-        override val poemExcerpt: String,
-        override val label: String,
-        override val id: Long,
+        override val poemAudioInfo: PoemAudioInfo,
     ): MediaPlayerState()
 
     data class Playing(
-        override val poemExcerpt: String,
-        override val label: String,
-        override val id: Long,
+        override val poemAudioInfo: PoemAudioInfo,
         val playingVerseIndex: Int?,
     ): MediaPlayerState()
 
-    data class Ended(
-        override val poemExcerpt: String,
-        override val label: String,
-        override val id: Long,
-    ): MediaPlayerState()
+    data object Ended: MediaPlayerState() {
+        override val poemAudioInfo: PoemAudioInfo? = null
+    }
 
     data object LoadingFailed: MediaPlayerState() {
-        override val id: Long = 0
-        override val label: String = ""
-        override val poemExcerpt: String = ""
+        override val poemAudioInfo: PoemAudioInfo? = null
     }
 }

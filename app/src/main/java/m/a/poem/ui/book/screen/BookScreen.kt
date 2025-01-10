@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import m.a.poem.ui.shared.components.FetchingDataFailed
 import m.a.poem.ui.shared.components.PoetAppBar
 import m.a.poem.ui.shared.model.PoetUiModel
 import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.shared.ui.scrollShadow
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
@@ -41,13 +43,14 @@ fun BookScreen(
     bookId: Long,
     bookName: String
 ) {
+    val state = rememberLazyListState()
     val navigation = LocalNavController.comPilotNavController
     Scaffold(
         topBar = {
             PoetAppBar(
                 poetUiModel = poetUiModel,
                 onBackClick = { navigation.safePopBackStack() },
-                modifier = Modifier,
+                modifier = Modifier.scrollShadow(state),
                 onSearchClick = {
                     navigation.safeNavigate().navigate(
                         SearchRoute(
@@ -100,6 +103,7 @@ fun BookScreen(
                             )
                         },
                         modifier = Modifier,
+                        state = state
                     )
                 }
 

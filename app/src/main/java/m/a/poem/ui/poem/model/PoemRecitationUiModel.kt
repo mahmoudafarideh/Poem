@@ -1,5 +1,7 @@
 package m.a.poem.ui.poem.model
 
+import m.a.poem.domain.model.PoemRecitation
+
 data class PoemRecitationUiModel(
     val artist: String,
     val id: Long,
@@ -13,4 +15,6 @@ data class PoemRecitationUiModel(
         data object Paused : State()
         data object None : State()
     }
+
+    fun toRecitation() = PoemRecitation(artist, id, mp3Url, syncUrl)
 }

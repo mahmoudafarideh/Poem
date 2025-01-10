@@ -47,7 +47,7 @@ class PoemWidgetViewModel @Inject constructor(
             action = {
                 val poem = randomRepository.getRandomPoem()
                 _currentPoem = poem
-                val randomIndex = Random.nextInt(0, poem.verses.lastIndex - 1)
+                val randomIndex = getRandomIndex(poem)
                 WidgetPoemVerseUiModel(
                     firstVerse = poem.verses[randomIndex].text,
                     secondVerse = poem.verses[randomIndex + 1].text,
@@ -61,6 +61,11 @@ class PoemWidgetViewModel @Inject constructor(
                 }
             }
         )
+    }
+
+    private fun getRandomIndex(poem: RandomPoem): Int = Random.nextInt(0, poem.verses.lastIndex - 1).let {
+        if (it % 2 == 1) it - 1
+        else it
     }
 
     fun retryClicked() {

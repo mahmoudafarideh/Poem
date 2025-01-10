@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Book
@@ -32,6 +33,7 @@ internal fun BookItemsColumn(
     poetInfo: Loaded<ImmutableList<BookSubItemUiModel>>,
     onBookClick: (SubBook) -> Unit,
     onPoemClick: (SubPoem) -> Unit,
+    state: LazyListState,
     modifier: Modifier = Modifier
 ) {
     val windowSize = LocalWindowSize.current
@@ -41,6 +43,7 @@ internal fun BookItemsColumn(
     }
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
+        state = state,
     ) {
         items(
             items = poetInfo.data,

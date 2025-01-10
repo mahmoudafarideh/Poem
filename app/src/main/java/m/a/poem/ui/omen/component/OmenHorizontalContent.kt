@@ -1,6 +1,6 @@
 package m.a.poem.ui.omen.component
 
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,11 +10,12 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,11 +31,15 @@ internal fun OmenHorizontalContent(
     state: LoadableData<OmenUiModel>,
     onOmenClick: () -> Unit
 ) {
+    val boxWeight by animateFloatAsState(
+        if (shouldShowMessageBar) 1f else .01f,
+        tween(1_200)
+    )
     Row(
         modifier = Modifier
             .padding(16.dp)
-            .height(IntrinsicSize.Min)
-            .animateContentSize(tween(1_200)),
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
@@ -45,10 +50,7 @@ internal fun OmenHorizontalContent(
         )
         Box(
             modifier = Modifier
-                .then(
-                    if (shouldShowMessageBar) Modifier.weight(1f)
-                    else Modifier.width(0.dp)
-                )
+                .then(Modifier.weight(boxWeight))
                 .background(Color(34, 25, 125))
                 .fillMaxHeight()
                 .padding(8.dp),
@@ -66,5 +68,10 @@ internal fun OmenHorizontalContent(
             contentDescription = null,
             modifier = Modifier.fillMaxHeight()
         )
+        ((1f.minus(boxWeight)).div(2)).takeIf {
+            it > 0f
+        }?.let {
+            Spacer(modifier = Modifier.weight(it))
+        }
     }
 }

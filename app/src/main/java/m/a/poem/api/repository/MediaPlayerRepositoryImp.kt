@@ -56,23 +56,14 @@ class MediaPlayerRepositoryImp @Inject constructor(
                 if (!isPlaying) {
                     poemAudioInfo?.let { recitation ->
                         state.update {
-                            MediaPlayerState.Paused(
-                                recitation.poemExcerpt,
-                                recitation.recitation.artistName,
-                                recitation.recitation.id,
-                            )
+                            MediaPlayerState.Paused(recitation)
                         }
                     }
                 } else {
                     poemAudioInfo?.let { recitation ->
                         state.update {
                             MediaPlayerState.Playing(
-                                recitation.poemExcerpt,
-                                recitation.recitation.artistName,
-                                recitation.recitation.id,
-                                audioSync.lastOrNull { (_, time) ->
-                                    time <= exoPlayer.currentPosition + 1000
-                                }?.first
+                                recitation, getPlayingVerseIndex()
                             )
                         }
                     }
@@ -84,11 +75,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
                 if (isLoading && !exoPlayer.isPlaying) {
                     poemAudioInfo?.let { recitation ->
                         state.update {
-                            MediaPlayerState.Loading(
-                                recitation.poemExcerpt,
-                                recitation.recitation.artistName,
-                                recitation.recitation.id,
-                            )
+                            MediaPlayerState.Loading(recitation)
                         }
                     }
                 }
@@ -99,11 +86,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
                 if (playbackState == Player.STATE_ENDED) {
                     poemAudioInfo?.let { recitation ->
                         state.update {
-                            MediaPlayerState.Ended(
-                                recitation.poemExcerpt,
-                                recitation.recitation.artistName,
-                                recitation.recitation.id,
-                            )
+                            MediaPlayerState.Ended
                         }
                         poemAudioInfo = null
                     }
@@ -113,24 +96,19 @@ class MediaPlayerRepositoryImp @Inject constructor(
         })
     }
 
+    private fun getPlayingVerseIndex(): Int? = audioSync.lastOrNull { (_, time) ->
+        time <= exoPlayer.currentPosition + 1_200
+    }?.first
+
     private fun observePlayerProgressChange() {
         coroutineScope.launch(Dispatchers.Main) {
             state.flatMapLatest {
                 flow {
                     while (it is MediaPlayerState.Playing) {
                         poemAudioInfo?.let { recitation ->
-                            emit(
-                                MediaPlayerState.Playing(
-                                    recitation.poemExcerpt,
-                                    recitation.recitation.artistName,
-                                    recitation.recitation.id,
-                                    audioSync.lastOrNull { (_, time) ->
-                                        time <= exoPlayer.currentPosition + 500
-                                    }?.first
-                                )
-                            )
+                            emit(MediaPlayerState.Playing(recitation, getPlayingVerseIndex()))
                         }
-                        delay(100)
+                        delay(1_000)
                     }
                 }
             }.collect {
@@ -156,11 +134,7 @@ class MediaPlayerRepositoryImp @Inject constructor(
         coroutineScope.launch {
             poemAudioInfo.recitation.syncUrl?.let {
                 state.update {
-                    MediaPlayerState.Loading(
-                        poemAudioInfo.poemExcerpt,
-                        poemAudioInfo.recitation.artistName,
-                        poemAudioInfo.recitation.id,
-                    )
+                    MediaPlayerState.Loading(poemAudioInfo)
                 }
                 runCatching {
                     audioSyncHelper.getAudioSync(it)

@@ -2,6 +2,7 @@ package m.a.poem.ui.search.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import m.a.poem.ui.shared.ui.scrollShadow
 
 
 @Composable
@@ -23,7 +25,8 @@ internal fun SearchAppBar(
     onBackClick: () -> Unit,
     bookName: String?,
     poetName: String?,
-    modifier: Modifier = Modifier
+    listState: LazyListState,
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         title = {
@@ -47,6 +50,6 @@ internal fun SearchAppBar(
                     .padding(12.dp)
             )
         },
-        modifier = modifier
+        modifier = modifier.scrollShadow(listState)
     )
 }

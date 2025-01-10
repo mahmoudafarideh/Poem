@@ -22,8 +22,8 @@ import m.a.poem.ui.home.component.HomeLoadedScreen
 import m.a.poem.ui.home.component.HomeLoadingScreen
 import m.a.poem.ui.home.model.CenturyUiModel
 import m.a.poem.ui.home.model.HomeUiModel
-import m.a.poem.ui.omen.navigation.OmenRoute
-import m.a.poem.ui.omen.navigation.routes.navigator
+import m.a.poem.ui.info.navigation.InfoRoute
+import m.a.poem.ui.info.navigation.routes.navigator
 import m.a.poem.ui.search.navigation.SearchRoute
 import m.a.poem.ui.search.navigation.routes.navigator
 import m.a.poem.ui.shared.components.FetchingDataFailed
@@ -49,7 +49,7 @@ fun HomeScreen(
         )
     }
     val onInfoClick = {
-        navigation.safeNavigate().navigate(OmenRoute.navigator)
+        navigation.safeNavigate().navigate(InfoRoute.navigator)
     }
     val scrollState = rememberLazyGridState()
 

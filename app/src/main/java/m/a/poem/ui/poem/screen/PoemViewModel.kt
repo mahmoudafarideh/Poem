@@ -13,7 +13,6 @@ import m.a.poem.domain.model.Loaded
 import m.a.poem.domain.model.MediaPlayerState
 import m.a.poem.domain.model.PoemAudioInfo
 import m.a.poem.domain.model.PoemInfo
-import m.a.poem.domain.model.PoemRecitation
 import m.a.poem.domain.repository.MediaPlayerRepository
 import m.a.poem.domain.repository.PoemRepository
 import m.a.poem.ui.book.model.SubPoem
@@ -59,7 +58,7 @@ class PoemViewModel @AssistedInject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             mediaPlayerRepository.state.collect { mediaState ->
                 state.value.poem.data?.recitations?.firstOrNull {
-                    it.id == mediaState?.id || it.state != PoemRecitationUiModel.State.None
+                    it.id == mediaState?.poemAudioInfo?.recitation?.id || it.state != PoemRecitationUiModel.State.None
                 }?.let {
                     updateRecitationState(mediaState, it.id)
                 }
@@ -151,14 +150,12 @@ class PoemViewModel @AssistedInject constructor(
         }
         mediaPlayerRepository.play(
             PoemAudioInfo(
-                PoemRecitation(
-                    recitation.artist,
-                    recitationId,
-                    recitation.mp3Url,
-                    recitation.syncUrl
-                ),
-                data.verses.first().text,
-                poemId
+                recitation.toRecitation(),
+                poetUiModel.toPoet(),
+                PoemAudioInfo.Poem(
+                    data.verses.first().text,
+                    poemId
+                )
             )
         )
     }
@@ -168,7 +165,7 @@ class PoemViewModel @AssistedInject constructor(
         recitationId: Long
     ) {
         when {
-            mediaPlayerState?.id != recitationId -> {
+            mediaPlayerState?.poemAudioInfo?.recitation?.id != recitationId -> {
                 updateVerseHighlightState(false, -1)
                 updateRecitationState(recitationId, PoemRecitationUiModel.State.None)
             }

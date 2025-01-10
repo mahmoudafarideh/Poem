@@ -2,6 +2,11 @@ package m.a.poem.domain.model
 
 data class PoemAudioInfo(
     val recitation: PoemRecitation,
-    val poemExcerpt: String,
-    val poemId: Long
-)
+    val poet: Poet,
+    val poemInfo: Poem,
+) {
+    data class Poem(
+        val excerpt: String,
+        val id: Long
+    )
+}

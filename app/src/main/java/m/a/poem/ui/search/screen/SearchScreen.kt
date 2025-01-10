@@ -3,6 +3,7 @@ package m.a.poem.ui.search.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -36,14 +37,17 @@ fun SearchScreen(
     onPoemClick: (PoetUiModel, Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listState = rememberLazyListState()
     Scaffold(
         topBar = {
             SearchAppBar(
-                onTermChange,
-                state.term,
-                onBackClick,
-                state.bookUiModel?.name,
-                state.poetUiModel?.nickname
+                onTermChange = onTermChange,
+                term = state.term,
+                onBackClick = onBackClick,
+                bookName = state.bookUiModel?.name,
+                poetName = state.poetUiModel?.nickname,
+                listState = listState,
+                modifier = Modifier,
             )
         },
         modifier = modifier
@@ -68,7 +72,8 @@ fun SearchScreen(
                             modifier = Modifier,
                             resultState = state.result,
                             onListReachEnd = onListReachEnd,
-                            onRetryClick = onRetryClick
+                            onRetryClick = onRetryClick,
+                            listState = listState
                         )
                     } else {
                         SearchNoResultInfo(

@@ -35,7 +35,7 @@ internal fun AppInfoBar(
         Spacer(modifier = Modifier.size(12.dp))
         Text(
             text = stringResource(R.string.saba_slogan),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.size(12.dp))
