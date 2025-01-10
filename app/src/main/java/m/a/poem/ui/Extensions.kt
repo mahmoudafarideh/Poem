@@ -42,9 +42,31 @@ val LocalSnackBarHostState =
 
 internal fun Context.goToMarket() {
     Intent(Intent.ACTION_VIEW).apply {
-        data = Uri.parse("bazaar://details?id=" + "PACKAGE_NAME")
+        data = Uri.parse("bazaar://details?id=" + "m.a.nobahar")
         setPackage("com.farsitel.bazaar")
     }.let {
         startActivity(it)
+    }
+}
+
+internal fun Context.goToInstagram() {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://instagram.com/_u/nobaharapp"))
+    runCatching {
+        intent.setPackage("com.instagram.android")
+        startActivity(intent)
+    }.onFailure {
+        intent.setPackage(null)
+        startActivity(intent)
+    }
+}
+internal fun Context.goToTelegram() {
+
+    runCatching {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=nobaharapp"))
+        intent.setPackage("org.telegram.messenger")
+        startActivity(intent)
+    }.onFailure {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.me/nobaharapp"))
+        startActivity(intent)
     }
 }

@@ -1,7 +1,6 @@
 package m.a.poem.ui.splash.screen
 
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import m.a.poem.domain.model.LoadableData
 import m.a.poem.domain.model.NotLoaded
 import m.a.poem.domain.repository.SplashRepository
@@ -25,7 +24,6 @@ class SplashViewModel @Inject constructor(
         executeLoadable(
             currentValue = state.value,
             action = {
-                delay(2_000)
                 splashRepository.getSplash()
             },
             data = {

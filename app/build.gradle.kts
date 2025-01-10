@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinx.serialization)
+    id("com.google.gms.google-services")
 }
 
 kapt {
@@ -71,6 +72,9 @@ dependencies {
     implementation(libs.glance.appwidget.preview)
     implementation(libs.glance.preview)
     implementation(libs.capturable)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
 
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)

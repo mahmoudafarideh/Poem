@@ -1,9 +1,13 @@
 package m.a.poem.ui.main
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Box
@@ -23,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavController.OnDestinationChangedListener
 import androidx.navigation.NavDestination
@@ -56,11 +61,24 @@ import m.a.poem.ui.theme.PoemTheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val navigationFlow = MutableStateFlow<RouteNavigator?>(null)
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { isGranted: Boolean ->
+    }
 
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkIntentDestination()
+        askNotificationPermission()
         enableEdgeToEdge()
         setContent {
             PoemTheme {
@@ -137,7 +155,7 @@ class MainActivity : ComponentActivity() {
                     destination: NavDestination,
                     arguments: Bundle?
                 ) {
-                    if(destination.route != SplashRoute.navigationRoute()){
+                    if (destination.route != SplashRoute.navigationRoute()) {
                         splashPassed()
                     }
                 }

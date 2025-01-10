@@ -6,7 +6,7 @@
     <string name="retry_button_label">نلاش دوباره</string>
     <string name="poet_books_label">آثار</string>
     <string name="poet_bio_label">زندگی‌نامه</string>
-    <string name="saba_slogan"><b>نوبهار</b> | قدرت‌گرفته از گنجور</string>
+    <string name="saba_slogan">قدرت‌گرفته از گنجور</string>
     <string name="search_placeholder">جست‌وجو ...</string>
     <string name="search_limit_message">برای جست‌وجو حداقل ۲ حرف وارد کنید!</string>
     <string name="no_search_result_label">هیچ نتیجه‌ای پیدا نشد!</string>

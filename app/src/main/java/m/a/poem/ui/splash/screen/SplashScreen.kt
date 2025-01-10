@@ -43,30 +43,9 @@ fun SplashScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            Row(
-                modifier = Modifier.align(Alignment.Center),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(R.mipmap.logo),
-                    contentDescription = null,
-                    modifier = Modifier.size(86.dp)
-                )
-                Spacer(modifier = Modifier.size(24.dp))
-                Column {
-                    Text(
-                        text = stringResource(R.string.nobahar),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Spacer(modifier = Modifier.size(12.dp))
-                    Text(
-                        text = stringResource(R.string.nobahar_slogan),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
+            NobaharSlogan(
+                Modifier.align(Alignment.Center)
+            )
             when (state) {
                 Failed -> {
                     SplashFailed(
@@ -81,14 +60,44 @@ fun SplashScreen(
                 Loading -> {
                     CircularProgressIndicator(
                         modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = 16.dp)
-                                .size(24.dp),
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 16.dp)
+                            .size(24.dp),
                     )
                 }
 
                 NotLoaded -> {}
             }
+        }
+    }
+}
+
+@Composable
+internal fun NobaharSlogan(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(R.mipmap.logo),
+            contentDescription = null,
+            modifier = Modifier.size(86.dp)
+        )
+        Spacer(modifier = Modifier.size(24.dp))
+        Column {
+            Text(
+                text = stringResource(R.string.nobahar),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(modifier = Modifier.size(12.dp))
+            Text(
+                text = stringResource(R.string.nobahar_slogan),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }

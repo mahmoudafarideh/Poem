@@ -73,7 +73,7 @@ fun HomeLoadedScreen(
         }
 
         item(
-            span = { GridItemSpan(cells) }
+            span = { GridItemSpan(cells) },
         ) {
             communication?.let {
                 HomeCommunicationBar(it)

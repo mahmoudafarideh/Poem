@@ -2,6 +2,8 @@ package m.a.poem.ui.home.component
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,18 +11,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.glance.LocalContext
 import com.valentinilk.shimmer.shimmer
 import m.a.nobahar.R
 import m.a.poem.ui.goToMarket
@@ -32,11 +35,13 @@ internal fun HomeCommunicationBar(
     model: HomeCommunicationUiModel,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit) {
+        Log.d("SXO", "HomeCommunicationBar: $model")
+    }
     val context = LocalContext.current
     Column(modifier = modifier) {
         when (model) {
             HomeCommunicationUiModel.AppUpdate -> {
-                Spacer(modifier = Modifier.size(24.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -63,10 +68,10 @@ internal fun HomeCommunicationBar(
             }
 
             is HomeCommunicationUiModel.HomeBanner -> {
-                Spacer(modifier = Modifier.size(24.dp))
                 UrlImage(
                     url = model.bannerUrl,
                     modifier = Modifier
+                        .padding(16.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .aspectRatio(model.aspect)
                         .fillMaxWidth()
@@ -84,6 +89,7 @@ internal fun HomeCommunicationBar(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(16.dp))
                                 .aspectRatio(model.aspect)
+                                .background(Color.Gray)
                                 .fillMaxWidth()
                                 .shimmer()
                         )

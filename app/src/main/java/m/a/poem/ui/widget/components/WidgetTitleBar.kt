@@ -54,7 +54,7 @@ internal fun WidgetTitleBar(
             )
             Spacer(modifier = GlanceModifier.size(12.dp))
             Image(
-                provider = ImageProvider(R.mipmap.logo),
+                provider = ImageProvider(R.mipmap.round_logo),
                 contentDescription = null,
                 modifier = GlanceModifier.size(36.dp)
             )

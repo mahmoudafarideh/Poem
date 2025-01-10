@@ -1,14 +1,13 @@
 package m.a.poem.ui.shared.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
@@ -18,7 +17,6 @@ fun UrlImage(
     url: String,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    tint: Color = Color.Unspecified,
     placeholder: (@Composable () -> Unit)? = null,
 ) {
     Box {
@@ -35,11 +33,10 @@ fun UrlImage(
         if (!isImageLoaded) {
             placeholder?.invoke()
         }
-        Icon(
-            tint = tint,
+        Image(
             painter = painter,
             modifier = modifier,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
         )
     }
 }

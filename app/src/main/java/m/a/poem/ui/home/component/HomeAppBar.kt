@@ -41,7 +41,7 @@ internal fun HomeAppBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(R.mipmap.logo),
+                    painter = painterResource(R.mipmap.round_logo),
                     contentDescription = null,
                     modifier = Modifier.size(32.dp)
                 )

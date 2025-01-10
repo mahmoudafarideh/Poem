@@ -10,29 +10,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
-import m.a.poem.ui.home.component.AppInfoBar
+import m.a.nobahar.R
+import m.a.poem.ui.goToInstagram
+import m.a.poem.ui.goToTelegram
+import m.a.poem.ui.home.component.GanjoorBar
 import m.a.poem.ui.noRippleClickable
 import m.a.poem.ui.shared.ui.SabaPreview
+import m.a.poem.ui.splash.screen.NobaharSlogan
 import m.a.poem.ui.theme.PoemThemePreview
 
 @Composable
-fun InfoDialog(
-    modifier: Modifier = Modifier
-) {
+fun InfoDialog(modifier: Modifier = Modifier) {
     val navigation = LocalNavController.comPilotNavController
+    val context = LocalContext.current
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -50,16 +54,30 @@ fun InfoDialog(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppInfoBar()
-            Spacer(modifier = Modifier.height(36.dp))
+            NobaharSlogan()
+            Spacer(Modifier.size(24.dp))
+            GanjoorBar()
+            Spacer(modifier = Modifier.height(12.dp))
             Row {
                 Icon(
-                    imageVector = Icons.Default.Close,
+                    painter = painterResource(R.drawable.ic_instagram),
                     tint = MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                     modifier = modifier
                         .clip(CircleShape)
                         .clickable {
+                            context.goToInstagram()
+                        }
+                        .padding(12.dp)
+                )
+                Icon(
+                    painter = painterResource(R.drawable.ic_telegram),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null,
+                    modifier = modifier
+                        .clip(CircleShape)
+                        .clickable {
+                            context.goToTelegram()
                         }
                         .padding(12.dp)
                 )

@@ -19,7 +19,7 @@ import m.a.poem.ui.theme.PoemThemePreview
 
 
 @Composable
-internal fun AppInfoBar(
+internal fun GanjoorBar(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -28,21 +28,15 @@ internal fun AppInfoBar(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Image(
-            painter = painterResource(R.mipmap.logo),
+            painter = painterResource(R.drawable.gdap),
             contentDescription = null,
             modifier = Modifier.size(32.dp)
         )
         Spacer(modifier = Modifier.size(12.dp))
         Text(
             text = stringResource(R.string.saba_slogan),
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onBackground
-        )
-        Spacer(modifier = Modifier.size(12.dp))
-        Image(
-            painter = painterResource(R.drawable.gdap),
-            contentDescription = null,
-            modifier = Modifier.size(32.dp)
         )
     }
 }
@@ -51,6 +45,6 @@ internal fun AppInfoBar(
 @Composable
 fun AppInfoBarPreview() {
     PoemThemePreview {
-        AppInfoBar()
+        GanjoorBar()
     }
 }
