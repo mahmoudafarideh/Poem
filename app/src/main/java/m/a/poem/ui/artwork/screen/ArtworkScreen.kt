@@ -14,7 +14,6 @@ import dev.shreyaspatil.capturable.controller.rememberCaptureController
 import m.a.poem.ui.artwork.component.ArtworkAppBar
 import m.a.poem.ui.artwork.component.ArtworkHorizontalContent
 import m.a.poem.ui.artwork.component.ArtworkVerticalContent
-import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
 import m.a.poem.ui.artwork.model.ArtFontUiModel
 import m.a.poem.ui.artwork.model.ArtSavingState
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
@@ -33,7 +32,7 @@ fun ArtworkScreen(
     state: ArtScreenUiModel,
     onTabClick: (ArtTabUiModel.Tab) -> Unit,
     onFontClick: (ArtFontUiModel.Font) -> Unit,
-    onFontSizeClick: (ArtFontSizeUiModel.Size) -> Unit,
+    onFontSizeChange: (Int) -> Unit,
     onColorClick: (Color) -> Unit,
     onSaveButtonClick: () -> Unit,
     onMatnnegarClick: () -> Unit,
@@ -57,7 +56,7 @@ fun ArtworkScreen(
                     state = state,
                     onTabClick = onTabClick,
                     onFontClick = onFontClick,
-                    onFontSizeClick = onFontSizeClick,
+                    onFontSizeChange = onFontSizeChange,
                     onColorClick = onColorClick,
                     onBackgroundClick = onBackgroundClick,
                     scaffoldState = scaffoldState,
@@ -76,7 +75,7 @@ fun ArtworkScreen(
                     state = state,
                     onTabClick = onTabClick,
                     onFontClick = onFontClick,
-                    onFontSizeClick = onFontSizeClick,
+                    onFontSizeChange = onFontSizeChange,
                     onColorClick = onColorClick,
                     onBackgroundClick = onBackgroundClick,
                     firstVerse = firstVerse,
@@ -108,7 +107,7 @@ private fun ArtworkScreenPreview() {
             ),
             onTabClick = {},
             onFontClick = {},
-            onFontSizeClick = {},
+            onFontSizeChange = {},
             onColorClick = {},
             onBackgroundClick = {},
             onSaveButtonClick = {},

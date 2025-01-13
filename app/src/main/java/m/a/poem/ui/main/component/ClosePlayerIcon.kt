@@ -23,9 +23,7 @@ internal fun ClosePlayerIcon(
         contentDescription = null,
         modifier = modifier
             .clip(CircleShape)
-            .clickable {
-                onClick()
-            }
+            .clickable { onClick() }
             .padding(12.dp)
     )
 }

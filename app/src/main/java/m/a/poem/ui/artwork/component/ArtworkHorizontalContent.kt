@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.controller.CaptureController
-import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
 import m.a.poem.ui.artwork.model.ArtFontUiModel
 import m.a.poem.ui.artwork.model.ArtSavingState
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
@@ -34,7 +32,7 @@ internal fun ArtworkHorizontalContent(
     state: ArtScreenUiModel,
     onTabClick: (ArtTabUiModel.Tab) -> Unit,
     onFontClick: (ArtFontUiModel.Font) -> Unit,
-    onFontSizeClick: (ArtFontSizeUiModel.Size) -> Unit,
+    onFontSizeChange: (Int) -> Unit,
     onColorClick: (Color) -> Unit,
     onBackgroundClick: (Int) -> Unit,
     onSaveButtonClick: () -> Unit,
@@ -84,7 +82,7 @@ internal fun ArtworkHorizontalContent(
                         state = state,
                         onTabClick = onTabClick,
                         onFontClick = onFontClick,
-                        onFontSizeClick = onFontSizeClick,
+                        onFontSizeChange = onFontSizeChange,
                         onColorClick = onColorClick,
                         onBackgroundClick = onBackgroundClick,
                         modifier = Modifier.graphicsLayer {

@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -17,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import dev.shreyaspatil.capturable.controller.CaptureController
-import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
 import m.a.poem.ui.artwork.model.ArtFontUiModel
 import m.a.poem.ui.artwork.model.ArtSavingState
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
@@ -30,7 +28,7 @@ internal fun ArtworkVerticalContent(
     state: ArtScreenUiModel,
     onTabClick: (ArtTabUiModel.Tab) -> Unit,
     onFontClick: (ArtFontUiModel.Font) -> Unit,
-    onFontSizeClick: (ArtFontSizeUiModel.Size) -> Unit,
+    onFontSizeChange: (Int) -> Unit,
     onColorClick: (Color) -> Unit,
     onBackgroundClick: (Int) -> Unit,
     scaffoldState: BottomSheetScaffoldState,
@@ -52,7 +50,7 @@ internal fun ArtworkVerticalContent(
                 state = state,
                 onTabClick = onTabClick,
                 onFontClick = onFontClick,
-                onFontSizeClick = onFontSizeClick,
+                onFontSizeChange = onFontSizeChange,
                 onColorClick = onColorClick,
                 onBackgroundClick = onBackgroundClick,
                 modifier = Modifier.graphicsLayer {

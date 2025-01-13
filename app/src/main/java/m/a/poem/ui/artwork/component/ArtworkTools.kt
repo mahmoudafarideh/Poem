@@ -12,23 +12,24 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
 import m.a.poem.ui.artwork.model.ArtFontUiModel
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
 import m.a.poem.ui.artwork.model.ArtTabUiModel
+import kotlin.math.roundToInt
 
 @Composable
 fun ArtworkTools(
     state: ArtScreenUiModel,
     onTabClick: (ArtTabUiModel.Tab) -> Unit,
     onFontClick: (ArtFontUiModel.Font) -> Unit,
-    onFontSizeClick: (ArtFontSizeUiModel.Size) -> Unit,
+    onFontSizeChange: (Int) -> Unit,
     onColorClick: (Color) -> Unit,
     onBackgroundClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -88,28 +89,15 @@ fun ArtworkTools(
 
                 Spacer(modifier = Modifier.size(24.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .horizontalScroll(rememberScrollState())
-                        .fillMaxWidth()
-                ) {
-                    state.fontSizes.forEach {
-                        SelectiveArtworkItem(
-                            selected = it.selected,
-                            onClick = {
-                                onFontSizeClick(it.size)
-                            },
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        ) {
-                            FontSizeBox(
-                                sizeName = it.size.label,
-                                size = it.size.verseSize,
-                                fontFamily = state.selectedFont.font.fontFamily,
-                            )
-                        }
-                    }
-                }
+                Slider(
+                    value = state.selectedFontSize.size.progress.toFloat(),
+                    onValueChange = {
+                        onFontSizeChange(it.roundToInt())
+                    },
+                    steps = 7,
+                    valueRange = 1f..9f,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             ArtTabUiModel.Tab.Background -> {

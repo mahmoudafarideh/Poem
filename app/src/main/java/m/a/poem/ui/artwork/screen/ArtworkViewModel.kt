@@ -1,6 +1,7 @@
 package m.a.poem.ui.artwork.screen
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +9,6 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import m.a.poem.storage.BitmapSaver
-import m.a.poem.ui.artwork.model.ArtFontSizeUiModel
 import m.a.poem.ui.artwork.model.ArtFontUiModel
 import m.a.poem.ui.artwork.model.ArtSavingState
 import m.a.poem.ui.artwork.model.ArtScreenUiModel
@@ -42,11 +42,12 @@ class ArtworkViewModel @Inject constructor(
         }
     }
 
-    fun fontSizeClicked(size: ArtFontSizeUiModel.Size) {
+    fun fontSizeChanged(size: Int) {
+        Log.d("SXO", "fontSizeChanged: $size")
         updateState {
             copy(
                 fontSizes = fontSizes.map {
-                    it.copy(selected = size == it.size)
+                    it.copy(selected = it.size.progress == size )
                 }.toImmutableList()
             )
         }

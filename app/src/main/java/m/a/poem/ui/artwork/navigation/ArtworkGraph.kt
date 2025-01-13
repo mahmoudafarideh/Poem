@@ -34,8 +34,8 @@ fun NavGraphBuilder.artworkGraph() {
             onFontClick = {
                 viewModel.fontClicked(it)
             },
-            onFontSizeClick = {
-                viewModel.fontSizeClicked(it)
+            onFontSizeChange = {
+                viewModel.fontSizeChanged(it)
             },
             onColorClick = {
                 viewModel.colorClicked(it)
