@@ -13,10 +13,9 @@ class NobaharFirebaseMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var localStorage: LocalStorage
 
-    private var firebaseToken: String? by localStorage.optional(PrefKeys.FirebaseToken)
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        var firebaseToken: String? by localStorage.optional(PrefKeys.FirebaseToken)
         firebaseToken = token
     }
 }

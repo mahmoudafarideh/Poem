@@ -68,12 +68,17 @@ class MainActivity : ComponentActivity() {
 
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,10 +133,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
             val navController = LocalNavController.comPilotNavController
-            if (splashPassed) {
-                LaunchedEffect(Unit) {
+            LaunchedEffect(splashPassed) {
+                if (splashPassed) {
                     navigationFlow.filterNotNull().collect {
-                        navController.safeNavigate().navigate(it)
+                        navController.navigate(it)
                         navigationFlow.update { null }
                     }
                 }
@@ -186,8 +191,8 @@ class MainActivity : ComponentActivity() {
 
                 }
             }
-            intent.extras?.remove(KEY_DESTINATION)
-            intent.extras?.remove(KEY_DESTINATION_ROUTE)
+            intent.removeExtra(KEY_DESTINATION)
+            intent.removeExtra(KEY_DESTINATION_ROUTE)
         }
     }
 
