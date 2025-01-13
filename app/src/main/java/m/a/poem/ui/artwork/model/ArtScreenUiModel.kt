@@ -35,6 +35,10 @@ data class ArtScreenUiModel(
                 ArtBackgroundUiModel(R.drawable.bg_poem_4, false),
                 ArtBackgroundUiModel(R.drawable.bg_poem_5, false),
                 ArtBackgroundUiModel(R.drawable.bg_poem_6, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_7, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_8, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_9, false),
+                ArtBackgroundUiModel(R.drawable.bg_poem_10, false),
             ),
             colors = persistentListOf(
                 ArtColorUiModel(Color.White, true),
