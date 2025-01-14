@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/round_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Poem"
-        android:name="m.a.poem.ui.PoemApp"
+        android:name="m.a.nobahar.ui.PoemApp"
         tools:targetApi="31">
         <activity
-            android:name="m.a.poem.ui.main.MainActivity"
+            android:name="m.a.nobahar.ui.main.MainActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Poem">
@@ -28,7 +28,7 @@
         </activity>
 
         <receiver
-            android:name="m.a.poem.ui.widget.widget.PoemVerseWidgetReceiver"
+            android:name="m.a.nobahar.ui.widget.widget.PoemVerseWidgetReceiver"
             android:exported="true"
             android:label="@string/app_name">
 
@@ -41,7 +41,7 @@
                 android:resource="@xml/poem_verse_widget_config" />
         </receiver>
         <service
-            android:name="m.a.poem.service.NobaharFirebaseMessagingService"
+            android:name="m.a.nobahar.service.NobaharFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
