@@ -31,7 +31,6 @@ internal fun ArtworkBox(
     firstVerse: String,
     secondVerse: String,
     poetName: String,
-    bookName: String,
     state: ArtScreenUiModel,
     captureController: CaptureController,
     modifier: Modifier = Modifier,
@@ -70,7 +69,7 @@ internal fun ArtworkBox(
         ) {
             Spacer(modifier = Modifier.weight(0.7f))
             Text(
-                text = "$poetName » $bookName",
+                text = poetName,
                 style = MaterialTheme.typography.bodyMedium,
                 color = state.selectedColor.color,
                 fontSize = state.selectedFontSize.size.poetSize,

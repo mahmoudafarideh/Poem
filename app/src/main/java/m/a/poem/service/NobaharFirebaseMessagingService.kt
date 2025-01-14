@@ -1,6 +1,7 @@
 package m.a.poem.service
 
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import m.a.poem.api.storage.optional
 import m.a.poem.config.PrefKeys
@@ -17,5 +18,10 @@ class NobaharFirebaseMessagingService : FirebaseMessagingService() {
         super.onNewToken(token)
         var firebaseToken: String? by localStorage.optional(PrefKeys.FirebaseToken)
         firebaseToken = token
+    }
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        super.onMessageReceived(message)
+
     }
 }

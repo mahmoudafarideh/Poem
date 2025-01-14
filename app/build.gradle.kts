@@ -76,6 +76,8 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.messaging)
 
+    implementation(libs.analytics)
+
     implementation(libs.hilt.android)
     implementation(libs.hilt.compose)
     kapt(libs.hilt.compiler)

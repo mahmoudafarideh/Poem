@@ -28,7 +28,6 @@ fun ArtworkScreen(
     firstVerse: String,
     secondVerse: String,
     poetName: String,
-    bookName: String,
     state: ArtScreenUiModel,
     onTabClick: (ArtTabUiModel.Tab) -> Unit,
     onFontClick: (ArtFontUiModel.Font) -> Unit,
@@ -63,7 +62,6 @@ fun ArtworkScreen(
                     firstVerse = firstVerse,
                     secondVerse = secondVerse,
                     poetName = poetName,
-                    bookName = bookName,
                     captureController = captureController,
                     modifier = Modifier.padding(contentPadding),
                     onMatnnegarClick = onMatnnegarClick
@@ -81,7 +79,6 @@ fun ArtworkScreen(
                     firstVerse = firstVerse,
                     secondVerse = secondVerse,
                     poetName = poetName,
-                    bookName = bookName,
                     onSaveButtonClick = onSaveButtonClick,
                     captureController = captureController,
                     modifier = Modifier.padding(contentPadding),
@@ -101,7 +98,6 @@ private fun ArtworkScreenPreview() {
             firstVerse = "اَلا یا اَیُّهَا السّاقی اَدِرْ کَأسَاً و ناوِلْها",
             secondVerse = "که عشق آسان نُمود اوّل ولی افتاد مشکل\u200Cها",
             poetName = "حافظ",
-            bookName = "غزلیات",
             state = ArtScreenUiModel.default.copy(
                 savingState = ArtSavingState.Failed
             ),

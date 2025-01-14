@@ -35,7 +35,6 @@ internal fun ArtworkVerticalContent(
     firstVerse: String,
     secondVerse: String,
     poetName: String,
-    bookName: String,
     captureController: CaptureController,
     onMatnnegarClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -70,7 +69,6 @@ internal fun ArtworkVerticalContent(
                 firstVerse = firstVerse,
                 secondVerse = secondVerse,
                 poetName = poetName,
-                bookName = bookName,
                 modifier = Modifier
                     .aspectRatio(1f)
                     .padding(16.dp),

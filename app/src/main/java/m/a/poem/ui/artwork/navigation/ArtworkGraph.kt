@@ -26,7 +26,6 @@ fun NavGraphBuilder.artworkGraph() {
             firstVerse = it.argument.first.text,
             secondVerse = it.argument.second.text,
             poetName = it.argument.poetName,
-            bookName = it.argument.poemBook,
             state = state,
             onTabClick = {
                 viewModel.tabClicked(it)

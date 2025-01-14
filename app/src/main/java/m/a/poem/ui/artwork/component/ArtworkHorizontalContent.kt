@@ -40,7 +40,6 @@ internal fun ArtworkHorizontalContent(
     firstVerse: String,
     secondVerse: String,
     poetName: String,
-    bookName: String,
     captureController: CaptureController,
     modifier: Modifier = Modifier
 ) {
@@ -49,7 +48,6 @@ internal fun ArtworkHorizontalContent(
             firstVerse = firstVerse,
             secondVerse = secondVerse,
             poetName = poetName,
-            bookName = bookName,
             modifier = Modifier
                 .aspectRatio(1f)
                 .padding(16.dp),
