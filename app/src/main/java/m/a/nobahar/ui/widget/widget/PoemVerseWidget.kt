@@ -8,6 +8,8 @@ import androidx.glance.action.actionParametersOf
 import androidx.glance.action.actionStartActivity
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
+import m.a.nobahar.analytics.AppMetricaAgent
+import m.a.nobahar.analytics.PoemFromWidgetScreenEvent
 import m.a.nobahar.ui.main.MainActivity
 import m.a.nobahar.ui.main.MainActivity.Companion.KEY_DESTINATION
 import m.a.nobahar.ui.poem.navigation.PoemRoute
@@ -38,6 +40,9 @@ class PoemVerseWidget @Inject constructor(
                 onRetryClick = { viewModel.retryClicked() },
                 onRefreshClick = { viewModel.refreshClicked() },
                 onPoemClick = viewModel.currentPoem?.let {
+                    AppMetricaAgent.log(
+                        PoemFromWidgetScreenEvent(it.id)
+                    )
                     val parameters =
                         actionParametersOf(destinationKey to PoemRoute(it.id).navigator())
                     actionStartActivity<MainActivity>(parameters)

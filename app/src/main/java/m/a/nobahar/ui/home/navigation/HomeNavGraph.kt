@@ -7,6 +7,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
+import m.a.nobahar.analytics.AppMetricaAgent
+import m.a.nobahar.analytics.OmenScreenEvent
 import m.a.nobahar.ui.home.navigation.routes.screen
 import m.a.nobahar.ui.home.screen.HomeScreen
 import m.a.nobahar.ui.home.screen.HomeViewModel
@@ -35,6 +37,7 @@ fun NavGraphBuilder.homeGraph() {
                     .navigate(PoetRoute(it.toPoet()).navigator)
             },
             onOmenClick = {
+                AppMetricaAgent.log(OmenScreenEvent)
                 navigation.safeNavigate().navigate(OmenRoute.navigator)
             }
         )

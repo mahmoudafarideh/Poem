@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.persistentListOf
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
+import m.a.nobahar.analytics.AppInfoEvent
+import m.a.nobahar.analytics.AppMetricaAgent
 import m.a.nobahar.domain.model.Failed
 import m.a.nobahar.domain.model.LoadableData
 import m.a.nobahar.domain.model.Loaded
@@ -49,6 +51,7 @@ fun HomeScreen(
         )
     }
     val onInfoClick = {
+        AppMetricaAgent.log(AppInfoEvent)
         navigation.safeNavigate().navigate(InfoRoute.navigator)
     }
     val scrollState = rememberLazyGridState()
