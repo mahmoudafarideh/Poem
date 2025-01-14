@@ -18,6 +18,7 @@
         <activity
             android:name="m.a.poem.ui.main.MainActivity"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.Poem">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
