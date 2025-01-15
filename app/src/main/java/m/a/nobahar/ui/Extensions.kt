@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import m.a.nobahar.BuildConfig
 import m.a.nobahar.domain.model.Poet
 import m.a.nobahar.ui.search.model.SearchBookUiModel
 import m.a.nobahar.ui.search.navigation.SearchRoute
@@ -40,22 +41,55 @@ fun Modifier.noRippleClickable(
 val LocalSnackBarHostState =
     compositionLocalOf<SnackbarHostState> { error("No SnackbarHostState found!") }
 
-internal fun Context.goToMarket() {
+internal fun Context.goToMarket(packageValue: String = packageName) {
+    @Suppress("KotlinConstantConditions")
+    when (BuildConfig.Market) {
+        "CafeBazaar" -> openCafeBazaar(packageValue)
+        "Myket" -> openMyket(packageValue)
+        else -> openCafeBazaar(packageValue)
+    }
+
+}
+
+private fun Context.openCafeBazaar(packageValue: String) {
     Intent(Intent.ACTION_VIEW).apply {
-        data = Uri.parse("bazaar://details?id=" + "m.a.nobahar")
+        data = Uri.parse("bazaar://details?id=$packageValue")
         setPackage("com.farsitel.bazaar")
     }.let {
-        startActivity(it)
+        runCatching {
+            startActivity(it)
+        }
+            .onFailure {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://cafebazaar.ir/app/$packageValue")
+                    )
+                )
+            }
+    }
+}
+
+private fun Context.openMyket(packageValue: String) {
+    Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse("myket://download/$packageValue")
+        setPackage("ir.mservices.market")
+    }.let {
+        runCatching {
+            startActivity(it)
+        }.onFailure {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://myket.ir/app/$packageValue")
+                )
+            )
+        }
     }
 }
 
 internal fun Context.goToMatnnegarMarket() {
-    Intent(Intent.ACTION_VIEW).apply {
-        data = Uri.parse("bazaar://details?id=" + "com.ma.textgraphy")
-        setPackage("com.farsitel.bazaar")
-    }.let {
-        startActivity(it)
-    }
+    goToMarket("com.ma.textgraphy")
 }
 
 internal fun Context.goToInstagram() {
@@ -68,6 +102,7 @@ internal fun Context.goToInstagram() {
         startActivity(intent)
     }
 }
+
 internal fun Context.goToTelegram() {
 
     runCatching {

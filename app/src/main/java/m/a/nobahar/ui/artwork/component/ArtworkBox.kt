@@ -54,7 +54,7 @@ internal fun ArtworkBox(
                 fontSize = state.selectedFontSize.size.verseSize,
                 fontFamily = state.selectedFont.font.fontFamily
             )
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(4.dp))
             Text(
                 text = secondVerse,
                 style = MaterialTheme.typography.bodyMedium,

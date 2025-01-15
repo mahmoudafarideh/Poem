@@ -29,11 +29,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "Market", "\"CafeBazaar\"")
+        }
+        debug {
+            isMinifyEnabled = false
+            buildConfigField("String", "Market", "\"Myket\"")
         }
     }
     compileOptions {
@@ -45,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 

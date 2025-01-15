@@ -20,6 +20,6 @@ data class ArtFontSizeUiModel(
         ExtraLarge(28.sp, 20.sp, 6),
         Big(30.sp, 22.sp, 7),
         ExtraBig(32.sp, 24.sp, 8),
-        Huge(34.sp, 22.sp, 9),
+        Huge(34.sp, 26.sp, 9),
     }
 }
