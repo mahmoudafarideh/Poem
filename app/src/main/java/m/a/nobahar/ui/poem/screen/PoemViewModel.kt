@@ -92,7 +92,7 @@ class PoemViewModel @AssistedInject constructor(
             var iteratedVerses = 0
             it.mapIndexedNotNull { index, poemVerse ->
                 poemVerse.toPoemVerseUiModel(index, iteratedVerses).also {
-                    iteratedVerses = poemVerse.size
+                    iteratedVerses += poemVerse.size
                 }
             }.toImmutableList()
         },
