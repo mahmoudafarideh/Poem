@@ -35,9 +35,22 @@ class PoemWidgetViewModel @Inject constructor(
                 if (currentDate != Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
                     refreshClicked()
                 }
-                delay(360000)
+                delay(getMillisUntilNextDay())
             }
         }
+    }
+
+    fun getMillisUntilNextDay(): Long {
+        val now = Calendar.getInstance()
+        val nextDay = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, 1)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+
+        return nextDay.timeInMillis - now.timeInMillis
     }
 
     private fun getRandomVerse() {
@@ -63,10 +76,11 @@ class PoemWidgetViewModel @Inject constructor(
         )
     }
 
-    private fun getRandomIndex(poem: RandomPoem): Int = Random.nextInt(0, poem.verses.lastIndex - 1).let {
-        if (it % 2 == 1) it - 1
-        else it
-    }
+    private fun getRandomIndex(poem: RandomPoem): Int =
+        Random.nextInt(0, poem.verses.lastIndex - 1).let {
+            if (it % 2 == 1) it - 1
+            else it
+        }
 
     fun retryClicked() {
         getRandomVerse()
