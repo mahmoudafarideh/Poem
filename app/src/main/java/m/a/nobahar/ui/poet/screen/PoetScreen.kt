@@ -49,7 +49,9 @@ fun PoetScreen(
     onTabClick: (PoetScreenTabsUiModel) -> Unit,
     poetInfo: LoadableData<PoetScreenUiModel.PoetInfo>,
     onRetryClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onRandomPoemClick: () -> Unit,
+    loadingRandomPoem: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val state = rememberLazyListState()
     val windowSize = LocalWindowSize.current
@@ -65,6 +67,9 @@ fun PoetScreen(
                         SearchRoute(poetUiModel.toPoet(), null).navigator
                     )
                 },
+                showRandomIcon = true,
+                onRandomClick = onRandomPoemClick,
+                loadingRandomPoem = loadingRandomPoem
             )
         },
         modifier = modifier
@@ -141,11 +146,12 @@ fun PoetScreenPreview() {
     PoemThemePreview {
         PoetScreen(
             poetUiModel = PoetUiModel.fixture,
-            modifier = Modifier,
             selectedTab = PoetScreenTabsUiModel.Books,
             onTabClick = {},
-            onRetryClick = {},
             poetInfo = Loading,
+            onRetryClick = {},
+            loadingRandomPoem = false,
+            onRandomPoemClick = {}
         )
     }
 }

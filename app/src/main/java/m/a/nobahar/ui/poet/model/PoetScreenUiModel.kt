@@ -8,6 +8,7 @@ import m.a.nobahar.ui.shared.model.PoetUiModel
 data class PoetScreenUiModel(
     val poet: PoetUiModel,
     val poetInfo: LoadableData<PoetInfo> = NotLoaded,
+    val randomPoem: LoadableData<Unit> = NotLoaded,
     val selectedTabsUiModel: PoetScreenTabsUiModel = PoetScreenTabsUiModel.Books,
 ) {
     data class PoetInfo(

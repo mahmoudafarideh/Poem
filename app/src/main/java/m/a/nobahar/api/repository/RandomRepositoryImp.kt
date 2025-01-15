@@ -13,8 +13,8 @@ class RandomRepositoryImp @Inject constructor(
     private val randomApi: RandomApi,
     private val poemApi: PoemApi
 ) : RandomRepository {
-    override suspend fun getRandomPoem(): RandomPoem {
-        return getRandomPoemInternal()
+    override suspend fun getRandomPoem(poetId: Long?): RandomPoem {
+        return getRandomPoemInternal(poetId)
     }
 
     private suspend fun getRandomPoemInternal(
