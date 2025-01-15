@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">nobahar</string>
+    <string name="app_name">Nobahar</string>
     <string name="popular_poets_title">سخنوران پرمخاطب</string>
     <string name="categorize_by_century_title">دسته‌بندی براساس قرن</string>
     <string name="error_occured_label">مشکلی در اتصال به اینترنت پیش آمد!</string>
