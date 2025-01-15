@@ -22,7 +22,6 @@ class PoemWidgetViewModel @Inject constructor(
 
     private var _currentPoem: RandomPoem? = null
     val currentPoem get() = _currentPoem
-    private var currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
 
     init {
         getRandomVerse()
@@ -32,10 +31,8 @@ class PoemWidgetViewModel @Inject constructor(
     private fun observeShouldUpdatePoem() {
         viewModelScope.launch {
             while (true) {
-                if (currentDate != Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
-                    refreshClicked()
-                }
                 delay(getMillisUntilNextDay())
+                refreshClicked()
             }
         }
     }
