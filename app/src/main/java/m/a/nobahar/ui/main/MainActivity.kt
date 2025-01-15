@@ -60,6 +60,7 @@ import m.a.nobahar.ui.theme.PoemTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     private val navigationFlow = MutableStateFlow<RouteNavigator?>(null)
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
@@ -188,7 +189,6 @@ class MainActivity : ComponentActivity() {
                     override fun route(): String {
                         return intent.extras?.getString(KEY_DESTINATION_ROUTE).orEmpty()
                     }
-
                 }
             }
             intent.removeExtra(KEY_DESTINATION)

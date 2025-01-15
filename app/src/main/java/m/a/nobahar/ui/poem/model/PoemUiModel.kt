@@ -17,6 +17,6 @@ data class PoemUiModel(
 ) {
     val selectedVerses = verses.filter { it.isSelected }.toImmutableList()
     val anyVerseSelected = selectedVerses.isNotEmpty()
-    val isOneVerseSelected = selectedVerses.count() == 1
-    val selectedVerse = selectedVerses.firstOrNull()
+    val isOneVerseSelected = selectedVerses.count { it is PoemVerseUiModel.Double } == 1
+    val selectedVerse: PoemVerseUiModel.Double? = selectedVerses.filterIsInstance<PoemVerseUiModel.Double>().firstOrNull()
 }

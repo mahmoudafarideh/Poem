@@ -1,5 +1,6 @@
 package m.a.nobahar.api.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import m.a.nobahar.domain.model.PoemVerse
 
@@ -7,9 +8,12 @@ import m.a.nobahar.domain.model.PoemVerse
 data class PoemVerseDto(
     val text: String,
     val id: Long,
+    @SerialName("coupletIndex")
+    val couple: Int
 )
 
 internal fun PoemVerseDto.toPoemVerse() = PoemVerse(
     text = text,
-    id = id
+    id = id,
+    couple = couple
 )

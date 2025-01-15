@@ -64,7 +64,7 @@ internal fun PoemVerses(
     ) {
         items(
             items = poemUiModel.data.verses,
-            key = { "${it.first.id} ${it.second.id}" }
+            key = { it.index }
         ) {
             Column(
                 modifier = Modifier
@@ -93,14 +93,26 @@ internal fun PoemVerses(
                         .align(Alignment.Start)
                         .padding(top = 12.dp)
                 )
-                Spacer(modifier = Modifier.size(16.dp))
-                PoemVerse(
-                    verse = it.second,
-                    highlightColor = highlightColor,
-                    modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(bottom = 12.dp)
-                )
+                it.second?.let {
+                    Spacer(modifier = Modifier.size(16.dp))
+                    PoemVerse(
+                        verse = it,
+                        highlightColor = highlightColor,
+                        modifier = Modifier
+                            .align(Alignment.End)
+                    )
+                }
+                it.third?.let {
+                    Spacer(modifier = Modifier.size(16.dp))
+                    PoemVerse(
+                        verse = it,
+                        highlightColor = highlightColor,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                    )
+                }
+                Spacer(modifier = Modifier.size(12.dp))
+
                 HorizontalDivider(
                     modifier = Modifier.padding(top = 12.dp)
                 )

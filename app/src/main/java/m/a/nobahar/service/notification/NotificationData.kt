@@ -1,5 +1,8 @@
 package m.a.nobahar.service.notification
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class NotificationData(
     val id: Long,
     val title: String,

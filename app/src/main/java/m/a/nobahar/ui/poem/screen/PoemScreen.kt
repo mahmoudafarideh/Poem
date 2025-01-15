@@ -166,8 +166,10 @@ private fun copyVerses(
             clipboardManager.setText(
                 AnnotatedString(
                     poem.selectedVerses.joinToString("\n\n") {
-                        it.first.text + "\n" + it.second.text
-                    } + "\n\n" + poem.poetUiModel.nickname + " | " + poem.label
+                        it.getString()
+                    } + "\n\n" + poem.poetUiModel.nickname
+                            + " | "
+                            + poem.label
                 )
             )
             onVersesCopyClick()
@@ -234,16 +236,19 @@ private fun PoemScreenPreview() {
             poemUiModel = Loaded(
                 PoemUiModel(
                     verses = persistentListOf(
-                        PoemVerseUiModel(
+                        PoemVerseUiModel.Double(
                             first = PoemVerseUiModel.VerseInfo(
                                 "ای رستخیز ناگهان وی رحمت بی\u200Cمنتها",
-                                1
+                                1,
+                                1,
                             ),
                             second = PoemVerseUiModel.VerseInfo(
                                 "ای آتشی افروخته، در بیشه اندیشه\u200Cمنتها",
-                                2
+                                2,
+                                1
                             ),
-                            1
+                            1,
+                            0
                         ),
                     ),
                     next = PoemItemUiModel(

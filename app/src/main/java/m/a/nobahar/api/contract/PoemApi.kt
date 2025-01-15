@@ -8,7 +8,7 @@ import retrofit2.http.Streaming
 import retrofit2.http.Url
 
 interface PoemApi {
-    @GET("ganjoor/poem/{id}?catInfo=true&catPoems=false&rhymes=true&recitations=true&images=true&songs=true&comments=true&verseDetails=true&navigation=true&relatedpoems=true")
+    @GET("ganjoor/poem/{id}?catInfo=true&catPoems=false&rhymes=false&recitations=true&images=false&songs=false&comments=false&verseDetails=true&navigation=false&relatedpoems=false")
     suspend fun getPoem(@Path("id") id: Long): PoemInfoDto
 
     @Streaming

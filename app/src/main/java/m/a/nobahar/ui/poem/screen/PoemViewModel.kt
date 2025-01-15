@@ -49,7 +49,7 @@ class PoemViewModel @AssistedInject constructor(
                     poem.copy(
                         verses = poem.verses.mapIndexed { verseIndex, verse ->
                             when (index) {
-                                verseIndex -> verse.copy(isSelected = !verse.isSelected)
+                                verseIndex -> verse.toggleSelection(isSelected = !verse.isSelected)
                                 else -> verse
                             }
                         }.toImmutableList()
@@ -88,9 +88,14 @@ class PoemViewModel @AssistedInject constructor(
     }
 
     private fun PoemInfo.toPoemUiModel() = PoemUiModel(
-        verses = verses.zipped().mapIndexed { index, poemVerse ->
-            poemVerse.toPoemVerseUiModel(index)
-        }.toImmutableList(),
+        verses = verses.zipped().let {
+            var iteratedVerses = 0
+            it.mapIndexedNotNull { index, poemVerse ->
+                poemVerse.toPoemVerseUiModel(index, iteratedVerses).also {
+                    iteratedVerses = poemVerse.size
+                }
+            }.toImmutableList()
+        },
         next = nextPoem?.toPoemItemUiModel(),
         previous = previousPoem?.toPoemItemUiModel(),
         recitations = recitations.map {
@@ -102,16 +107,26 @@ class PoemViewModel @AssistedInject constructor(
     )
 
     private fun List<PoemVerse>.zipped() = buildList {
-        var firstItem: PoemVerse? = null
+        val coupleVerses: MutableList<PoemVerse> = mutableListOf()
+        var previousIndex: Int = this@zipped.firstOrNull()?.couple ?: -1
         this@zipped.forEach {
             when {
-                firstItem == null -> firstItem = it
+                previousIndex != it.couple -> {
+                    if (coupleVerses.isNotEmpty()) {
+                        add(coupleVerses.toList())
+                    }
+                    coupleVerses.clear()
+                    coupleVerses.add(it)
+                    previousIndex = it.couple
+                }
+
                 else -> {
-                    add(firstItem to it)
-                    firstItem = null
+                    coupleVerses += it
                 }
             }
-
+        }
+        if (coupleVerses.isNotEmpty()) {
+            add(coupleVerses.toList())
         }
     }
 
@@ -139,8 +154,8 @@ class PoemViewModel @AssistedInject constructor(
             copy(
                 poem = Loaded(
                     data.copy(
-                        verses = data.verses.mapIndexed { index, verse ->
-                            updateHighlightedVerse(verse, shouldHighlight, index, verseIndex)
+                        verses = data.verses.map { verse ->
+                            updateHighlightedVerse(verse, shouldHighlight, verseIndex)
                         }.toImmutableList(),
                     )
                 )
@@ -151,16 +166,8 @@ class PoemViewModel @AssistedInject constructor(
     private fun updateHighlightedVerse(
         verse: PoemVerseUiModel,
         shouldHighlight: Boolean,
-        index: Int,
         verseIndex: Int
-    ): PoemVerseUiModel = verse.copy(
-        first = verse.first.copy(
-            isHighlighted = shouldHighlight && index.times(2) <= verseIndex
-        ),
-        second = verse.second.copy(
-            isHighlighted = shouldHighlight && index.times(2).plus(1) <= verseIndex
-        )
-    )
+    ): PoemVerseUiModel = verse.toggleHighlight(verseIndex, shouldHighlight)
 
     fun recitationClicked(recitationId: Long) {
         val data = state.value.poem.data ?: return
@@ -224,10 +231,7 @@ class PoemViewModel @AssistedInject constructor(
                 poem = Loaded(
                     poem.copy(
                         verses = poem.verses.map { verse ->
-                            verse.copy(
-                                isSelected
-                                = false
-                            )
+                            verse.toggleSelection(isSelected = false)
                         }.toImmutableList()
                     )
                 )

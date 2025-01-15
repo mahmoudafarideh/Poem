@@ -3,7 +3,6 @@ package m.a.nobahar.api.storage
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import m.a.nobahar.domain.storage.LocalStorage
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -16,18 +15,6 @@ class PrefStorage(
 
     private val sharedPreferences: SharedPreferences by lazy {
         context.getSharedPreferences(name, Activity.MODE_PRIVATE)
-    }
-
-    init {
-        sharedPreferences.all.forEach {
-            Log.d(
-                "SXO", "Key is ${it.key} value is ${it.value}, ${
-                    it.value?.let {
-                        it::class.java
-                    }
-                }"
-            )
-        }
     }
 
     override fun <T : Any> getData(key: String, clazz: Class<T>, defaultValue: T?): T? {

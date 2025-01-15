@@ -40,6 +40,7 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
             runCatching {
                 action()
             }.onFailure {
+                it.printStackTrace()
                 data(Failed)
             }.onSuccess {
                 data(Loaded(it))
@@ -85,7 +86,7 @@ abstract class BaseViewModel<T>(initialState: T) : ViewModel() {
                         currentValue.data.orEmpty().plus(it).toImmutableList(),
                         currentValue.page.plus(1),
                         currentValue.limit,
-                        it.size <= currentValue.limit
+                        it.size >= currentValue.limit
                     )
                 )
             }
