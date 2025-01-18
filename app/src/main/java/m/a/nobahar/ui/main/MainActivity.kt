@@ -41,7 +41,6 @@ import kotlinx.coroutines.flow.update
 import m.a.compilot.common.RouteNavigator
 import m.a.compilot.navigation.LocalNavController
 import m.a.compilot.navigation.comPilotNavController
-import m.a.nobahar.api.model.main
 import m.a.nobahar.ui.LocalSnackBarHostState
 import m.a.nobahar.ui.artwork.navigation.artworkGraph
 import m.a.nobahar.ui.book.navigation.bookGraph
@@ -86,7 +85,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         checkIntentDestination()
         askNotificationPermission()
-        main(this)
         enableEdgeToEdge()
         setContent {
             PoemTheme {
