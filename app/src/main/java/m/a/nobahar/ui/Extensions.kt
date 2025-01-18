@@ -42,10 +42,9 @@ val LocalSnackBarHostState =
     compositionLocalOf<SnackbarHostState> { error("No SnackbarHostState found!") }
 
 internal fun Context.goToMarket(packageValue: String = packageName) {
-    @Suppress("KotlinConstantConditions")
-    when (BuildConfig.Market) {
-        "CafeBazaar" -> openCafeBazaar(packageValue)
-        "Myket" -> openMyket(packageValue)
+    when (BuildConfig.Market.lowercase()) {
+        "cafebazaar" -> openCafeBazaar(packageValue)
+        "myket" -> openMyket(packageValue)
         else -> openCafeBazaar(packageValue)
     }
 

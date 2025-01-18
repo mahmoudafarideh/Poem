@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface BookApi {
 
-    @GET("ganjoor/cat/{id}?poems=true&mainSections=false")
+    @GET("v1/book/{id}")
     suspend fun getBook(@Path("id") id: Long): BookDetailDto
 
 }

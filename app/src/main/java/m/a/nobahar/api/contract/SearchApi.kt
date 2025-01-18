@@ -6,13 +6,13 @@ import retrofit2.http.Query
 
 interface SearchApi {
 
-    @GET("ganjoor/poems/search")
+    @GET("v1/poem/search")
     suspend fun searchPoem(
-        @Query("PageNumber") page: Int,
-        @Query("PageSize") limit: Int,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
         @Query("term") term: String,
         @Query("poetId") poetId: Long?,
-        @Query("catId") bookId: Long?,
+        @Query("bookId") bookId: Long?,
     ): List<SearchResultDto>
 
 }

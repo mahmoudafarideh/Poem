@@ -23,7 +23,7 @@ import retrofit2.Retrofit
 import javax.inject.Singleton
 
 const val WEB_URL = "https://api.ganjoor.net"
-const val API_URL = "$WEB_URL/api/"
+const val API_URL = "https://nobahar.app/api/"
 
 @Module
 @InstallIn(SingletonComponent::class)

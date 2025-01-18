@@ -12,8 +12,6 @@ import m.a.nobahar.domain.repository.SplashRepository
 import m.a.nobahar.domain.storage.LocalStorage
 import javax.inject.Inject
 
-const val splashApiRoute = "https://nobahar.app/api/splash"
-
 class SplashRepositoryImp @Inject constructor(
     private val splashApi: SplashApi,
     localStorage: LocalStorage,
@@ -24,7 +22,6 @@ class SplashRepositoryImp @Inject constructor(
     private var deviceId: Long? by localStorage.optional(PrefKeys.DeviceId)
     override suspend fun getSplash() {
         val splashData = splashApi.getSplash(
-            splashApiRoute,
             firebaseToken,
             getAppVersion(),
             deviceId

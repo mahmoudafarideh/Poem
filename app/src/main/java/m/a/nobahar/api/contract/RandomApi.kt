@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface RandomApi {
 
-    @GET("ganjoor/poem/random")
+    @GET("v1/poem/random")
     suspend fun getRandomPoem(
         @Query("poetId") poetId: Long? = null
     ): RandomPoemDto
