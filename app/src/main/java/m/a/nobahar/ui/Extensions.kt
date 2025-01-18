@@ -45,6 +45,7 @@ internal fun Context.goToMarket(packageValue: String = packageName) {
     when (BuildConfig.Market.lowercase()) {
         "cafebazaar" -> openCafeBazaar(packageValue)
         "myket" -> openMyket(packageValue)
+        "googleplay" -> openGooglePlay(packageValue)
         else -> openCafeBazaar(packageValue)
     }
 
@@ -57,8 +58,7 @@ private fun Context.openCafeBazaar(packageValue: String) {
     }.let {
         runCatching {
             startActivity(it)
-        }
-            .onFailure {
+        }.onFailure {
                 startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
@@ -66,6 +66,14 @@ private fun Context.openCafeBazaar(packageValue: String) {
                     )
                 )
             }
+    }
+}
+
+private fun Context.openGooglePlay(packageValue: String) {
+    try {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageValue")))
+    } catch (_: Exception) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageValue")))
     }
 }
 
