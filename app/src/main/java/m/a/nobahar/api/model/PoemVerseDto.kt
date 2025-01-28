@@ -13,7 +13,7 @@ data class PoemVerseDto(
 )
 
 internal fun PoemVerseDto.toPoemVerse() = PoemVerse(
-    text = text,
+    text = text.replace("\n", " "),
     id = id,
     couple = couple
 )

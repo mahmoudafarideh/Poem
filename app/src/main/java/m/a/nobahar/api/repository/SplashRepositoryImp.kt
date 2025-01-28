@@ -4,30 +4,31 @@ import android.content.Context
 import androidx.core.content.pm.PackageInfoCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import m.a.nobahar.api.contract.SplashApi
-import m.a.nobahar.api.storage.optional
 import m.a.nobahar.config.PrefKeys
 import m.a.nobahar.domain.model.HomeCommunication
 import m.a.nobahar.domain.repository.HomeCommunicationRepository
 import m.a.nobahar.domain.repository.SplashRepository
 import m.a.nobahar.domain.storage.LocalStorage
+import m.a.nobahar.domain.storage.optional
 import javax.inject.Inject
 
 class SplashRepositoryImp @Inject constructor(
     private val splashApi: SplashApi,
-    localStorage: LocalStorage,
+    private val localStorage: LocalStorage,
     private val homeCommunicationRepository: HomeCommunicationRepository,
     @ApplicationContext private val context: Context,
 ) : SplashRepository {
-    private val firebaseToken: String? by localStorage.optional(PrefKeys.FirebaseToken)
-    private var deviceId: Long? by localStorage.optional(PrefKeys.DeviceId)
+
     override suspend fun getSplash() {
+        val firebaseToken = localStorage.optional<String>(PrefKeys.FirebaseToken)
+        val deviceId = localStorage.optional<Long>(PrefKeys.DeviceId)
         val splashData = splashApi.getSplash(
-            firebaseToken,
+            firebaseToken.getValue(),
             getAppVersion(),
-            deviceId
+            deviceId.getValue()
         )
         splashData.deviceId?.let {
-            deviceId = it
+            deviceId.updateValue(it)
         }
 
         when {

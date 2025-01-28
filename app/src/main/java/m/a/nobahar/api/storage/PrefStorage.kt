@@ -3,9 +3,9 @@ package m.a.nobahar.api.storage
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import m.a.nobahar.domain.storage.LocalStorage
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 @Suppress("UNCHECKED_CAST")
 class PrefStorage(
@@ -17,7 +17,13 @@ class PrefStorage(
         context.getSharedPreferences(name, Activity.MODE_PRIVATE)
     }
 
-    override fun <T : Any> getData(key: String, clazz: Class<T>, defaultValue: T?): T? {
+    override suspend fun <T : Any> getData(key: String, clazz: Class<T>, defaultValue: T?): T? {
+        return withContext(Dispatchers.IO) {
+            getData(key, defaultValue, clazz)
+        }
+    }
+
+    private fun <T : Any> getData(key: String, defaultValue: T?, clazz: Class<T>): T? {
         if (!sharedPreferences.contains(key)) return defaultValue
         return when (clazz) {
             Int::class.java, Integer::class.java ->
@@ -34,10 +40,15 @@ class PrefStorage(
 
             else -> throw IllegalArgumentException()
         }
-
     }
 
-    override fun <T : Any> setData(key: String, clazz: Class<T>, value: T?) {
+    override suspend fun <T : Any> setData(key: String, clazz: Class<T>, value: T?) {
+        withContext(Dispatchers.IO) {
+            updateData(value, key, clazz)
+        }
+    }
+
+    private fun <T : Any> updateData(value: T?, key: String, clazz: Class<T>) {
         val editor = sharedPreferences.edit()
         if (value == null) {
             editor.remove(key)
@@ -59,34 +70,5 @@ class PrefStorage(
             }
         }
         editor.apply()
-    }
-}
-
-inline fun <reified T : Any> LocalStorage.optional(
-    key: String,
-    default: T? = null
-): ReadWriteProperty<Any?, T?> {
-
-    return object : ReadWriteProperty<Any?, T?> {
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T? =
-            getData(key, T::class.java, default)
-
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T?) {
-            setData(key, T::class.java, value)
-        }
-    }
-}
-
-inline fun <reified T : Any> LocalStorage.data(
-    key: String, default: T
-): ReadWriteProperty<Any?, T> {
-
-    return object : ReadWriteProperty<Any?, T> {
-        override fun getValue(thisRef: Any?, property: KProperty<*>): T =
-            getData(key, T::class.java, default)!!
-
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-            setData(key, T::class.java, value)
-        }
     }
 }

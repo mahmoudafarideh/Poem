@@ -10,11 +10,14 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import m.a.nobahar.R
-import m.a.nobahar.api.storage.optional
 import m.a.nobahar.config.PrefKeys
 import m.a.nobahar.domain.storage.LocalStorage
+import m.a.nobahar.domain.storage.optional
 import m.a.nobahar.service.notification.toNotificationData
 import java.net.HttpURLConnection
 import java.net.URL
@@ -31,8 +34,10 @@ class NobaharFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        var firebaseToken: String? by localStorage.optional(PrefKeys.FirebaseToken)
-        firebaseToken = token
+        CoroutineScope(Dispatchers.IO).launch {
+            var firebaseToken= localStorage.optional<String>(PrefKeys.FirebaseToken)
+            firebaseToken.updateValue(token)
+        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

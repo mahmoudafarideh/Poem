@@ -34,7 +34,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "Market", "\"Myket\"")
+            buildConfigField("String", "Market", "\"GooglePlay\"")
         }
         debug {
             isMinifyEnabled = false

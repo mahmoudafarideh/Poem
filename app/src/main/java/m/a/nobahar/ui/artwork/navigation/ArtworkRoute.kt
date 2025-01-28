@@ -12,3 +12,11 @@ data class ArtworkRoute(
 ) {
     companion object
 }
+
+@RouteNavigation
+data class SomeScreenRoute(
+    val id: Int,
+    val title: String
+) {
+    companion object
+}
